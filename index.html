@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>京都焼肉なおき｜東新町・新栄の焼肉屋 一人焼肉・ディナーデート・女子会・宴会</title>
+<meta name="description" content="名古屋市中区東新町・新栄の焼肉屋「京都焼肉なおき」。18:00〜4:00営業。一人焼肉・ディナーデート・女子会・宴会におすすめ。京都仕込みの厳選肉とヤンニンジャン。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600;700&family=Shippori+Mincho+B1:wght@400;600;800&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --washi:#f0ebe0;
+  --washi2:#e8e0d0;
+  --ink:#1a1208;
+  --ink2:#0d0a05;
+  --red:#b01020;
+  --red2:#d01828;
+  --gold:#c8a84a;
+  --cream:#faf6ee;
+  --smoke:#8a7d6e;
+  --border-light:rgba(0,0,0,0.12);
+}
+html{scroll-behavior:smooth;}
+body{background:var(--washi);color:var(--ink);font-family:'Noto Serif JP',serif;overflow-x:hidden;}
+
+/* WASHI TEXTURE */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:stretch;height:56px;
+  background:rgba(10,7,3,0.95);backdrop-filter:blur(8px);
+}
+.nav-inner{display:flex;align-items:center;flex:1;padding:0 2rem;gap:0;}
+.nav-links{display:flex;list-style:none;height:100%;}
+.nav-links li{height:100%;}
+.nav-links a{
+  display:flex;align-items:center;height:100%;
+  font-size:0.72rem;letter-spacing:0.15em;color:rgba(255,255,255,0.8);
+  text-decoration:none;padding:0 1rem;
+  border-bottom:2px solid transparent;
+  transition:color 0.3s,border-color 0.3s;
+  white-space:nowrap;
+}
+.nav-links a:hover,.nav-links a.active{color:#fff;border-bottom-color:var(--red);}
+.nav-links a.active{background:var(--red);}
+.nav-right{display:flex;align-items:stretch;margin-left:auto;}
+.nav-tel{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:0 1.5rem;background:rgba(255,255,255,0.05);
+  border-left:1px solid rgba(255,255,255,0.1);
+}
+.nav-tel-label{font-size:0.55rem;color:rgba(255,255,255,0.5);letter-spacing:0.15em;}
+.nav-tel-num{font-size:0.9rem;font-weight:600;color:#fff;text-decoration:none;letter-spacing:0.05em;}
+.nav-web{
+  display:flex;align-items:center;gap:0.4rem;
+  background:var(--red);color:#fff;text-decoration:none;
+  font-size:0.68rem;letter-spacing:0.15em;padding:0 1.4rem;
+  transition:background 0.3s;white-space:nowrap;
+}
+.nav-web:hover{background:var(--red2);}
+.nav-logo-small{
+  font-family:'Zen Old Mincho',serif;font-size:1.1rem;font-weight:900;
+  color:var(--gold);text-decoration:none;margin-right:1.5rem;letter-spacing:0.1em;
+}
+
+/* ── HERO ── */
+.hero{
+  position:relative;height:100vh;min-height:600px;
+  display:flex;overflow:hidden;
+  padding-left:160px;margin-top:56px;
+}
+.hero-sidebar{
+  position:fixed;left:0;top:56px;bottom:0;width:160px;z-index:10;
+  background:var(--washi);border-right:1px solid var(--border-light);
+  display:flex;flex-direction:column;align-items:center;padding:2rem 0;
+  gap:1.5rem;
+}
+.hero-logo{
+  font-family:'Zen Old Mincho',serif;font-size:3rem;font-weight:900;
+  line-height:1;letter-spacing:0.05em;color:var(--ink);text-align:center;
+  writing-mode:vertical-rl;
+}
+.hero-logo-sub{font-size:0.55rem;letter-spacing:0.3em;color:var(--smoke);margin-top:0.5rem;display:block;}
+.hero-desc{
+  font-size:0.62rem;font-weight:300;line-height:2;color:var(--smoke);
+  writing-mode:vertical-rl;letter-spacing:0.1em;text-align:left;
+}
+.hero-sns{display:flex;flex-direction:column;align-items:center;gap:0.5rem;margin-top:auto;}
+.hero-sns-label{font-size:0.6rem;letter-spacing:0.3em;color:var(--smoke);writing-mode:vertical-rl;}
+.hero-sns a{color:var(--smoke);text-decoration:none;font-size:1.1rem;transition:color 0.3s;}
+.hero-sns a:hover{color:var(--ink);}
+
+.hero-slides{
+  flex:1;display:flex;overflow:hidden;position:relative;
+}
+.slide{
+  flex:0 0 25%;position:relative;overflow:hidden;cursor:pointer;
+  transition:flex 0.6s ease;
+}
+.slide:hover{flex:0 0 35%;}
+.slide-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#2a1a0e,#1a0e06);
+  display:flex;align-items:center;justify-content:center;
+  font-size:4rem;
+  transition:transform 0.6s ease;
+}
+.slide:hover .slide-bg{transform:scale(1.05);}
+.slide-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.1) 60%,transparent 100%);
+}
+.slide-text{
+  position:absolute;bottom:2rem;left:1.5rem;right:1.5rem;
+  font-family:'Zen Old Mincho',serif;font-size:clamp(1rem,2vw,1.6rem);
+  font-weight:700;line-height:1.4;color:#fff;
+  text-shadow:0 2px 10px rgba(0,0,0,0.8);
+}
+.slide-text em{color:var(--gold);font-style:normal;}
+
+/* ── COMMON ── */
+.page-content{margin-left:160px;position:relative;z-index:1;}
+section{position:relative;z-index:1;}
+
+.red-label{
+  display:inline-block;background:var(--red);color:#fff;
+  font-size:0.72rem;letter-spacing:0.15em;padding:0.3rem 0.8rem;
+  margin-bottom:0.8rem;
+}
+.section-catch{
+  font-family:'Zen Old Mincho',serif;
+  font-size:clamp(2rem,4vw,4rem);font-weight:900;line-height:1.2;
+  letter-spacing:0.05em;
+}
+.section-catch em{color:var(--red);font-style:normal;}
+.body-text{font-size:0.85rem;font-weight:300;line-height:2.2;color:#3a2e22;}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── CONCEPT ── */
+.concept{
+  display:grid;grid-template-columns:1fr 1fr;min-height:100vh;
+}
+.concept-img{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#1a0e06,#2a1a0e);
+  display:flex;align-items:center;justify-content:center;font-size:8rem;
+}
+.concept-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.concept-img-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,0,0,0.3),rgba(0,0,0,0.1));
+}
+.concept-img-text{
+  position:absolute;right:2rem;top:50%;transform:translateY(-50%);
+  font-family:'Zen Old Mincho',serif;font-size:clamp(1.5rem,3vw,2.8rem);
+  font-weight:900;line-height:1.6;color:#fff;writing-mode:vertical-rl;
+  text-shadow:0 2px 20px rgba(0,0,0,0.8);
+}
+.concept-img-sub{
+  position:absolute;left:2rem;bottom:3rem;
+  font-size:0.72rem;font-weight:300;line-height:2;color:rgba(255,255,255,0.8);
+  letter-spacing:0.1em;
+}
+.concept-body-wrap{
+  background:var(--washi);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:5rem 4rem;
+}
+.concept-hours{
+  margin-top:2rem;padding:1.5rem;
+  background:var(--ink);color:var(--cream);
+  display:inline-block;
+}
+.concept-hours-time{font-family:'Zen Old Mincho',serif;font-size:1.5rem;font-weight:700;letter-spacing:0.1em;}
+.concept-hours-label{font-size:0.65rem;letter-spacing:0.2em;color:rgba(255,255,255,0.6);margin-bottom:0.3rem;}
+
+/* ── KODAWARI ── */
+.kodawari{background:var(--ink);color:var(--cream);min-height:100vh;}
+.kodawari-inner{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;}
+.kodawari-content{display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem;}
+.kodawari-header{margin-bottom:3rem;}
+.kodawari-catch{
+  font-family:'Zen Old Mincho',serif;font-size:clamp(2.5rem,5vw,5rem);
+  font-weight:900;line-height:1;letter-spacing:0.05em;color:var(--cream);
+  position:relative;
+}
+.kodawari-catch::before{
+  content:'違いを生むのは';
+  display:block;
+  background:var(--red);color:#fff;
+  font-size:0.75rem;letter-spacing:0.15em;
+  padding:0.3rem 0.8rem;margin-bottom:0.8rem;
+  width:fit-content;
+}
+.kodawari-list{display:flex;flex-direction:column;gap:0;}
+.kodawari-item{
+  padding:2.5rem 0;border-bottom:1px solid rgba(255,255,255,0.08);
+  display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start;
+}
+.kodawari-item:first-child{border-top:1px solid rgba(255,255,255,0.08);}
+.kodawari-num{
+  font-family:'Zen Old Mincho',serif;font-size:0.72rem;
+  color:var(--red);letter-spacing:0.1em;writing-mode:vertical-rl;
+  padding-top:0.3rem;
+}
+.kodawari-title{font-family:'Zen Old Mincho',serif;font-size:1.4rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.8rem;}
+.kodawari-body{font-size:0.8rem;font-weight:300;line-height:2;color:rgba(255,255,255,0.7);}
+.kodawari-photo{
+  background:linear-gradient(135deg,#2a1a0e,#1a0e06);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10rem;position:relative;overflow:hidden;min-height:600px;
+}
+.kodawari-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.7;}
+.kodawari-photo-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);
+  padding:3rem 2.5rem 2rem;
+  font-family:'Zen Old Mincho',serif;font-size:clamp(2rem,4vw,3.5rem);
+  font-weight:900;color:#fff;line-height:1.4;
+  text-shadow:0 2px 20px rgba(0,0,0,0.8);
+}
+.kodawari-photo-caption span{font-size:0.8rem;font-weight:300;display:block;margin-top:0.5rem;color:rgba(255,255,255,0.7);letter-spacing:0.2em;}
+
+/* ── HISSHOKU ── */
+.hisshoku{background:var(--ink2);color:var(--cream);padding:6rem 0;}
+.hisshoku-header{text-align:center;margin-bottom:4rem;}
+.hisshoku-title{
+  font-family:'Zen Old Mincho',serif;font-size:clamp(2.5rem,6vw,6rem);
+  font-weight:900;line-height:1;
+}
+.hisshoku-title em{color:var(--red);font-style:normal;font-size:1.2em;}
+.hisshoku-note{font-size:0.7rem;color:rgba(255,255,255,0.4);letter-spacing:0.15em;margin-top:0.8rem;}
+.hisshoku-items{display:flex;flex-direction:column;gap:0;}
+.hisshoku-item{
+  display:grid;grid-template-columns:1fr 1fr;min-height:70vh;
+}
+.hisshoku-item:nth-child(even) .hisshoku-item-content{order:-1;}
+.hisshoku-item-content{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:4rem 5rem;
+}
+.hisshoku-item-photo{
+  background:linear-gradient(135deg,#2a1a0e,#3a2010);
+  display:flex;align-items:center;justify-content:center;
+  font-size:8rem;position:relative;overflow:hidden;
+}
+.hisshoku-item-name{
+  font-family:'Zen Old Mincho',serif;font-size:clamp(1.5rem,3vw,2.5rem);
+  font-weight:700;letter-spacing:0.1em;margin-bottom:0.5rem;
+}
+.hisshoku-item-price{
+  font-size:1.2rem;font-weight:600;letter-spacing:0.1em;
+  color:rgba(255,255,255,0.8);margin-bottom:1.5rem;
+}
+.hisshoku-item-body{font-size:0.8rem;font-weight:300;line-height:2.2;color:rgba(255,255,255,0.65);}
+.hisshoku-thumbs{display:flex;gap:0.5rem;margin-top:1.5rem;}
+.hisshoku-thumb{
+  width:70px;height:50px;background:linear-gradient(135deg,#3a2010,#2a1408);
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  cursor:pointer;border:2px solid transparent;transition:border-color 0.3s;
+  flex-shrink:0;
+}
+.hisshoku-thumb.active,.hisshoku-thumb:hover{border-color:var(--red);}
+
+/* ── YANNINJYAN MODAL ── */
+.modal-trigger{
+  display:flex;align-items:center;gap:1rem;
+  border:1px solid rgba(255,255,255,0.2);padding:1rem 1.5rem;
+  cursor:pointer;margin-top:2rem;width:fit-content;
+  transition:border-color 0.3s,background 0.3s;background:none;color:var(--cream);
+  font-family:'Noto Serif JP',serif;
+}
+.modal-trigger:hover{border-color:var(--red);background:rgba(176,16,32,0.1);}
+.modal-trigger-img{width:50px;height:50px;background:linear-gradient(135deg,#3a2010,#2a1408);display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+.modal-trigger-text{text-align:left;}
+.modal-trigger-label{font-size:0.6rem;letter-spacing:0.2em;color:rgba(255,255,255,0.5);}
+.modal-trigger-name{font-family:'Zen Old Mincho',serif;font-size:1rem;font-weight:700;letter-spacing:0.1em;}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;display:none;align-items:center;justify-content:center;padding:2rem;}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--ink);color:var(--cream);max-width:900px;width:100%;
+  max-height:90vh;overflow-y:auto;position:relative;
+}
+.modal-close{
+  position:absolute;top:1rem;right:1rem;background:none;border:none;
+  color:var(--cream);font-size:1.5rem;cursor:pointer;z-index:10;
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  transition:background 0.3s;
+}
+.modal-close:hover{background:rgba(255,255,255,0.1);}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;}
+.modal-photos{padding:2rem;display:flex;flex-direction:column;gap:1rem;}
+.modal-photo{
+  width:100%;aspect-ratio:4/3;
+  background:linear-gradient(135deg,#2a1a0e,#3a2010);
+  display:flex;align-items:center;justify-content:center;font-size:4rem;
+}
+.modal-content{padding:3rem 2.5rem;}
+.modal-label{font-size:0.68rem;letter-spacing:0.2em;color:var(--smoke);margin-bottom:0.5rem;}
+.modal-title{font-family:'Zen Old Mincho',serif;font-size:2rem;font-weight:900;letter-spacing:0.1em;margin-bottom:1.5rem;}
+.modal-body{font-size:0.8rem;font-weight:300;line-height:2.1;color:rgba(255,255,255,0.75);margin-bottom:2rem;}
+.modal-usage-title{
+  font-family:'Zen Old Mincho',serif;font-size:1.4rem;font-weight:700;
+  writing-mode:vertical-rl;float:left;margin-right:1.5rem;color:var(--cream);
+}
+.modal-usage-btns{display:flex;flex-direction:column;gap:0.5rem;overflow:hidden;}
+.modal-usage-btn{
+  padding:0.7rem 1rem;border:1px solid rgba(255,255,255,0.15);
+  font-size:0.78rem;letter-spacing:0.1em;text-align:left;cursor:pointer;
+  background:none;color:var(--cream);transition:all 0.3s;
+  font-family:'Noto Serif JP',serif;
+}
+.modal-usage-btn.active,.modal-usage-btn:hover{background:var(--red);border-color:var(--red);color:#fff;}
+
+/* ── JIMAN (常連自慢) ── */
+.jiman{background:var(--washi2);padding:6rem 0;}
+.jiman-header{text-align:center;margin-bottom:4rem;}
+.jiman-items{display:flex;flex-direction:column;gap:0;}
+.jiman-item{
+  display:grid;grid-template-columns:1fr 1fr;min-height:80vh;
+  position:relative;
+}
+.jiman-item:nth-child(even){direction:rtl;}
+.jiman-item:nth-child(even) > *{direction:ltr;}
+.jiman-photo{
+  background:#1a0e06;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9rem;position:relative;overflow:hidden;
+}
+.jiman-photo-wrap{position:relative;}
+.jiman-photo-label{
+  position:absolute;top:1.5rem;left:1.5rem;
+  background:var(--red);color:#fff;
+  font-size:0.68rem;letter-spacing:0.15em;padding:0.3rem 0.8rem;z-index:2;
+}
+.jiman-content{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:4rem 5rem;background:var(--washi2);position:relative;
+}
+.jiman-side-text{
+  position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);
+  font-family:'Zen Old Mincho',serif;font-size:clamp(1.8rem,3vw,2.8rem);
+  font-weight:900;writing-mode:vertical-rl;line-height:1.2;color:rgba(0,0,0,0.06);
+  pointer-events:none;
+}
+.jiman-red-label{background:var(--red);color:#fff;font-size:0.65rem;letter-spacing:0.15em;padding:0.25rem 0.7rem;display:inline-block;margin-bottom:0.8rem;}
+.jiman-name{font-family:'Zen Old Mincho',serif;font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:700;letter-spacing:0.1em;margin-bottom:0.4rem;}
+.jiman-price{font-size:1.1rem;font-weight:600;color:var(--ink);letter-spacing:0.1em;margin-bottom:1.2rem;}
+.jiman-body{font-size:0.8rem;font-weight:300;line-height:2.2;color:#3a2e22;}
+.jiman-thumbs{display:flex;gap:0.4rem;margin-top:1.2rem;}
+.jiman-thumb{width:60px;height:45px;background:var(--washi);border:1px solid var(--border-light);display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;transition:border-color 0.3s;}
+.jiman-thumb.active,.jiman-thumb:hover{border-color:var(--red);}
+.jiman-cta{
+  text-align:center;margin-top:3rem;padding:3rem;
+  background:var(--ink);
+}
+.jiman-cta-title{font-family:'Zen Old Mincho',serif;font-size:1.2rem;font-weight:700;color:var(--cream);letter-spacing:0.15em;margin-bottom:1.5rem;}
+.btn-menu{
+  display:inline-flex;align-items:center;gap:1rem;
+  background:var(--cream);color:var(--ink);text-decoration:none;
+  font-family:'Zen Old Mincho',serif;font-size:0.9rem;letter-spacing:0.2em;
+  padding:1rem 3rem;transition:background 0.3s;
+}
+.btn-menu:hover{background:var(--washi2);}
+
+/* ── COURSE ── */
+.course{background:var(--ink);color:var(--cream);padding:6rem 0;}
+.course-inner{max-width:800px;margin:0 auto;padding:0 4rem;}
+.course-header{text-align:center;margin-bottom:3rem;}
+.course-tabs{display:flex;border:1px solid rgba(255,255,255,0.15);margin-bottom:3rem;width:fit-content;margin-left:auto;margin-right:auto;}
+.course-tab{
+  padding:0.8rem 2rem;font-size:0.78rem;letter-spacing:0.15em;
+  background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;
+  display:flex;align-items:center;gap:0.5rem;border-right:1px solid rgba(255,255,255,0.15);
+  transition:all 0.3s;font-family:'Noto Serif JP',serif;
+}
+.course-tab:last-child{border-right:none;}
+.course-tab.active{background:var(--red);color:#fff;}
+.course-panel{display:none;}
+.course-panel.active{display:block;}
+.course-card{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+  padding:3rem;margin-bottom:1.5rem;
+}
+.course-card-title{font-family:'Zen Old Mincho',serif;font-size:1.5rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.5rem;}
+.course-card-price{font-size:0.9rem;color:rgba(255,255,255,0.6);letter-spacing:0.15em;margin-bottom:1.5rem;}
+.course-card-img{
+  width:100%;aspect-ratio:16/7;background:linear-gradient(135deg,#2a1a0e,#3a2010);
+  display:flex;align-items:center;justify-content:center;font-size:5rem;margin-bottom:1.5rem;
+}
+.course-card-items{display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 2rem;}
+.course-card-item{font-size:0.78rem;font-weight:300;color:rgba(255,255,255,0.65);padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.course-card-body{font-size:0.78rem;font-weight:300;line-height:2;color:rgba(255,255,255,0.6);margin-top:1rem;}
+.course-prices{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem;}
+.course-price-item{text-align:center;padding:1rem;border:1px solid rgba(255,255,255,0.1);}
+.course-price-label{font-size:0.65rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);margin-bottom:0.3rem;}
+.course-price-val{font-family:'Zen Old Mincho',serif;font-size:1.3rem;font-weight:700;}
+
+/* ── KUUKAN ── */
+.kuukan{background:var(--washi);padding:6rem 0;}
+.kuukan-hero{
+  width:100%;height:50vh;background:linear-gradient(135deg,#2a1a0e,#1a0e06);
+  display:flex;align-items:center;justify-content:center;font-size:8rem;
+  position:relative;margin-bottom:4rem;overflow:hidden;
+}
+.kuukan-hero-text{
+  position:absolute;right:3rem;
+  font-family:'Zen Old Mincho',serif;font-size:clamp(2rem,4vw,3.5rem);
+  font-weight:900;color:#fff;writing-mode:vertical-rl;
+  text-shadow:0 2px 20px rgba(0,0,0,0.8);
+}
+.kuukan-inner{max-width:1100px;margin:0 auto;padding:0 4rem;}
+.kuukan-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:3rem;align-items:start;}
+.kuukan-map-wrap{display:flex;flex-direction:column;gap:1rem;}
+.kuukan-map-label{font-size:0.6rem;letter-spacing:0.2em;color:var(--smoke);writing-mode:vertical-rl;}
+.kuukan-map-img{
+  width:200px;background:var(--ink);padding:1.5rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:0.5rem;
+}
+.kuukan-map-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;width:100%;font-size:0.6rem;color:rgba(255,255,255,0.5);text-align:center;}
+.kuukan-map-cell{background:rgba(255,255,255,0.05);padding:0.3rem;border:1px solid rgba(255,255,255,0.08);}
+.kuukan-seat{padding:2rem;border:1px solid var(--border-light);}
+.kuukan-seat-tag{background:var(--red);color:#fff;font-size:0.65rem;letter-spacing:0.15em;padding:0.25rem 0.7rem;display:inline-block;margin-bottom:1rem;}
+.kuukan-seat-photo{
+  width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#2a1a0e,#c8a84a20);
+  display:flex;align-items:center;justify-content:center;font-size:4rem;margin-bottom:1rem;
+  border:1px solid var(--border-light);
+}
+.kuukan-seat-name{font-family:'Zen Old Mincho',serif;font-size:1.2rem;font-weight:700;letter-spacing:0.1em;margin-bottom:0.5rem;}
+.kuukan-seat-body{font-size:0.75rem;font-weight:300;line-height:2;color:#3a2e22;}
+
+/* ── NEWS ── */
+.news-section{background:var(--ink2);color:var(--cream);padding:5rem 0;}
+.news-inner{max-width:900px;margin:0 auto;padding:0 4rem;}
+.news-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.5rem;}
+.news-all{font-size:0.72rem;letter-spacing:0.2em;color:rgba(255,255,255,0.5);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.2);padding-bottom:0.2rem;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Serif JP',serif;}
+.news-list{display:flex;flex-direction:column;gap:0;}
+.news-item{
+  display:flex;gap:2rem;align-items:baseline;
+  padding:1.2rem 0;border-bottom:1px solid rgba(255,255,255,0.08);
+  cursor:pointer;transition:opacity 0.3s;
+}
+.news-item:hover{opacity:0.7;}
+.news-item:first-child{border-top:1px solid rgba(255,255,255,0.08);}
+.news-date{font-family:'Zen Old Mincho',serif;font-size:0.75rem;color:rgba(255,255,255,0.4);letter-spacing:0.1em;white-space:nowrap;}
+.news-cat{font-size:0.6rem;letter-spacing:0.15em;padding:0.15rem 0.5rem;background:var(--red);color:#fff;white-space:nowrap;}
+.news-cat.blog{background:rgba(200,168,74,0.8);color:var(--ink);}
+.news-title{font-size:0.82rem;font-weight:300;letter-spacing:0.05em;line-height:1.6;}
+
+/* ── MAP & ACCESS ── */
+.access{background:var(--washi);padding:5rem 0;}
+.access-inner{max-width:1100px;margin:0 auto;padding:0 4rem;}
+.access-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;}
+.access-map{
+  width:100%;aspect-ratio:1;border:1px solid var(--border-light);overflow:hidden;
+}
+.access-map iframe{width:100%;height:100%;border:0;}
+.access-table{width:100%;border-collapse:collapse;margin-top:1.5rem;}
+.access-table tr{border-bottom:1px solid var(--border-light);}
+.access-table td{padding:1rem 0;font-size:0.82rem;vertical-align:top;}
+.access-table td:first-child{font-weight:600;color:var(--red);letter-spacing:0.1em;width:30%;padding-right:1rem;white-space:nowrap;}
+.access-table td:last-child{font-weight:300;line-height:1.9;color:#3a2e22;}
+
+/* ── RECRUIT ── */
+.recruit{background:var(--ink2);color:var(--cream);padding:5rem 0;}
+.recruit-inner{max-width:900px;margin:0 auto;padding:0 4rem;}
+.recruit-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;}
+.recruit-table{width:100%;border-collapse:collapse;margin-top:1.5rem;}
+.recruit-table tr{border-bottom:1px solid rgba(255,255,255,0.08);}
+.recruit-table td{padding:1rem 0;font-size:0.82rem;vertical-align:top;}
+.recruit-table td:first-child{font-weight:600;color:var(--red);letter-spacing:0.1em;width:35%;padding-right:1rem;white-space:nowrap;}
+.recruit-table td:last-child{font-weight:300;line-height:1.9;color:rgba(255,255,255,0.8);}
+.btn-red{display:inline-block;background:var(--red);color:#fff;text-decoration:none;font-size:0.78rem;letter-spacing:0.25em;padding:1rem 2.5rem;transition:background 0.3s;margin-top:2rem;}
+.btn-red:hover{background:var(--red2);}
+
+/* ── FOOTER ── */
+footer{background:var(--ink2);padding:2.5rem 0;border-top:1px solid rgba(255,255,255,0.06);}
+.footer-inner{max-width:1100px;margin:0 auto;padding:0 4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem;}
+.footer-logo{font-family:'Zen Old Mincho',serif;font-size:1.2rem;font-weight:900;color:var(--gold);letter-spacing:0.1em;}
+.footer-links{display:flex;gap:1.5rem;}
+.footer-links a{font-size:0.7rem;letter-spacing:0.15em;color:rgba(255,255,255,0.45);text-decoration:none;transition:color 0.3s;}
+.footer-links a:hover{color:rgba(255,255,255,0.8);}
+.footer-copy{font-size:0.62rem;color:rgba(255,255,255,0.25);letter-spacing:0.1em;}
+
+/* ── FIXED RESERVE BAR ── */
+.fixed-bar{
+  position:fixed;bottom:0;left:160px;right:0;z-index:400;
+  display:flex;height:56px;
+  box-shadow:0 -4px 30px rgba(0,0,0,0.5);
+}
+.fixed-bar-info{
+  flex:1;background:rgba(10,7,3,0.97);backdrop-filter:blur(8px);
+  border-top:1px solid rgba(255,255,255,0.08);
+  display:flex;align-items:center;gap:2rem;padding:0 2rem;
+}
+.fixed-bar-name{font-family:'Zen Old Mincho',serif;font-size:0.85rem;font-weight:700;color:var(--gold);letter-spacing:0.15em;}
+.fixed-bar-hours{font-size:0.65rem;font-weight:300;color:rgba(255,255,255,0.45);letter-spacing:0.1em;}
+.fixed-bar-hours span{color:rgba(255,255,255,0.8);margin-left:0.3rem;}
+.fixed-bar-tel{font-size:0.9rem;font-weight:600;color:#fff;text-decoration:none;margin-left:auto;letter-spacing:0.05em;}
+.fixed-bar-btn-tel{
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.1);color:#fff;text-decoration:none;
+  font-size:0.72rem;letter-spacing:0.2em;padding:0 2rem;
+  border-left:1px solid rgba(255,255,255,0.08);
+  transition:background 0.3s;white-space:nowrap;
+}
+.fixed-bar-btn-tel:hover{background:rgba(255,255,255,0.15);}
+.fixed-bar-btn-web{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--red);color:#fff;text-decoration:none;
+  font-size:0.72rem;letter-spacing:0.2em;padding:0 2rem;
+  transition:background 0.3s;white-space:nowrap;
+}
+.fixed-bar-btn-web:hover{background:var(--red2);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero{padding-left:0;flex-direction:column;}
+  .hero-sidebar{display:none;}
+  .page-content{margin-left:0;}
+  .fixed-bar{left:0;}
+  nav{overflow-x:auto;}
+  .nav-inner{padding:0 1rem;}
+  .nav-links a{padding:0 0.7rem;font-size:0.65rem;}
+  .concept,.kodawari-inner,.hisshoku-item,.jiman-item,.access-grid,.recruit-grid,.kuukan-grid{grid-template-columns:1fr;}
+  .hisshoku-item:nth-child(even) .hisshoku-item-content{order:0;}
+  .jiman-item:nth-child(even){direction:ltr;}
+  .modal-grid{grid-template-columns:1fr;}
+  .course-prices{grid-template-columns:1fr 1fr;}
+  .concept-body-wrap,.kodawari-content,.hisshoku-item-content,.jiman-content,.kuukan-inner,.news-inner,.recruit-inner,.access-inner{padding:3rem 1.5rem;}
+  .course-inner,.footer-inner{padding:0 1.5rem;}
+  footer .footer-inner{flex-direction:column;text-align:center;}
+  .fixed-bar-hours{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo-small">なおき</a>
+    <ul class="nav-links">
+      <li><a href="#" class="active">トップ</a></li>
+      <li><a href="#kodawari">なおきのこだわり</a></li>
+      <li><a href="#menu">おすすめメニュー</a></li>
+      <li><a href="#course">コース・セットメニュー</a></li>
+      <li><a href="#kuukan">空間</a></li>
+      <li><a href="#news">NEWS</a></li>
+      <li><a href="#access">MAP</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <div class="nav-tel">
+      <span class="nav-tel-label">ご予約・お問い合わせ</span>
+      <a href="tel:052-990-6329" class="nav-tel-num">📞 052-990-6329</a>
+    </div>
+    <a href="https://retty.me/area/PRE23/ARE63/SUB6304/100001788734/" target="_blank" class="nav-web">🗓 WEB予約はこちら</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <aside class="hero-sidebar">
+    <div style="text-align:center;">
+      <img src="logo.png" alt="京都焼肉なおき" style="width:100px;">
+    </div>
+    <p class="hero-desc">東新町・新栄の焼肉屋｜京都焼肉なおき｜一人焼肉・ディナーデート・女子会・宴会におすすめ</p>
+    <div class="hero-sns">
+      <span class="hero-sns-label">SNS</span>
+      <a href="https://www.instagram.com/yakinikunaoki?igsh=MW85ejY1NGpjMmV4Yg==" target="_blank">📸</a>
+    </div>
+  </aside>
+  <div class="hero-slides">
+    <div class="slide">
+      <div class="slide-bg"><img src="kv_i1.jpg" alt="なおき"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-text"><em>迫力満点！</em><br>鮮度抜群！</div>
+    </div>
+    <div class="slide">
+      <div class="slide-bg"><img src="kv_i2.jpg" alt="なおき"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-text">お一人様<br><em>大歓迎</em></div>
+    </div>
+    <div class="slide">
+      <div class="slide-bg"><img src="kv_i3.jpg" alt="なおき"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-text">宴会にも<br><em>ぴったり</em></div>
+    </div>
+    <div class="slide">
+      <div class="slide-bg"><img src="kv_i4.jpg" alt="なおき"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-text"><em>2階にある</em><br>隠れ家焼肉</div>
+    </div>
+    <div class="slide">
+      <div class="slide-bg"><img src="kv_i5.jpg" alt="なおき"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-text">ここでしか<br>食べられない<br><em>逸品たち</em></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="page-content">
+
+<!-- CONCEPT -->
+<section class="concept" id="concept">
+  <div class="concept-img">
+    <img src="sec2_bgi1.jpg" alt="なおきのこだわり">
+    <div class="concept-img-overlay"></div>
+    <div class="concept-img-text">一口でわかる、<br>肉の違い。</div>
+    <div class="concept-img-sub">18:00〜4:00営業</div>
+  </div>
+  <div class="concept-body-wrap">
+    <div class="reveal">
+      <p class="red-label">About</p>
+      <h2 class="section-catch">東新町の長い夜を、<br><em>贅沢</em>に締めくくる</h2>
+      <div style="width:40px;height:2px;background:var(--red);margin:1.5rem 0;"></div>
+      <p class="body-text">
+        名古屋市中区、東新町・女子大エリア。<br>
+        「栄」「新栄町駅」から徒歩圏内の「京都焼肉なおき」は、<br>
+        アラカルトやコースで上質な肉をリーズナブルにご提供している焼肉屋です。<br><br>
+        味はもちろんのこと、見た目からも美味しさが伝わるよう品質管理やカットの仕方も徹底しています。<br>
+        コースには飲み放題を付けることもでき、お集まりにも最適です。<br><br>
+        朝4時まで営業していますので、一人焼肉やデート、ご宴会、女子会などの他、"今日の〆は焼肉"といった贅沢な一日の締めくくりにもぜひ。
+      </p>
+      <div class="concept-hours reveal" style="transition-delay:0.3s;">
+        <div class="concept-hours-label">営業時間</div>
+        <div class="concept-hours-time">18:00 〜 4:00</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KODAWARI -->
+<section class="kodawari" id="kodawari">
+  <div class="kodawari-inner">
+    <div class="kodawari-content reveal">
+      <div class="kodawari-header">
+        <h2 class="kodawari-catch">語られない<br>ひと手間</h2>
+      </div>
+      <div class="kodawari-list">
+        <div class="kodawari-item">
+          <div class="kodawari-num">カット</div>
+          <div>
+            <h3 class="kodawari-title">手切りへの徹底</h3>
+            <p class="kodawari-body">肉は一枚一枚すべて手切りしており、もちろん部位によって切り方を変えています。余分な脂は丁寧に取り除き、やわらかい部位は満足感を感じていただけるよう厚めにカット。食感の良さを引き立てるための隠し包丁も数ミリ単位で妥協しません。</p>
+          </div>
+        </div>
+        <div class="kodawari-item">
+          <div class="kodawari-num">品質</div>
+          <div>
+            <h3 class="kodawari-title">鮮度を守る品質管理</h3>
+            <p class="kodawari-body">どのお客様にも「鮮度がいい」と言っていただけるように、肉の管理・保存を徹底しています。大切なのは、ドリップが出ないようにすること。必要な分だけを解凍して使用し、仕入れ直後に丁寧に処理することで、鮮やかな色合いの赤身をお出しすることができるのです。</p>
+          </div>
+        </div>
+        <div class="kodawari-item">
+          <div class="kodawari-num">想い</div>
+          <div>
+            <h3 class="kodawari-title">心を尽くす</h3>
+            <p class="kodawari-body">それがなおきの美味しさの基準です。素材の力を信じ、丁寧なひと手間を積み重ねることで、一口食べた瞬間に違いがわかる一皿をお届けします。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="kodawari-photo reveal" style="transition-delay:0.2s;">
+      <img src="sec2_bgi3.jpg" alt="こだわり">
+      <div class="kodawari-photo-caption">
+        心を尽くす
+        <span>それがなおきの美味しさの基準です。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HISSHOKU -->
+<section id="menu">
+  <div style="background:var(--ink2);color:var(--cream);padding:4rem 0 2rem;text-align:center;" class="reveal">
+    <p style="font-size:0.72rem;letter-spacing:0.3em;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">まずはコレ</p>
+    <h2 class="hisshoku-title" style="font-family:'Zen Old Mincho',serif;font-size:clamp(2.5rem,6vw,6rem);font-weight:900;">必食<em style="color:var(--red);font-style:normal;">3</em>選</h2>
+    <p style="font-size:0.7rem;color:rgba(255,255,255,0.35);letter-spacing:0.15em;margin-top:0.8rem;">※価格は全て税込みです。</p>
+  </div>
+  <div class="hisshoku-items">
+    <!-- ネギタン塩 -->
+    <div class="hisshoku-item" style="background:var(--ink2);">
+      <div class="hisshoku-item-content reveal">
+        <h3 class="hisshoku-item-name">ネギタン塩</h3>
+        <div class="hisshoku-item-price">1,080円</div>
+        <p class="hisshoku-item-body">スタッフおすすめの、不動の人気メニューです。食感が硬めの舌先は薄めに、お尻のやわらかい部分は厚めにカット。一皿の中で厚みが異なる肉が楽しめるのも、手切りならではです。<br><br>※お好みの量で召し上がれるよう、ネギは別添えでお出しします。</p>
+        <div class="hisshoku-thumbs">
+          <div class="hisshoku-thumb active">🥩</div>
+          <div class="hisshoku-thumb">🔥</div>
+          <div class="hisshoku-thumb">🥢</div>
+        </div>
+      </div>
+<div class="hisshoku-item-photo reveal" style="transition-delay:0.2s;"><img src="sec3_i1.jpg" alt="ネギタン塩" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;"></div>
+    </div>
+    <!-- 赤身3種盛り -->
+    <div class="hisshoku-item" style="background:var(--ink);">
+<div class="hisshoku-item-photo reveal"><img src="sec3_i2.jpg" alt="赤身3種盛り" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;"></div>
+      <div class="hisshoku-item-content reveal" style="transition-delay:0.2s;">
+        <h3 class="hisshoku-item-name">赤身3種盛り（塩）</h3>
+        <div class="hisshoku-item-price">2,420円</div>
+        <p class="hisshoku-item-body">その日の仕入れによって部位は変わりますが、肉質のやわらかい和牛のみの盛り合わせです。贅沢に厚切りで3種類をお出しします。<br><br>※写真は左から、和牛カイノミ、和牛ハラミ、和牛フランクです。</p>
+        <div class="hisshoku-thumbs">
+          <div class="hisshoku-thumb active">🥩</div>
+          <div class="hisshoku-thumb">🥢</div>
+          <div class="hisshoku-thumb">🍋</div>
+        </div>
+        <!-- ヤンニンジャンモーダルトリガー -->
+        <button class="modal-trigger" id="open-modal">
+          <div class="modal-trigger-img">🫙</div>
+          <div class="modal-trigger-text">
+            <div class="modal-trigger-label">知っておきたい 魅惑の卓上調味料</div>
+            <div class="modal-trigger-name">〝黒のつぼ〟</div>
+          </div>
+          <span style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:auto;">▶</span>
+        </button>
+      </div>
+    </div>
+    <!-- ミノ湯引き -->
+    <div class="hisshoku-item" style="background:var(--ink2);">
+      <div class="hisshoku-item-content reveal">
+        <h3 class="hisshoku-item-name">ミノ湯引き</h3>
+        <div class="hisshoku-item-price">980円</div>
+        <p class="hisshoku-item-body">てっさをイメージした薄切りのミノは、肉とは思えない食感に驚いていただけること間違いなし。どっさりと乗せたネギをたっぷり巻いてお召し上がりください。</p>
+        <div class="hisshoku-thumbs">
+          <div class="hisshoku-thumb active">🥩</div>
+          <div class="hisshoku-thumb">🌿</div>
+          <div class="hisshoku-thumb">🥢</div>
+        </div>
+      </div>
+<div class="hisshoku-item-photo reveal" style="transition-delay:0.2s;"><img src="sec3_i3.jpg" alt="ミノ湯引き" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;"></div>
+    </div>
+  </div>
+
+  <!-- 常連自慢 -->
+  <div class="jiman" id="jiman">
+    <div class="jiman-header reveal">
+      <p class="red-label">常連さんに愛される</p>
+      <h2 class="section-catch" style="font-family:'Zen Old Mincho',serif;">なおき自慢の一皿</h2>
+    </div>
+    <div class="jiman-items">
+      <div class="jiman-item">
+        <div class="jiman-photo-wrap">
+          <div class="jiman-photo-label">ワイワイ楽しむなら</div>
+          <div class="jiman-photo" style="background:#1a0e06;"><img src="sec4_i1.jpg" alt="生センマイ" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:0.85;"></div>
+        </div>
+        <div class="jiman-content reveal">
+          <div class="jiman-side-text">なおき自慢</div>
+          <span class="jiman-red-label">常連さんに愛される</span>
+          <h3 class="jiman-name">生センマイ</h3>
+          <div class="jiman-price">750円</div>
+          <p class="jiman-body">迫力のある見た目と、新鮮でしっかりした歯ごたえが楽しめます。水気を十分に切ることが美味しさの秘訣です。</p>
+          <div class="jiman-thumbs">
+            <div class="jiman-thumb active">🥩</div>
+            <div class="jiman-thumb">🫙</div>
+            <div class="jiman-thumb">🍋</div>
+          </div>
+        </div>
+      </div>
+      <div class="jiman-item">
+        <div class="jiman-photo-wrap">
+          <div class="jiman-photo-label">〆の定番</div>
+          <div class="jiman-photo" style="background:#1a0e06;"><img src="sec5_i1.jpg" alt="チゲスープ" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:0.85;"></div>
+        </div>
+        <div class="jiman-content reveal">
+          <div class="jiman-side-text">なおき自慢</div>
+          <span class="jiman-red-label">常連さんに愛される</span>
+          <h3 class="jiman-name">チゲスープ</h3>
+          <div class="jiman-price">900円</div>
+          <p class="jiman-body">辛いものが苦手な方でも召し上がっていただけます。辛さを足したい場合は、卓上のプッコチダレで調整してください。そうめん入りで、食べ応えも抜群です。</p>
+          <div class="jiman-thumbs">
+            <div class="jiman-thumb active">🍲</div>
+            <div class="jiman-thumb">🌶</div>
+            <div class="jiman-thumb">🍜</div>
+          </div>
+        </div>
+      </div>
+      <div class="jiman-item">
+        <div class="jiman-photo-wrap">
+          <div class="jiman-photo-label">絶品ホルモン</div>
+          <div class="jiman-photo" style="background:#1a0e06;"><img src="sec5_i2.jpg" alt="レバー山椒焼き" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:0.85;"></div>
+        </div>
+        <div class="jiman-content reveal">
+          <div class="jiman-side-text">なおき自慢</div>
+          <span class="jiman-red-label">常連さんに愛される</span>
+          <h3 class="jiman-name">レバー山椒焼き</h3>
+          <div class="jiman-price">680円</div>
+          <p class="jiman-body">焼肉のタレにヤンニンジャンとごま油を加えたもみダレで味付け。仕上げに山椒を振って独特の風味をほどよく和らげ、食べやすくしています。</p>
+          <div class="jiman-thumbs">
+            <div class="jiman-thumb active">🥩</div>
+            <div class="jiman-thumb">🫙</div>
+            <div class="jiman-thumb">🌿</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="jiman-cta">
+      <p class="jiman-cta-title">フルメニューはこちら</p>
+      <a href="#" class="btn-menu">フードメニュー ▶</a>
+    </div>
+  </div>
+</section>
+
+<!-- COURSE -->
+<section class="course" id="course">
+  <div class="course-inner">
+    <div class="course-header reveal">
+      <p class="red-label" style="display:block;text-align:center;margin-bottom:0.8rem;">Course & Set Menu</p>
+      <h2 class="section-catch" style="text-align:center;color:var(--cream);">コース・<em>セットメニュー</em></h2>
+    </div>
+    <div class="course-tabs reveal">
+      <button class="course-tab active" data-course="hitori">👤 お一人でも</button>
+      <button class="course-tab" data-course="otonin">👥 大人数でも</button>
+    </div>
+    <div class="course-panel active" id="course-hitori">
+      <div class="course-card reveal">
+        <h3 class="course-card-title">おひとり様セット</h3>
+        <p class="course-card-price">※3種類ご用意しています</p>
+<div class="course-card-img" style="position:relative;overflow:hidden;"><img src="sec4_i2.jpg" alt="おひとり様セット" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+        <p class="course-card-body">塩・タレ・おまかせの他、各種盛り合わせもご用意しています。初めての方やご注文に迷われた際にはぜひ。お一人で召し上がるのにちょうど良いボリューム感です。</p>
+        <div class="course-prices">
+          <div class="course-price-item">
+            <div class="course-price-label">A. 塩焼きセット</div>
+            <div class="course-price-val">2,000円</div>
+          </div>
+          <div class="course-price-item">
+            <div class="course-price-label">B. 赤身タレ焼きセット</div>
+            <div class="course-price-val">2,000円</div>
+          </div>
+          <div class="course-price-item">
+            <div class="course-price-label">C. 本日のおまかせセット</div>
+            <div class="course-price-val">2,000円</div>
+          </div>
+        </div>
+        <div class="course-card-items" style="margin-top:1.5rem;">
+          <div class="course-card-item">ホルモン盛り合わせ（タレ） ¥890</div>
+          <div class="course-card-item">おすすめ赤身3種盛り ¥2,420</div>
+          <div class="course-card-item">刺身盛り合わせ ¥1,750</div>
+        </div>
+      </div>
+    </div>
+    <div class="course-panel" id="course-otonin">
+      <div class="course-card reveal">
+        <h3 class="course-card-title">宴会コース（飲み放題付き）</h3>
+        <p class="course-card-price">お一人様 4,000円〜</p>
+<div class="course-card-img" style="position:relative;overflow:hidden;"><img src="sec6_i1.jpg" alt="宴会" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+        <p class="course-card-body">2名様から貸切OK。飲み放題付きコースで宴会・女子会・各種ご宴席に。詳細はお電話またはWEB予約にてお問い合わせください。</p>
+        <div class="course-prices" style="grid-template-columns:1fr 1fr;">
+          <div class="course-price-item">
+            <div class="course-price-label">スタンダードコース</div>
+            <div class="course-price-val">4,000円</div>
+          </div>
+          <div class="course-price-item">
+            <div class="course-price-label">プレミアムコース</div>
+            <div class="course-price-val">5,500円</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KUUKAN -->
+<section class="kuukan" id="kuukan">
+  <div class="kuukan-hero" style="position:relative;">
+    <img src="sec6_para.jpg" alt="店内" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5;">
+    <div class="kuukan-hero-text">店内のご案内</div>
+  </div>
+  <div class="kuukan-inner">
+    <div class="kuukan-grid reveal">
+      <div class="kuukan-map-wrap">
+        <span class="kuukan-map-label">店内見取り図</span>
+        <div class="kuukan-map-img" style="background:var(--ink);color:var(--cream);">
+          <div style="font-size:0.55rem;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;">キッチン</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:100%;margin-bottom:0.5rem;">
+            <div style="background:rgba(255,255,255,0.08);height:20px;"></div>
+            <div style="background:rgba(255,255,255,0.08);height:20px;"></div>
+            <div style="background:rgba(255,255,255,0.08);height:20px;"></div>
+            <div style="background:rgba(255,255,255,0.08);height:20px;"></div>
+            <div style="background:rgba(176,16,32,0.4);height:20px;font-size:0.5rem;color:#fff;display:flex;align-items:center;justify-content:center;">C</div>
+            <div style="background:rgba(255,255,255,0.08);height:20px;"></div>
+          </div>
+          <div style="font-size:0.5rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">W.C.</div>
+          <div style="margin-top:0.5rem;font-size:0.5rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">▼ 入口</div>
+        </div>
+      </div>
+      <div class="kuukan-seat">
+        <span class="kuukan-seat-tag">ワイワイ楽しむなら</span>
+<div class="kuukan-seat-photo" style="position:relative;overflow:hidden;"><img src="sec6_i2.jpg" alt="テーブル席" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+        <h3 class="kuukan-seat-name">テーブル席</h3>
+        <p class="kuukan-seat-body">4名様向けのテーブル席は2卓あり、仕切りもある適度に間を感じずお食事を楽しめます。7名様までのテーブル席も1卓ご用意しています。</p>
+      </div>
+      <div class="kuukan-seat">
+        <span class="kuukan-seat-tag">焼肉愛好者の特等席</span>
+<div class="kuukan-seat-photo" style="position:relative;overflow:hidden;"><img src="sec6_i3.jpg" alt="カウンター席" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+        <h3 class="kuukan-seat-name">カウンター</h3>
+        <p class="kuukan-seat-body">肉を焼く様子を目の前でご覧になれるカウンター席は3席。気になることやご意見などありましたら、遠慮なくお声がけください。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section class="news-section" id="news">
+  <div class="news-inner">
+    <div class="news-header reveal">
+      <div>
+        <p style="font-size:0.65rem;letter-spacing:0.3em;color:rgba(255,255,255,0.4);margin-bottom:0.3rem;">NEWS</p>
+        <h2 style="font-family:'Zen Old Mincho',serif;font-size:1.8rem;font-weight:700;letter-spacing:0.1em;">お知らせ</h2>
+      </div>
+      <button class="news-all">すべての記事を見る →</button>
+    </div>
+    <div class="news-list reveal">
+      <div class="news-item">
+        <span class="news-date">2025.06.20</span>
+        <span class="news-cat">お知らせ</span>
+        <span class="news-title">6月のおすすめ希少部位のご案内</span>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2025.06.15</span>
+        <span class="news-cat blog">ブログ</span>
+        <span class="news-title">タレへのこだわり——プッコチ醤油ダレが生まれた理由</span>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2025.06.01</span>
+        <span class="news-cat">お知らせ</span>
+        <span class="news-title">京都焼肉なおき、栄にグランドオープンしました</span>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2025.05.28</span>
+        <span class="news-cat blog">ブログ</span>
+        <span class="news-title">炭火と網の温度管理——美味しく焼くための3つのコツ</span>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2025.05.20</span>
+        <span class="news-cat">お知らせ</span>
+        <span class="news-title">貸切プランのご案内（2名〜最大14名様まで）</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESS -->
+<section class="access" id="access">
+  <div class="access-inner">
+    <div class="reveal" style="margin-bottom:3rem;">
+      <p class="red-label">Access & Map</p>
+      <h2 class="section-catch">アクセス</h2>
+    </div>
+    <div class="access-grid reveal">
+      <div>
+        <table class="access-table">
+          <tr><td>店名</td><td>京都焼肉なおき</td></tr>
+          <tr><td>住所</td><td>愛知県名古屋市中区栄4-6-18<br>パールプラザビル 2F</td></tr>
+          <tr><td>アクセス</td><td>地下鉄栄駅より徒歩8分<br>新栄町駅より徒歩圏内</td></tr>
+          <tr><td>電話</td><td><a href="tel:052-990-6329" style="color:var(--red);text-decoration:none;">052-990-6329</a></td></tr>
+          <tr>
+            <td>営業時間</td>
+            <td>月・火・木：18:00〜翌4:00<br>金：18:00〜24:00<br>土：18:00〜翌4:00<br>日・祝：18:00〜翌5:00</td>
+          </tr>
+          <tr><td>定休日</td><td>水曜日</td></tr>
+          <tr><td>席数</td><td>カウンター3席・テーブル約4卓<br>貸切対応可（要相談）</td></tr>
+        </table>
+      </div>
+      <div class="access-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d812.9!2d136.91404!3d35.16868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60037a0fee0c8b8b%3A0xe2b8e9f4a59dcbdd!2z5Lqs6YO96Zmc56iy44Gq44GK44GN!5e0!3m2!1sja!2sjp!4v1742000000000!5m2!1sja!2sjp"
+          width="100%" height="100%" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECRUIT -->
+<section class="recruit" id="recruit">
+  <div class="recruit-inner">
+    <div class="reveal" style="margin-bottom:3rem;">
+      <p class="red-label" style="background:rgba(176,16,32,0.6);">Recruit</p>
+      <h2 class="section-catch" style="color:var(--cream);">一緒に働きませんか</h2>
+    </div>
+    <div class="recruit-grid reveal">
+      <div>
+        <p style="font-size:0.85rem;font-weight:300;line-height:2.3;color:rgba(255,255,255,0.75);">
+          京都焼肉なおきでは、一緒にお店を盛り上げてくれるスタッフを募集しています。<br><br>
+          焼肉が好き、接客が好き、深夜の栄で働きたい—そんな方を大歓迎します。<br>
+          未経験・学生・Wワーク、いずれも歓迎です。
+        </p>
+        <a href="tel:052-990-6329" class="btn-red">📞 採用に応募する</a>
+      </div>
+      <div>
+        <table class="recruit-table">
+          <tr><td>募集職種</td><td>ホールスタッフ（アルバイト）</td></tr>
+          <tr><td>給与</td><td>時給 1,100円〜<br>深夜割増あり（22時以降 +25%）</td></tr>
+          <tr><td>勤務時間</td><td>18:00〜翌4:00（シフト制）<br>週2日〜・1日3時間〜 相談可</td></tr>
+          <tr><td>待遇</td><td>まかない有り・交通費支給<br>昇給あり</td></tr>
+          <tr><td>応募資格</td><td>未経験歓迎・学生可<br>18歳以上（高校生不可）</td></tr>
+          <tr><td>応募方法</td><td><a href="tel:052-990-6329" style="color:var(--red);text-decoration:none;">052-990-6329</a><br>お電話にてご連絡ください</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">京都焼肉なおき</div>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/yakinikunaoki?igsh=MW85ejY1NGpjMmV4Yg==" target="_blank">Instagram</a>
+      <a href="https://retty.me/area/PRE23/ARE63/SUB6304/100001788734/" target="_blank">Retty</a>
+      <a href="https://maps.google.com/?cid=16336924147757665245" target="_blank">Googleマップ</a>
+    </div>
+    <p class="footer-copy">© 2025 京都焼肉なおき All Rights Reserved.</p>
+  </div>
+</footer>
+
+</div><!-- /page-content -->
+
+<!-- FIXED BAR -->
+<div class="fixed-bar">
+  <div class="fixed-bar-info">
+    <div class="fixed-bar-name">京都焼肉なおき</div>
+    <div class="fixed-bar-hours">営業時間<span>18:00〜翌4:00</span>　定休日<span>水曜</span></div>
+    <a href="tel:052-990-6329" class="fixed-bar-tel">📞 052-990-6329</a>
+  </div>
+  <a href="tel:052-990-6329" class="fixed-bar-btn-tel">お電話で予約</a>
+  <a href="https://retty.me/area/PRE23/ARE63/SUB6304/100001788734/" target="_blank" class="fixed-bar-btn-web">🗓 WEB予約はこちら</a>
+</div>
+
+<!-- YANNINJYAN MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" id="close-modal">✕ 閉じる</button>
+    <div class="modal-grid">
+      <div class="modal-photos">
+<div class="modal-photo" id="modal-photo" style="position:relative;overflow:hidden;"><img src="yannninnjyann.jpg" alt="ヤンニンジャン" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;"></div>
+<div class="modal-photo" id="modal-photo2" style="position:relative;overflow:hidden;"><img src="sec3-popup_i2.jpg" alt="食べ方" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;"></div>
+      </div>
+      <div class="modal-content">
+        <div class="modal-label">中毒性抜群 〝黒のつぼ〟こと</div>
+        <h2 class="modal-title">ヤンニンジャン</h2>
+        <p class="modal-body">タレは、店主の修業元である京都・大韶園と同じものを使用。ほんのりと甘味も感じられる醤油ベースの味わいに、ニラの香りと食感がアクセントを添えています。<br>肉に付けるだけでなく、自由にアレンジもできる中毒性も抜群の薬味です。</p>
+        <div style="display:flex;align-items:flex-start;gap:1rem;">
+          <div class="modal-usage-title">食べ方のすゝめ</div>
+          <div class="modal-usage-btns">
+            <button class="modal-usage-btn active" onclick="switchUsage(this,'yakiniku')">焼肉のタレに</button>
+            <button class="modal-usage-btn" onclick="switchUsage(this,'sashimi')">人気の刺身に</button>
+            <button class="modal-usage-btn" onclick="switchUsage(this,'hakumai')">白米のお供に</button>
+            <button class="modal-usage-btn" onclick="switchUsage(this,'lemon')">レモンでアレンジも</button>
+            <button class="modal-usage-btn" onclick="switchUsage(this,'tamagosoup')">卵スープの味変に</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Scroll reveal
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// Course tabs
+document.querySelectorAll('.course-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.course-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.course-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('course-'+tab.dataset.course).classList.add('active');
+  });
+});
+
+// Modal
+document.getElementById('open-modal').addEventListener('click',()=>{
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+});
+document.getElementById('close-modal').addEventListener('click',()=>{
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+});
+document.getElementById('modal').addEventListener('click',e=>{
+  if(e.target===e.currentTarget){
+    e.currentTarget.classList.remove('open');
+    document.body.style.overflow='';
+  }
+});
+
+const usageImgs = {
+  'yakiniku':'sec3-popup_i2.jpg',
+  'sashimi':'sec3-popup_i3.jpg',
+  'hakumai':'sec3-popup_i4.jpg',
+  'lemon':'sec3-popup_i5.jpg',
+  'tamagosoup':'tamagosoup.jpg'
+};
+function switchUsage(btn, key){
+  document.querySelectorAll('.modal-usage-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const p2 = document.getElementById('modal-photo2');
+  p2.innerHTML = '<img src="'+usageImgs[key]+'" alt="食べ方" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">';
+}
+</script>
+</body>
+</html>
