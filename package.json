@@ -9,22 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "15.2.4",
-    "react": "^19",
-    "react-dom": "^19",
+    "next": "15.2.5",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "microcms-js-sdk": "^3.1.1",
     "nodemailer": "^6.9.13"
   },
   "devDependencies": {
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "19.0.0",
+    "@types/react-dom": "19.0.0",
     "@types/nodemailer": "^6.4.14",
     "typescript": "^5",
     "tailwindcss": "^3.4.1",
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
     "eslint": "^9",
-    "eslint-config-next": "15.2.4"
+    "eslint-config-next": "15.2.5"
   }
 }
