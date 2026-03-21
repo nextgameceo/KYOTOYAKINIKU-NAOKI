@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --washi: #f0ebe0;
+    --ink: #0a0a0a;
+    --red: #b01020;
+    --gold: #c8a84a;
+  }
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; }
+}
+
+@layer utilities {
+  .text-washi { color: #f0ebe0; }
+  .bg-washi { background-color: #f0ebe0; }
+  .text-gold { color: #c8a84a; }
+  .bg-red-naoki { background-color: #b01020; }
+}
