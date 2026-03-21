@@ -84,8 +84,7 @@ export default async function HomePage() {
           </h2>
           <div className="w-10 h-0.5 bg-[#b01020] mb-6" />
           <p className="text-sm font-light leading-[2.2] text-[#3a2e22] mb-8">
-            名古屋市中区、東新町・女子大エリア。「栄」「新栄町駅」から徒歩圏内の「京都焼肉なおき」は、アラカルトやコースで上質な肉をリーズナブルにご提供している焼肉屋です。<br /><br />
-            朝4時まで営業していますので、一人焼肉やデート、ご宴会、女子会などの他、今日の〆は焼肉といった贅沢な一日の締めくくりにもぜひ。
+            名古屋市中区、東新町・女子大エリア。栄・新栄町駅から徒歩圏内の京都焼肉なおきは、アラカルトやコースで上質な肉をリーズナブルにご提供している焼肉屋です。朝4時まで営業していますので、一人焼肉やデート、ご宴会、女子会などの他、今日の締めくくりにもぜひ。
           </p>
           <div className="bg-[#1a1208] text-white inline-block px-6 py-4 w-fit">
             <p className="text-[10px] tracking-widest text-white/50 mb-1">営業時間</p>
@@ -104,8 +103,8 @@ export default async function HomePage() {
           </div>
           <div className="divide-y divide-white/8">
             {[
-              { label: 'カット', title: '手切りへの徹底', body: '肉は一枚一枚すべて手切りしており、もちろん部位によって切り方を変えています。余分な脂は丁寧に取り除き、やわらかい部位は満足感を感じていただけるよう厚めにカット。' },
-              { label: '品質', title: '鮮度を守る品質管理', body: 'どのお客様にも鮮度がいいと言っていただけるように、肉の管理・保存を徹底しています。必要な分だけを解凍して使用し、仕入れ直後に丁寧に処理することで、鮮やかな色合いの赤身をお出しします。' },
+              { label: 'カット', title: '手切りへの徹底', body: '肉は一枚一枚すべて手切りしており、部位によって切り方を変えています。余分な脂は丁寧に取り除き、やわらかい部位は厚めにカット。' },
+              { label: '品質', title: '鮮度を守る品質管理', body: '肉の管理・保存を徹底しています。必要な分だけを解凍して使用し、仕入れ直後に丁寧に処理することで、鮮やかな色合いの赤身をお出しします。' },
               { label: '想い', title: '心を尽くす', body: 'それがなおきの美味しさの基準です。素材の力を信じ、丁寧なひと手間を積み重ねることで、一口食べた瞬間に違いがわかる一皿をお届けします。' },
             ].map(item => (
               <div key={item.label} className="grid grid-cols-[auto_1fr] gap-5 py-6">
@@ -163,11 +162,11 @@ export default async function HomePage() {
           <h2 className="text-5xl md:text-8xl font-black tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>
             必食<span className="text-[#b01020]">3</span>選
           </h2>
-          <p className="text-white/30 text-xs tracking-widest mt-4">※価格は全て税込みです。</p>
+          <p className="text-white/30 text-xs tracking-widest mt-4">価格は全て税込みです。</p>
         </div>
         {[
-          { img: '/sec3_i1.jpg', name: 'ネギタン塩', price: '1,080', desc: 'スタッフおすすめの、不動の人気メニューです。食感が硬めの舌先は薄めに、お尻のやわらかい部分は厚めにカット。一皿の中で厚みが異なる肉が楽しめるのも、手切りならでは。', note: '※ネギは別添えでお出しします。', reverse: false, bg: 'bg-[#0d0a05]' },
-          { img: '/sec3_i2.jpg', name: '赤身3種盛り（塩）', price: '2,420', desc: 'その日の仕入れによって部位は変わりますが、肉質のやわらかい和牛のみの盛り合わせです。贅沢に厚切りで3種類をお出しします。', note: '※写真は左から、和牛カイノミ、和牛ハラミ、和牛フランクです。', reverse: true, bg: 'bg-[#080604]' },
+          { img: '/sec3_i1.jpg', name: 'ネギタン塩', price: '1,080', desc: 'スタッフおすすめの不動の人気メニューです。舌先は薄めに、やわらかい部分は厚めにカット。一皿の中で異なる食感が楽しめるのも手切りならでは。', note: 'ネギは別添えでお出しします。', reverse: false, bg: 'bg-[#0d0a05]' },
+          { img: '/sec3_i2.jpg', name: '赤身3種盛り（塩）', price: '2,420', desc: 'その日の仕入れによって部位は変わりますが、肉質のやわらかい和牛のみの盛り合わせです。贅沢に厚切りで3種類をお出しします。', note: '写真は左から、和牛カイノミ、和牛ハラミ、和牛フランクです。', reverse: true, bg: 'bg-[#080604]' },
           { img: '/sec3_i3.jpg', name: 'ミノ湯引き', price: '980', desc: 'てっさをイメージした薄切りのミノは、肉とは思えない食感に驚いていただけること間違いなし。どっさりと乗せたネギをたっぷり巻いてお召し上がりください。', note: '', reverse: false, bg: 'bg-[#0d0a05]' },
         ].map((item, i) => (
           <div key={i} className={`grid md:grid-cols-2 min-h-[70vh] ${item.bg}`}>
@@ -248,9 +247,9 @@ export default async function HomePage() {
       <section id="course" className="py-24 bg-[#0a0a0a]">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
-            <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-5">Course & Set Menu</span>
+            <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-5">Course and Set Menu</span>
             <h2 className="text-3xl md:text-5xl font-black tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>
-              コース・<span className="text-[#b01020]">セットメニュー</span>
+              コース・セットメニュー
             </h2>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
@@ -264,7 +263,7 @@ export default async function HomePage() {
               </div>
               <div className="p-6 bg-white/3">
                 <h3 className="text-xl font-bold tracking-wide mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>おひとり様セット</h3>
-                <p className="text-xs text-white/50 tracking-widest mb-4">※3種類ご用意しています</p>
+                <p className="text-xs text-white/50 tracking-widest mb-4">3種類ご用意しています</p>
                 <p className="text-sm font-light leading-relaxed text-white/65 mb-5">塩・タレ・おまかせの他、各種盛り合わせもご用意。お一人で召し上がるのにちょうど良いボリューム感です。</p>
                 <div className="grid grid-cols-3 gap-2">
                   {[['A. 塩焼き', '2,000円'], ['B. 赤身タレ', '2,000円'], ['C. おまかせ', '2,000円']].map(([l, v]) => (
@@ -324,7 +323,7 @@ export default async function HomePage() {
                   ))}
                 </div>
                 <p className="text-[9px] text-white/20 text-center tracking-widest">W.C.</p>
-                <p className="text-[9px] text-white/20 text-center tracking-widest mt-3">▼ 入口</p>
+                <p className="text-[9px] text-white/20 text-center tracking-widest mt-3">入口</p>
               </div>
             </div>
             <div className="border border-white/10 overflow-hidden">
@@ -407,7 +406,7 @@ export default async function HomePage() {
       <section id="access" className="py-20 bg-[#f0ebe0] text-[#1a1208]">
         <div className="max-w-5xl mx-auto px-6">
           <div className="mb-12">
-            <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-4">Access & Map</span>
+            <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-4">Access and Map</span>
             <h2 className="text-3xl md:text-5xl font-black tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>アクセス</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-10">
