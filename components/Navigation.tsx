@@ -5,8 +5,8 @@ import Link from 'next/link';
 const links = [
   { href: '/', label: 'トップ' },
   { href: '/#concept', label: 'こだわり' },
-  { href: '/menu', label: 'メニュー' },        // ← /menu に変更
-  { href: '/reserve', label: 'WEB予約' },      // ← 追加
+  { href: '/menu', label: 'メニュー' },
+  { href: '/reserve', label: 'WEB予約' },
   { href: '/#access', label: 'アクセス' },
   { href: '/wage', label: '採用情報' },
 ];
@@ -38,19 +38,22 @@ export default function Navigation() {
       </div>
 
       <div className="flex items-stretch">
-        
+        {/* デスクトップ用電話リンク：<a を補完 */}
+        <a 
           href="tel:052-990-6329"
           className="hidden md:flex flex-col justify-center px-4 text-white bg-white/5 border-l border-white/10"
         >
           <span className="text-[10px] text-white/40 tracking-widest">ご予約・お問い合わせ</span>
           <span className="text-sm font-semibold tracking-wide">052-990-6329</span>
         </a>
+        
         <Link
           href="/reserve"
           className="flex items-center justify-center bg-[#b01020] hover:bg-[#d01828] text-white text-xs tracking-widest px-5 transition-colors whitespace-nowrap"
         >
           WEB予約
         </Link>
+        
         <button
           className="md:hidden flex items-center justify-center w-14 text-white border-l border-white/10"
           onClick={() => setOpen(!open)}
@@ -72,8 +75,9 @@ export default function Navigation() {
               {l.label}
             </Link>
           ))}
-          {/* モバイル用電話リンク */}
           
+          {/* モバイル用電話リンク：<a を補完 */}
+          <a
             href="tel:052-990-6329"
             onClick={() => setOpen(false)}
             className="block px-6 py-4 text-sm text-[#c8a84a] border-b border-white/5 tracking-widest"
