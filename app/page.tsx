@@ -33,9 +33,7 @@ export default async function HomePage() {
   return (
     <div className="bg-[#0a0a0a] text-white overflow-x-hidden">
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          HERO
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* HERO */}
       <section className="relative h-screen flex overflow-hidden">
         {[
           { src: '/kv_i1.jpg', label: '迫力満点！', sub: '鮮度抜群！' },
@@ -95,9 +93,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          CONCEPT
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* CONCEPT */}
       <section id="concept" className="grid md:grid-cols-2 min-h-screen">
         <div className="relative min-h-[50vh] md:min-h-screen overflow-hidden">
           <Image src="/sec2_bgi1.jpg" alt="こだわり" fill sizes="50vw" className="object-cover" />
@@ -141,9 +137,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          KODAWARI
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* KODAWARI */}
       <section id="kodawari" className="grid md:grid-cols-2 min-h-screen bg-[#0a0a0a]">
         <div className="flex flex-col justify-center px-8 md:px-16 py-20 order-2 md:order-1">
           <div className="mb-8">
@@ -189,9 +183,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          TARE
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* TARE */}
       <section className="py-24 bg-[#080604]">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -226,9 +218,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          HISSHOKU
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* HISSHOKU */}
       <section id="menu" className="bg-[#0a0a0a]">
         <div className="py-20 text-center border-b border-white/5">
           <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-5">まずはコレ</span>
@@ -264,8 +254,6 @@ export default async function HomePage() {
             <span className="group-hover:translate-x-1 transition-transform">→</span>
           </Link>
         </div>
-
-        {/* microCMSメニュー */}
         {menuList.length > 0 && (
           <div className="py-20 bg-[#0a0a0a] border-t border-white/5">
             <div className="max-w-6xl mx-auto px-6">
@@ -295,9 +283,7 @@ export default async function HomePage() {
         )}
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          JIMAN
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* JIMAN */}
       <section className="bg-[#f0ebe0] text-[#1a1208]">
         <div className="py-16 text-center border-b border-black/10">
           <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-4">常連さんに愛される</span>
@@ -333,9 +319,7 @@ export default async function HomePage() {
         ))}
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          COURSE
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* COURSE */}
       <section id="course" className="py-24 bg-[#0a0a0a]">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -393,9 +377,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          KUUKAN
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* KUUKAN */}
       <section id="kuukan" className="bg-[#080604]">
         <div className="relative h-[40vh] md:h-[50vh] overflow-hidden">
           <Image src="/sec6_para.jpg" alt="店内" fill sizes="100vw" className="object-cover opacity-60" />
@@ -452,9 +434,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          NEWS
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* NEWS */}
       <section id="news" className="py-20 bg-[#0a0a0a] border-t border-white/5">
         <div className="max-w-3xl mx-auto px-6">
           <div className="mb-10">
@@ -491,9 +471,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          REVIEW
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* REVIEW */}
       <section className="py-24 bg-[#080604] text-center px-6">
         <div className="max-w-2xl mx-auto p-12 border border-[#c8a84a]/20 bg-[#0a0a0a]">
           <div className="text-[#c8a84a] text-4xl mb-6 tracking-tight">★★★★★ 5.0</div>
@@ -511,9 +489,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          ACCESS
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* ACCESS */}
       <section id="access" className="py-20 bg-[#f0ebe0] text-[#1a1208]">
         <div className="max-w-5xl mx-auto px-6">
           <div className="mb-12">
@@ -548,16 +524,17 @@ export default async function HomePage() {
             <div className="aspect-square md:aspect-auto md:h-full min-h-[300px] overflow-hidden border border-black/10">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d812.9!2d136.91404!3d35.16868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60037a0fee0c8b8b%3A0xe2b8e9f4a59dcbdd!2z5Lqs6YO96Zmc56iy44Gq44GK44GN!5e0!3m2!1sja!2sjp!4v1742000000000"
-                width="100%" height="100%" loading="lazy" className="border-0 w-full h-full"
+                width="100%"
+                height="100%"
+                loading="lazy"
+                className="border-0 w-full h-full"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          FOOTER
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* FOOTER */}
       <footer className="bg-[#080604] border-t border-white/6 py-10">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-[#c8a84a] text-xl font-black tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>
@@ -569,7 +546,13 @@ export default async function HomePage() {
               { href: 'https://retty.me/area/PRE23/ARE63/SUB6304/100001788734/', label: 'Retty' },
               { href: 'https://maps.google.com/?cid=16336924147757665245', label: 'Googleマップ' },
             ].map(link => (
-              <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white/70 tracking-widest transition-colors">
+              
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-white/40 hover:text-white/70 tracking-widest transition-colors"
+              >
                 {link.label}
               </a>
             ))}
