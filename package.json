@@ -1,0 +1,2 @@
+npm install microcms-js-sdk nodemailer
+npm install -D @types/nodemailer
