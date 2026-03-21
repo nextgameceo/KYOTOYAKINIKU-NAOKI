@@ -14,11 +14,8 @@ export default async function HomePage() {
   return (
     <div className="bg-[#0a0a0a] text-white overflow-x-hidden">
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          HERO
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* HERO */}
       <section className="relative h-screen flex overflow-hidden">
-        {/* 5パネルスライド */}
         {[
           { src: '/kv_i1.jpg', label: '迫力満点！', sub: '鮮度抜群！' },
           { src: '/kv_i2.jpg', label: 'お一人様', sub: '大歓迎' },
@@ -56,11 +53,9 @@ export default async function HomePage() {
             </div>
           </div>
         ))}
-
-        {/* 中央オーバーレイテキスト */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <div className="bg-black/40 backdrop-blur-sm px-8 py-6 text-center border border-white/10">
-            <p className="text-[#c8a84a] text-[10px] tracking-[0.6em] mb-3 font-[var(--font-montserrat)] uppercase">
+            <p className="text-[#c8a84a] text-[10px] tracking-[0.6em] mb-3 uppercase">
               Kyoto Yakiniku
             </p>
             <h1
@@ -76,19 +71,14 @@ export default async function HomePage() {
             </p>
           </div>
         </div>
-
-        {/* スクロールインジケーター */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none">
           <span className="text-white/30 text-[9px] tracking-[0.4em]">SCROLL</span>
           <div className="w-px h-10 bg-gradient-to-b from-[#c8a84a] to-transparent animate-pulse" />
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          CONCEPT
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* CONCEPT */}
       <section id="concept" className="grid md:grid-cols-2 min-h-screen">
-        {/* 左：写真 */}
         <div className="relative min-h-[50vh] md:min-h-screen overflow-hidden">
           <Image
             src="/sec2_bgi1.jpg"
@@ -98,7 +88,6 @@ export default async function HomePage() {
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/50" />
-          {/* 縦書きキャッチ */}
           <div
             className="absolute right-6 top-1/2 -translate-y-1/2 text-white font-black text-2xl md:text-4xl leading-tight tracking-widest drop-shadow-2xl"
             style={{
@@ -113,8 +102,6 @@ export default async function HomePage() {
             18:00〜翌4:00営業
           </div>
         </div>
-
-        {/* 右：テキスト */}
         <div className="flex flex-col justify-center px-8 md:px-16 py-20 bg-[#f0ebe0] text-[#1a1208]">
           <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-5 w-fit">
             About
@@ -147,11 +134,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          KODAWARI
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* KODAWARI */}
       <section id="kodawari" className="grid md:grid-cols-2 min-h-screen bg-[#0a0a0a]">
-        {/* 左：テキスト */}
         <div className="flex flex-col justify-center px-8 md:px-16 py-20 order-2 md:order-1">
           <div className="mb-8">
             <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-4">
@@ -202,8 +186,6 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
-
-        {/* 右：写真 */}
         <div className="relative min-h-[50vh] md:min-h-screen overflow-hidden order-1 md:order-2">
           <Image
             src="/sec2_bgi3.jpg"
@@ -227,9 +209,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          TARE
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* TARE */}
       <section className="py-24 bg-[#080604]">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -278,11 +258,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          HISSHOKU 3選
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* HISSHOKU */}
       <section id="menu" className="bg-[#0a0a0a]">
-        {/* ヘッダー */}
         <div className="py-20 text-center border-b border-white/5">
           <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-5">
             まずはコレ
@@ -297,8 +274,6 @@ export default async function HomePage() {
             ※価格は全て税込みです。
           </p>
         </div>
-
-        {/* 3アイテム */}
         {[
           {
             img: '/sec3_i1.jpg',
@@ -328,10 +303,7 @@ export default async function HomePage() {
             bg: 'bg-[#0d0a05]',
           },
         ].map((item, i) => (
-          <div
-            key={i}
-            className={`grid md:grid-cols-2 min-h-[70vh] ${item.bg}`}
-          >
+          <div key={i} className={`grid md:grid-cols-2 min-h-[70vh] ${item.bg}`}>
             <div className={`relative overflow-hidden min-h-[45vw] md:min-h-full ${item.reverse ? 'md:order-2' : ''}`}>
               <Image
                 src={item.img}
@@ -348,7 +320,7 @@ export default async function HomePage() {
               >
                 {item.name}
               </h3>
-              <p className="text-2xl text-white/70 tracking-widest mb-6 font-[var(--font-montserrat)]">
+              <p className="text-2xl text-white/70 tracking-widest mb-6">
                 ¥{item.price}
               </p>
               <div className="w-8 h-px bg-[#b01020] mb-6" />
@@ -359,8 +331,6 @@ export default async function HomePage() {
             </div>
           </div>
         ))}
-
-        {/* メニュー一覧へCTA */}
         <div className="py-16 text-center bg-[#080604] border-t border-white/5">
           <p className="text-white/40 text-xs tracking-widest mb-4">他にも多彩なメニューをご用意しています</p>
           <Link
@@ -373,9 +343,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          JIMAN
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* JIMAN */}
       <section className="bg-[#f0ebe0] text-[#1a1208]">
         <div className="py-16 text-center border-b border-black/10">
           <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-4">
@@ -434,9 +402,7 @@ export default async function HomePage() {
         ))}
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          COURSE
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* COURSE */}
       <section id="course" className="py-24 bg-[#0a0a0a]">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -451,7 +417,6 @@ export default async function HomePage() {
             </h2>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
-            {/* おひとり様セット */}
             <div className="border border-white/10 overflow-hidden group hover:border-white/25 transition-colors">
               <div className="relative aspect-video overflow-hidden">
                 <Image
@@ -469,10 +434,7 @@ export default async function HomePage() {
                 </div>
               </div>
               <div className="p-6 bg-white/3">
-                <h3
-                  className="text-xl font-bold tracking-wide mb-2"
-                  style={{ fontFamily: 'var(--font-noto-serif)' }}
-                >
+                <h3 className="text-xl font-bold tracking-wide mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>
                   おひとり様セット
                 </h3>
                 <p className="text-xs text-white/50 tracking-widest mb-4">※3種類ご用意しています</p>
@@ -493,8 +455,6 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
-
-            {/* 宴会コース */}
             <div className="border border-white/10 overflow-hidden group hover:border-white/25 transition-colors">
               <div className="relative aspect-video overflow-hidden">
                 <Image
@@ -512,10 +472,7 @@ export default async function HomePage() {
                 </div>
               </div>
               <div className="p-6 bg-white/3">
-                <h3
-                  className="text-xl font-bold tracking-wide mb-2"
-                  style={{ fontFamily: 'var(--font-noto-serif)' }}
-                >
+                <h3 className="text-xl font-bold tracking-wide mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>
                   宴会コース（飲み放題付き）
                 </h3>
                 <p className="text-xs text-white/50 tracking-widest mb-4">お一人様 4,000円〜</p>
@@ -539,11 +496,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          KUUKAN
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* KUUKAN */}
       <section id="kuukan" className="bg-[#080604]">
-        {/* パノラマヒーロー */}
         <div className="relative h-[40vh] md:h-[50vh] overflow-hidden">
           <Image
             src="/sec6_para.jpg"
@@ -564,19 +518,17 @@ export default async function HomePage() {
             店内のご案内
           </div>
         </div>
-
         <div className="max-w-5xl mx-auto px-6 pb-24">
           <div className="grid md:grid-cols-3 gap-6 -mt-8 relative z-10">
-            {/* フロアマップ */}
             <div className="bg-[#0a0a0a] border border-white/10 p-6 flex flex-col">
               <p className="text-[10px] tracking-widest text-white/40 mb-4">店内見取り図</p>
-              <div className="flex-1 bg-[#111] border border-white/5 p-4 font-[var(--font-montserrat)]">
+              <div className="flex-1 bg-[#111] border border-white/5 p-4">
                 <p className="text-[9px] text-white/30 text-center mb-3 tracking-widest">キッチン</p>
                 <div className="grid grid-cols-3 gap-1 mb-3">
                   {Array.from({ length: 6 }).map((_, i) => (
                     <div
                       key={i}
-                      className={`h-6 ${i === 4 ? 'bg-[#b01020]/40' : 'bg-white/6'} flex items-center justify-center`}
+                      className={`h-6 flex items-center justify-center ${i === 4 ? 'bg-[#b01020]/40' : 'bg-white/6'}`}
                     >
                       {i === 4 && <span className="text-[8px] text-white/60">C</span>}
                     </div>
@@ -586,8 +538,6 @@ export default async function HomePage() {
                 <p className="text-[9px] text-white/20 text-center tracking-widest mt-3">▼ 入口</p>
               </div>
             </div>
-
-            {/* テーブル席 */}
             <div className="border border-white/10 overflow-hidden">
               <div className="relative aspect-[4/3]">
                 <Image src="/sec6_i2.jpg" alt="テーブル席" fill sizes="33vw" className="object-cover" />
@@ -602,8 +552,6 @@ export default async function HomePage() {
                 </p>
               </div>
             </div>
-
-            {/* カウンター */}
             <div className="border border-white/10 overflow-hidden">
               <div className="relative aspect-[4/3]">
                 <Image src="/sec6_i3.jpg" alt="カウンター" fill sizes="33vw" className="object-cover" />
@@ -622,60 +570,49 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          NEWS
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* NEWS */}
       <section id="news" className="py-20 bg-[#0a0a0a] border-t border-white/5">
         <div className="max-w-3xl mx-auto px-6">
-          <div className="flex justify-between items-end mb-10">
-            <div>
-              <p className="text-[10px] tracking-[0.4em] text-white/30 mb-2">NEWS</p>
-              <h2
-                className="text-3xl font-bold tracking-widest"
-                style={{ fontFamily: 'var(--font-noto-serif)' }}
-              >
-                お知らせ
-              </h2>
-            </div>
+          <div className="mb-10">
+            <p className="text-[10px] tracking-[0.4em] text-white/30 mb-2">NEWS</p>
+            <h2
+              className="text-3xl font-bold tracking-widest"
+              style={{ fontFamily: 'var(--font-noto-serif)' }}
+            >
+              お知らせ
+            </h2>
           </div>
           <div className="divide-y divide-white/8">
             {newsList.length > 0 ? newsList.map(item => (
               <div key={item.id} className="flex gap-4 md:gap-6 items-baseline py-4 hover:opacity-70 transition-opacity cursor-pointer">
-                <span className="text-[10px] text-white/35 tracking-widest whitespace-nowrap font-[var(--font-montserrat)]">
+                <span className="text-[10px] text-white/35 tracking-widest whitespace-nowrap">
                   {new Date(item.publishedAt).toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('/', '.')}
                 </span>
                 <span className={`text-[9px] tracking-widest px-2 py-0.5 whitespace-nowrap shrink-0 ${
-                  item.category === 'blog'
-                    ? 'bg-[#c8a84a]/80 text-[#0a0a0a]'
-                    : 'bg-[#b01020] text-white'
+                  item.category === 'blog' ? 'bg-[#c8a84a]/80 text-[#0a0a0a]' : 'bg-[#b01020] text-white'
                 }`}>
                   {item.category === 'blog' ? 'ブログ' : 'お知らせ'}
                 </span>
                 <span className="text-sm font-light tracking-wide leading-relaxed">{item.title}</span>
               </div>
-            )) : (
-              /* microCMS未連携時のダミー */
-              [
-                { date: '2025.06.20', cat: 'お知らせ', title: '6月のおすすめ希少部位のご案内', blog: false },
-                { date: '2025.06.15', cat: 'ブログ', title: 'タレへのこだわり——プッコチ醤油ダレが生まれた理由', blog: true },
-                { date: '2025.06.01', cat: 'お知らせ', title: '京都焼肉なおき、栄にグランドオープンしました', blog: false },
-              ].map((item, i) => (
-                <div key={i} className="flex gap-4 md:gap-6 items-baseline py-4">
-                  <span className="text-[10px] text-white/35 tracking-widest whitespace-nowrap">{item.date}</span>
-                  <span className={`text-[9px] tracking-widest px-2 py-0.5 whitespace-nowrap shrink-0 ${item.blog ? 'bg-[#c8a84a]/80 text-[#0a0a0a]' : 'bg-[#b01020] text-white'}`}>
-                    {item.cat}
-                  </span>
-                  <span className="text-sm font-light tracking-wide">{item.title}</span>
-                </div>
-              ))
-            )}
+            )) : [
+              { date: '2025.06.20', cat: 'お知らせ', title: '6月のおすすめ希少部位のご案内', blog: false },
+              { date: '2025.06.15', cat: 'ブログ', title: 'タレへのこだわり——プッコチ醤油ダレが生まれた理由', blog: true },
+              { date: '2025.06.01', cat: 'お知らせ', title: '京都焼肉なおき、栄にグランドオープンしました', blog: false },
+            ].map((item, i) => (
+              <div key={i} className="flex gap-4 md:gap-6 items-baseline py-4">
+                <span className="text-[10px] text-white/35 tracking-widest whitespace-nowrap">{item.date}</span>
+                <span className={`text-[9px] tracking-widest px-2 py-0.5 whitespace-nowrap shrink-0 ${item.blog ? 'bg-[#c8a84a]/80 text-[#0a0a0a]' : 'bg-[#b01020] text-white'}`}>
+                  {item.cat}
+                </span>
+                <span className="text-sm font-light tracking-wide">{item.title}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          ACCESS
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* ACCESS */}
       <section id="access" className="py-20 bg-[#f0ebe0] text-[#1a1208]">
         <div className="max-w-5xl mx-auto px-6">
           <div className="mb-12">
@@ -691,7 +628,6 @@ export default async function HomePage() {
           </div>
           <div className="grid md:grid-cols-2 gap-10">
             <div>
-              {/* 外観写真 */}
               <div className="relative aspect-[4/3] overflow-hidden mb-6 border border-black/10">
                 <Image src="/sec7_i.jpg" alt="店舗外観" fill sizes="50vw" className="object-cover" />
               </div>
@@ -728,9 +664,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          FOOTER
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      {/* FOOTER */}
       <footer className="bg-[#080604] border-t border-white/6 py-10">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div
