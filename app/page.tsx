@@ -653,7 +653,7 @@ export default async function HomePage() {
             </div>
             <div className="aspect-square md:aspect-auto md:h-full min-h-[300px] overflow-hidden border border-black/10">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d812.9!2d136.91404!3d35.16868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60037a0fee0c8b8b%3A0xe2b8e9f4a59dcbdd!2z5Lqs6YO96Zmc56iy44Gq44GK44GN!5e0!3m2!1sja!2sjp!4v1742000000000"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3261.5036125036125!2d136.9112!3d35.1691"
                 width="100%"
                 height="100%"
                 loading="lazy"
@@ -677,10 +677,10 @@ export default async function HomePage() {
             {[
               { href: 'https://www.instagram.com/yakinikunaoki?igsh=MW85ejY1NGpjMmV4Yg==', label: 'Instagram' },
               { href: 'https://retty.me/area/PRE23/ARE63/SUB6304/100001788734/', label: 'Retty' },
-              { href: 'https://maps.google.com/?cid=16336924147757665245', label: 'Googleマップ' },
+              { href: 'https://maps.app.goo.gl/YourMapLink', label: 'Googleマップ' },
             ].map(link => (
-              
-                key={link.href}
+              <a
+                key={link.label}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
