@@ -1,8 +1,10 @@
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export const revalidate = 60;
 
+// microCMSデータ取得関数
 async function getCMS(endpoint: string) {
   try {
     const res = await fetch(
@@ -20,6 +22,7 @@ async function getCMS(endpoint: string) {
 }
 
 export default async function HomePage() {
+  // 並列データ取得（shop-info, news, menu）
   const [shopData, newsData, menuData] = await Promise.all([
     getCMS('shop-info'),
     getCMS('news'),
@@ -31,9 +34,10 @@ export default async function HomePage() {
   const menuList = menuData?.contents || [];
 
   return (
-    <div className="bg-[#0a0a0a] text-white overflow-x-hidden">
+    <div className="bg-[#0a0a0a] text-white overflow-x-hidden selection:bg-[#c8a84a] selection:text-black">
 
-      <section className="relative h-screen flex overflow-hidden">
+      {/* --- HERO SECTION: HOVER ACCORDION --- */}
+      <section className="relative h-screen flex overflow-hidden border-b border-white/5">
         {[
           { src: '/kv_i1.jpg', label: '迫力満点！', sub: '鮮度抜群！' },
           { src: '/kv_i2.jpg', label: 'お一人様', sub: '大歓迎' },
@@ -41,171 +45,181 @@ export default async function HomePage() {
           { src: '/kv_i4.jpg', label: '2階にある', sub: '隠れ家焼肉' },
           { src: '/kv_i5.jpg', label: 'ここでしか', sub: '食べられない逸品' },
         ].map((slide, i) => (
-          <div key={i} className="relative flex-1 overflow-hidden group transition-[flex] duration-700 ease-in-out hover:flex-[2.5] cursor-pointer">
-            <Image src={slide.src} alt={slide.label} fill sizes="20vw" className="object-cover group-hover:scale-105 transition-transform duration-700" priority={i === 0} />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            <div className="absolute bottom-6 left-0 right-0 px-3 text-center">
-              <p className="text-white font-black leading-tight text-sm drop-shadow-lg" style={{ fontFamily: 'var(--font-noto-serif)', writingMode: 'vertical-rl', margin: '0 auto', textShadow: '0 2px 8px rgba(0,0,0,0.9)' }}>
-                <span className="text-[#c8a84a]">{slide.label}</span><br />{slide.sub}
+          <div key={i} className="relative flex-1 overflow-hidden group transition-[flex] duration-700 ease-in-out hover:flex-[2.5] cursor-pointer border-r border-white/5">
+            <Image src={slide.src} alt={slide.label} fill sizes="20vw" className="object-cover group-hover:scale-110 transition-transform duration-1000" priority={i === 0} />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+            <div className="absolute bottom-12 left-0 right-0 px-3 text-center">
+              <p className="text-white font-black leading-tight text-sm tracking-[0.2em] drop-shadow-2xl" style={{ writingMode: 'vertical-rl', margin: '0 auto' }}>
+                <span className="text-[#c8a84a] mb-2">{slide.label}</span><br />{slide.sub}
               </p>
             </div>
           </div>
         ))}
+
+        {/* CENTER LOGO OVERLAY */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-          <div className="bg-black/50 backdrop-blur-sm px-8 py-6 text-center border border-white/10">
-            <p className="text-[#c8a84a] text-[10px] tracking-[0.6em] mb-3 uppercase">Kyoto Yakiniku</p>
-            <div className="relative w-16 h-20 mx-auto mb-3">
+          <div className="bg-black/60 backdrop-blur-md px-10 py-8 text-center border border-white/10 shadow-2xl">
+            <p className="text-[#c8a84a] text-[10px] tracking-[0.8em] mb-4 uppercase">Kyoto Yakiniku</p>
+            <div className="relative w-20 h-24 mx-auto mb-4">
               <Image src="/logo.png" alt="なおき" fill className="object-contain" />
             </div>
-            <p className="text-white/50 text-[10px] tracking-[0.5em]">SAKAE · NAGOYA</p>
-            <div className="w-8 h-px bg-[#c8a84a] mx-auto my-4" />
-            <p className="text-white/60 text-xs tracking-widest hidden md:block">京都二十年の技　秘伝のタレで紡ぐ、夜の一皿</p>
+            <p className="text-white/70 text-[10px] tracking-[0.5em] mb-6">SAKAE · NAGOYA</p>
+            <div className="w-10 h-px bg-[#c8a84a] mx-auto mb-6" />
+            <p className="text-white/80 text-xs tracking-[0.3em] leading-relaxed hidden md:block font-serif">
+              京都二十年の技<br />秘伝のタレで紡ぐ、夜の一皿
+            </p>
           </div>
         </div>
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none">
-          <span className="text-white/30 text-[9px] tracking-[0.4em]">SCROLL</span>
-          <div className="w-px h-10 bg-gradient-to-b from-[#c8a84a] to-transparent animate-pulse" />
+
+        {/* SCROLL INDICATOR */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 pointer-events-none">
+          <span className="text-white/30 text-[9px] tracking-[0.6em] uppercase">Scroll</span>
+          <div className="w-px h-16 bg-gradient-to-b from-[#c8a84a] to-transparent animate-bounce" />
         </div>
       </section>
 
+      {/* --- CONCEPT SECTION --- */}
       <section id="concept" className="grid md:grid-cols-2 min-h-screen">
-        <div className="relative min-h-[50vh] md:min-h-screen overflow-hidden">
+        <div className="relative min-h-[60vh] md:min-h-screen overflow-hidden">
           <Image src="/sec2_bgi1.jpg" alt="こだわり" fill sizes="50vw" className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/50" />
-          <div className="absolute right-6 top-1/2 -translate-y-1/2 text-white font-black text-2xl md:text-4xl leading-tight tracking-widest" style={{ writingMode: 'vertical-rl', fontFamily: 'var(--font-noto-serif)', textShadow: '0 2px 20px rgba(0,0,0,0.9)' }}>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/60" />
+          <div className="absolute right-10 top-1/2 -translate-y-1/2 text-white font-black text-3xl md:text-5xl leading-tight tracking-[0.3em]" style={{ writingMode: 'vertical-rl' }}>
             一口でわかる、肉の違い。
           </div>
-          <div className="absolute left-6 bottom-8 text-white/70 text-xs tracking-widest">18:00〜翌4:00営業</div>
+          <div className="absolute left-8 bottom-10 text-white/50 text-[10px] tracking-[0.4em] uppercase">Est. 2025 in Nagoya</div>
         </div>
-        <div className="flex flex-col justify-center px-8 md:px-16 py-20 bg-[#f0ebe0] text-[#1a1208]">
-          <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-5 w-fit">About</span>
-          <h2 className="text-3xl md:text-4xl font-black leading-snug mb-5" style={{ fontFamily: 'var(--font-noto-serif)' }}>
+        <div className="flex flex-col justify-center px-10 md:px-20 py-24 bg-[#f4f1ea] text-[#1a1208]">
+          <span className="inline-block bg-[#b01020] text-white text-[9px] tracking-[0.3em] px-4 py-1.5 mb-8 w-fit uppercase font-bold">About Naoki</span>
+          <h2 className="text-4xl md:text-5xl font-black leading-[1.4] mb-8 font-serif">
             東新町の長い夜を、<br /><span className="text-[#b01020]">贅沢</span>に締めくくる
           </h2>
-          <div className="w-10 h-0.5 bg-[#b01020] mb-6" />
-          <p className="text-sm font-light leading-[2.2] text-[#3a2e22] mb-8">
+          <div className="w-12 h-1 bg-[#b01020] mb-10" />
+          <p className="text-sm md:text-base font-medium leading-[2.4] text-[#3a2e22] mb-12 max-w-lg">
             名古屋市中区、東新町・女子大エリア。栄・新栄町駅から徒歩圏内の京都焼肉なおきは、アラカルトやコースで上質な肉をリーズナブルにご提供している焼肉屋です。朝4時まで営業していますので、一人焼肉やデート、ご宴会、女子会などの他、今日の締めくくりにもぜひ。
           </p>
-          <div className="bg-[#1a1208] text-white inline-block px-6 py-4 w-fit">
-            <p className="text-[10px] tracking-widest text-white/50 mb-1">営業時間</p>
-            <p className="text-2xl font-bold tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>18:00 〜 翌4:00</p>
+          <div className="bg-[#1a1208] text-white p-8 w-full md:w-fit shadow-xl border-l-4 border-[#b01020]">
+            <p className="text-[10px] tracking-[0.3em] text-white/40 mb-2 uppercase">Business Hours</p>
+            <p className="text-3xl font-bold tracking-widest font-serif">18:00 〜 翌4:00</p>
           </div>
         </div>
       </section>
 
+      {/* --- KODAWARI SECTION --- */}
       <section id="kodawari" className="grid md:grid-cols-2 min-h-screen bg-[#0a0a0a]">
-        <div className="flex flex-col justify-center px-8 md:px-16 py-20 order-2 md:order-1">
-          <div className="mb-8">
-            <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-4">違いを生むのは</span>
-            <h2 className="text-4xl md:text-6xl font-black leading-none tracking-tight" style={{ fontFamily: 'var(--font-noto-serif)' }}>
-              語られない<br />ひと手間
+        <div className="flex flex-col justify-center px-10 md:px-20 py-24 order-2 md:order-1">
+          <div className="mb-12">
+            <span className="inline-block border border-[#b01020] text-[#b01020] text-[10px] tracking-[0.3em] px-4 py-1.5 mb-6 font-bold uppercase">Our Philosophy</span>
+            <h2 className="text-5xl md:text-7xl font-black leading-tight tracking-tighter font-serif">
+              語られない<br /><span className="text-[#c8a84a]">ひと手間</span>
             </h2>
           </div>
-          <div className="divide-y divide-white/8">
+          <div className="divide-y divide-white/10 max-w-xl">
             {[
               { label: 'カット', title: '手切りへの徹底', body: '肉は一枚一枚すべて手切りしており、部位によって切り方を変えています。余分な脂は丁寧に取り除き、やわらかい部位は厚めにカット。' },
               { label: '品質', title: '鮮度を守る品質管理', body: '肉の管理・保存を徹底しています。必要な分だけを解凍して使用し、仕入れ直後に丁寧に処理することで、鮮やかな色合いの赤身をお出しします。' },
               { label: '想い', title: '心を尽くす', body: 'それがなおきの美味しさの基準です。素材の力を信じ、丁寧なひと手間を積み重ねることで、一口食べた瞬間に違いがわかる一皿をお届けします。' },
             ].map(item => (
-              <div key={item.label} className="grid grid-cols-[auto_1fr] gap-5 py-6">
-                <span className="text-[#b01020] text-[10px] tracking-widest pt-1" style={{ writingMode: 'vertical-rl' }}>{item.label}</span>
+              <div key={item.label} className="grid grid-cols-[auto_1fr] gap-8 py-8 group hover:bg-white/5 transition-colors duration-300 px-4 -mx-4">
+                <span className="text-[#b01020] text-[10px] font-black tracking-widest pt-2" style={{ writingMode: 'vertical-rl' }}>{item.label}</span>
                 <div>
-                  <h3 className="text-base font-bold tracking-wide mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>{item.title}</h3>
-                  <p className="text-sm font-light leading-relaxed text-white/60">{item.body}</p>
+                  <h3 className="text-xl font-bold tracking-wide mb-4 text-white group-hover:text-[#c8a84a] transition-colors font-serif">{item.title}</h3>
+                  <p className="text-sm font-light leading-relaxed text-white/50">{item.body}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <div className="relative min-h-[50vh] md:min-h-screen overflow-hidden order-1 md:order-2">
-          <Image src="/sec2_bgi3.jpg" alt="こだわり" fill sizes="50vw" className="object-cover opacity-75" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
-            <p className="text-3xl md:text-5xl font-black text-white leading-snug tracking-wide" style={{ fontFamily: 'var(--font-noto-serif)', textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>心を尽くす</p>
-            <p className="text-white/60 text-xs tracking-widest mt-2">それがなおきの美味しさの基準です。</p>
+        <div className="relative min-h-[60vh] md:min-h-screen overflow-hidden order-1 md:order-2">
+          <Image src="/sec2_bgi3.jpg" alt="こだわり" fill sizes="50vw" className="object-cover opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+          <div className="absolute bottom-16 left-12 right-12">
+            <p className="text-5xl md:text-7xl font-black text-white leading-tight tracking-wide font-serif mb-4" style={{ textShadow: '0 4px 30px rgba(0,0,0,0.8)' }}>心を尽くす</p>
+            <p className="text-[#c8a84a] text-sm tracking-[0.4em] font-bold">それがなおきの美味しさの基準です。</p>
           </div>
         </div>
       </section>
 
-      <section className="py-24 bg-[#080604]">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-5">Special Sauce</span>
-            <h2 className="text-3xl md:text-5xl font-black tracking-widest mb-4" style={{ fontFamily: 'var(--font-noto-serif)' }}>こだわりのタレ</h2>
-            <div className="w-8 h-px bg-[#c8a84a] mx-auto mb-5" />
-            <p className="text-white/50 text-sm font-light leading-relaxed max-w-md mx-auto">
-              タレは、店主の修業元である京都・大韶園と同じものを使用。肉の旨みを最大限に引き出す、なおき秘伝の味わいです。
+      {/* --- SPECIAL SAUCE SECTION --- */}
+      <section className="py-32 bg-[#080604]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-20">
+            <span className="inline-block bg-[#b01020] text-white text-[9px] tracking-[0.4em] px-5 py-2 mb-6 font-bold uppercase">Special Sauce</span>
+            <h2 className="text-4xl md:text-6xl font-black tracking-[0.3em] mb-6 font-serif uppercase">こだわりのタレ</h2>
+            <div className="w-16 h-0.5 bg-[#c8a84a] mx-auto mb-8" />
+            <p className="text-white/50 text-sm md:text-base font-light leading-relaxed max-w-2xl mx-auto italic">
+              タレは、店主の修業元である京都・大韶園と同じものを使用。<br className="hidden md:block" />肉の旨みを最大限に引き出す、なおき秘伝の味わいです。
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { img: '/yannninnjyann.jpg', name: '秘伝みそダレ', desc: '京都仕込みの白みそベース。カルビやロースとの相性が抜群。' },
               { img: '/sec3-popup_i2.jpg', name: '自家製洗いダレ', desc: 'さっぱり醤油ベース。タンや赤身の旨みを引き立てる。' },
               { img: '/sec3-popup_i3.jpg', name: 'ヤンニンジャン', desc: '京都大韶園と同じ秘伝。ニラの香りと食感がアクセント。' },
               { img: '/sec3-popup_i5.jpg', name: 'プッコチ醤油ダレ', desc: '青唐辛子の爽やかな辛みが特徴のなおき名物。' },
             ].map(tare => (
-              <div key={tare.name} className="group border-t-2 border-[#b01020] pt-5">
-                <div className="relative aspect-square overflow-hidden mb-4 bg-[#1a0e06]">
-                  <Image src={tare.img} alt={tare.name} fill sizes="25vw" className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90" />
+              <div key={tare.name} className="group">
+                <div className="relative aspect-[4/5] overflow-hidden mb-6 bg-[#1a0e06] border border-white/5">
+                  <Image src={tare.img} alt={tare.name} fill sizes="25vw" className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-80" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
                 </div>
-                <h3 className="text-sm font-bold tracking-wide text-[#c8a84a] mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>{tare.name}</h3>
-                <p className="text-xs font-light leading-relaxed text-white/55">{tare.desc}</p>
+                <h3 className="text-lg font-bold tracking-widest text-[#c8a84a] mb-3 font-serif">{tare.name}</h3>
+                <p className="text-[11px] font-light leading-relaxed text-white/40 group-hover:text-white/70 transition-colors">{tare.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="menu" className="bg-[#0a0a0a]">
-        <div className="py-20 text-center border-b border-white/5">
-          <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-5">まずはコレ</span>
-          <h2 className="text-5xl md:text-8xl font-black tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>
-            必食<span className="text-[#b01020]">3</span>選
+      {/* --- MAIN MENU HIGHLIGHTS (必食3選) --- */}
+      <section id="special-menu" className="bg-[#0a0a0a]">
+        <div className="py-24 text-center border-y border-white/5">
+          <span className="inline-block text-[#b01020] text-[10px] tracking-[0.5em] mb-6 font-bold uppercase">The Essentials</span>
+          <h2 className="text-6xl md:text-9xl font-black tracking-[0.2em] font-serif uppercase">
+            必食<span className="text-[#b01020] font-sans">3</span>選
           </h2>
-          <p className="text-white/30 text-xs tracking-widest mt-4">価格は全て税込みです。</p>
+          <p className="text-white/30 text-[10px] tracking-[0.4em] mt-8 uppercase">Prices include tax</p>
         </div>
         {[
           { img: '/sec3_i1.jpg', name: 'ネギタン塩', price: '1,080', desc: 'スタッフおすすめの不動の人気メニューです。舌先は薄めに、やわらかい部分は厚めにカット。一皿の中で異なる食感が楽しめるのも手切りならでは。', note: 'ネギは別添えでお出しします。', reverse: false, bg: 'bg-[#0d0a05]' },
           { img: '/sec3_i2.jpg', name: '赤身3種盛り（塩）', price: '2,420', desc: 'その日の仕入れによって部位は変わりますが、肉質のやわらかい和牛のみの盛り合わせです。贅沢に厚切りで3種類をお出しします。', note: '写真は左から、和牛カイノミ、和牛ハラミ、和牛フランクです。', reverse: true, bg: 'bg-[#080604]' },
           { img: '/sec3_i3.jpg', name: 'ミノ湯引き', price: '980', desc: 'てっさをイメージした薄切りのミノは、肉とは思えない食感に驚いていただけること間違いなし。どっさりと乗せたネギをたっぷり巻いてお召し上がりください。', note: '', reverse: false, bg: 'bg-[#0d0a05]' },
         ].map((item, i) => (
-          <div key={i} className={`grid md:grid-cols-2 min-h-[70vh] ${item.bg}`}>
-            <div className={`relative overflow-hidden min-h-[45vw] md:min-h-full ${item.reverse ? 'md:order-2' : ''}`}>
-              <Image src={item.img} alt={item.name} fill sizes="50vw" className="object-cover" />
+          <div key={i} className={`grid md:grid-cols-2 min-h-[80vh] items-stretch ${item.bg}`}>
+            <div className={`relative overflow-hidden min-h-[50vh] md:min-h-full ${item.reverse ? 'md:order-2' : ''}`}>
+              <Image src={item.img} alt={item.name} fill sizes="50vw" className="object-cover group-hover:scale-105 transition-transform duration-1000" />
             </div>
-            <div className={`flex flex-col justify-center px-8 md:px-16 py-16 ${item.reverse ? 'md:order-1' : ''}`}>
-              <h3 className="text-3xl md:text-4xl font-bold tracking-widest mb-3" style={{ fontFamily: 'var(--font-noto-serif)' }}>{item.name}</h3>
-              <p className="text-2xl text-white/70 tracking-widest mb-6">¥{item.price}</p>
-              <div className="w-8 h-px bg-[#b01020] mb-6" />
-              <p className="text-sm font-light leading-[2.2] text-white/65 mb-3">{item.desc}</p>
-              {item.note && <p className="text-xs text-white/35 tracking-wide">{item.note}</p>}
+            <div className={`flex flex-col justify-center px-10 md:px-24 py-20 ${item.reverse ? 'md:order-1' : ''}`}>
+              <h3 className="text-4xl md:text-5xl font-bold tracking-widest mb-4 font-serif">{item.name}</h3>
+              <p className="text-2xl text-[#c8a84a] tracking-[0.2em] mb-8 font-sans">¥{item.price}</p>
+              <div className="w-12 h-1 bg-[#b01020] mb-8" />
+              <p className="text-sm md:text-base font-light leading-[2.2] text-white/70 mb-6 max-w-md">{item.desc}</p>
+              {item.note && <p className="text-[10px] text-white/30 tracking-[0.2em] italic">※{item.note}</p>}
             </div>
           </div>
         ))}
-        <div className="py-16 text-center bg-[#080604] border-t border-white/5">
-          <p className="text-white/40 text-xs tracking-widest mb-4">他にも多彩なメニューをご用意しています</p>
-          <Link href="/menu" className="inline-flex items-center gap-3 border border-white/20 hover:border-[#c8a84a] text-white hover:text-[#c8a84a] text-sm tracking-widest px-10 py-4 transition-all group">
-            フルメニューを見る<span className="group-hover:translate-x-1 transition-transform">→</span>
-          </Link>
-        </div>
+
+        {/* --- FULL MENU GRID (FROM microCMS) --- */}
         {menuList.length > 0 && (
-          <div className="py-20 bg-[#0a0a0a] border-t border-white/5">
+          <div id="menu" className="py-32 bg-[#0a0a0a] border-t border-white/5">
             <div className="max-w-6xl mx-auto px-6">
-              <h2 className="text-2xl font-black tracking-widest text-center mb-12 text-[#c8a84a]" style={{ fontFamily: 'var(--font-noto-serif)' }}>御品書</h2>
-              <div className="grid md:grid-cols-2 gap-x-16 gap-y-8">
-                {menuList.map((item: { id: string; name: string; price: number; description: string; image?: { url: string } }) => (
-                  <div key={item.id} className="flex gap-6 border-b border-white/8 pb-8 items-start group">
+              <div className="text-center mb-20">
+                <h2 className="text-3xl md:text-5xl font-black tracking-[0.5em] text-[#c8a84a] font-serif uppercase">御品書</h2>
+                <div className="w-12 h-px bg-white/20 mx-auto mt-6" />
+              </div>
+              <div className="grid md:grid-cols-2 gap-x-20 gap-y-12">
+                {menuList.map((item: any) => (
+                  <div key={item.id} className="flex gap-8 border-b border-white/5 pb-10 items-start group">
                     {item.image?.url && (
-                      <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden bg-[#111]">
-                        <Image src={item.image.url} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                      <div className="relative w-28 h-28 flex-shrink-0 overflow-hidden bg-[#111] border border-white/5 shadow-2xl">
+                        <Image src={item.image.url} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                       </div>
                     )}
                     <div className="flex-1">
-                      <div className="flex justify-between items-baseline mb-2">
-                        <h3 className="text-lg tracking-wide" style={{ fontFamily: 'var(--font-noto-serif)' }}>{item.name}</h3>
-                        <span className="text-[#c8a84a] text-sm tracking-widest">¥{item.price?.toLocaleString()}</span>
+                      <div className="flex justify-between items-baseline mb-4">
+                        <h3 className="text-xl tracking-wide font-bold font-serif group-hover:text-[#c8a84a] transition-colors">{item.name}</h3>
+                        <span className="text-[#c8a84a] font-sans font-bold ml-4">¥{item.price?.toLocaleString()}</span>
                       </div>
-                      <p className="text-xs text-white/50 leading-relaxed">{item.description}</p>
+                      <p className="text-[11px] text-white/40 leading-relaxed font-light">{item.description}</p>
                     </div>
                   </div>
                 ))}
@@ -215,253 +229,103 @@ export default async function HomePage() {
         )}
       </section>
 
-      <section className="bg-[#f0ebe0] text-[#1a1208]">
-        <div className="py-16 text-center border-b border-black/10">
-          <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-4">常連さんに愛される</span>
-          <h2 className="text-3xl md:text-5xl font-black tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>なおき自慢の一皿</h2>
-        </div>
-        {[
-          { img: '/sec4_i1.jpg', tag: 'ワイワイ楽しむなら', name: '生センマイ', price: '750', desc: '迫力のある見た目と、新鮮でしっかりした歯ごたえが楽しめます。水気を十分に切ることが美味しさの秘訣です。', reverse: false },
-          { img: '/sec5_i1.jpg', tag: '〆の定番', name: 'チゲスープ', price: '900', desc: '辛いものが苦手な方でも召し上がっていただけます。辛さを足したい場合は、卓上のプッコチダレで調整してください。そうめん入りで食べ応えも抜群です。', reverse: true },
-          { img: '/sec5_i2.jpg', tag: '絶品ホルモン', name: 'レバー山椒焼き', price: '680', desc: '焼肉のタレにヤンニンジャンとごま油を加えたもみダレで味付け。仕上げに山椒を振って独特の風味をほどよく和らげ、食べやすくしています。', reverse: false },
-        ].map((item, i) => (
-          <div key={i} className={`grid md:grid-cols-2 min-h-[60vh] ${i % 2 !== 0 ? 'bg-[#e8e0d0]' : 'bg-[#f0ebe0]'}`}>
-            <div className={`relative overflow-hidden min-h-[50vw] md:min-h-full ${item.reverse ? 'md:order-2' : ''}`}>
-              <Image src={item.img} alt={item.name} fill sizes="50vw" className="object-cover" />
-              <div className="absolute top-4 left-4">
-                <span className="bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1">{item.tag}</span>
-              </div>
+      {/* --- NEWS SECTION --- */}
+      <section id="news" className="py-32 bg-[#0a0a0a] border-t border-white/5 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+              <p className="text-[10px] tracking-[0.6em] text-[#b01020] mb-4 font-black uppercase">Latest News</p>
+              <h2 className="text-4xl font-bold tracking-[0.2em] font-serif">お知らせ</h2>
             </div>
-            <div className={`flex flex-col justify-center px-8 md:px-16 py-16 relative ${item.reverse ? 'md:order-1' : ''}`}>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 text-5xl font-black tracking-widest text-black/5 pointer-events-none select-none" style={{ writingMode: 'vertical-rl', fontFamily: 'var(--font-noto-serif)' }}>なおき自慢</div>
-              <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-5 w-fit">常連さんに愛される</span>
-              <h3 className="text-2xl md:text-3xl font-bold tracking-widest mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>{item.name}</h3>
-              <p className="text-lg font-semibold tracking-widest text-[#1a1208] mb-6">¥{item.price}</p>
-              <div className="w-8 h-px bg-[#b01020] mb-5" />
-              <p className="text-sm font-light leading-[2.2] text-[#3a2e22]">{item.desc}</p>
-            </div>
+            <Link href="/news" className="text-[10px] tracking-[0.3em] text-white/30 hover:text-[#c8a84a] uppercase transition-colors">View all news →</Link>
           </div>
-        ))}
-      </section>
-
-      <section id="course" className="py-24 bg-[#0a0a0a]">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-5">Course and Set Menu</span>
-            <h2 className="text-3xl md:text-5xl font-black tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>
-              コース・セットメニュー
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="border border-white/10 overflow-hidden group hover:border-white/25 transition-colors">
-              <div className="relative aspect-video overflow-hidden">
-                <Image src="/sec4_i2.jpg" alt="おひとり様セット" fill sizes="50vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-5">
-                  <span className="bg-[#b01020] text-white text-[10px] tracking-widest px-2 py-1">お一人でも</span>
-                </div>
-              </div>
-              <div className="p-6 bg-white/3">
-                <h3 className="text-xl font-bold tracking-wide mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>おひとり様セット</h3>
-                <p className="text-xs text-white/50 tracking-widest mb-4">3種類ご用意しています</p>
-                <p className="text-sm font-light leading-relaxed text-white/65 mb-5">塩・タレ・おまかせの他、各種盛り合わせもご用意。お一人で召し上がるのにちょうど良いボリューム感です。</p>
-                <div className="grid grid-cols-3 gap-2">
-                  {[['A. 塩焼き', '2,000円'], ['B. 赤身タレ', '2,000円'], ['C. おまかせ', '2,000円']].map(([l, v]) => (
-                    <div key={l} className="text-center border border-white/10 p-2">
-                      <p className="text-[9px] text-white/40 tracking-wider mb-1">{l}</p>
-                      <p className="text-sm font-bold text-[#c8a84a]">{v}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="border border-white/10 overflow-hidden group hover:border-white/25 transition-colors">
-              <div className="relative aspect-video overflow-hidden">
-                <Image src="/sec6_i1.jpg" alt="宴会コース" fill sizes="50vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-5">
-                  <span className="bg-[#b01020] text-white text-[10px] tracking-widest px-2 py-1">大人数でも</span>
-                </div>
-              </div>
-              <div className="p-6 bg-white/3">
-                <h3 className="text-xl font-bold tracking-wide mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>宴会コース（飲み放題付き）</h3>
-                <p className="text-xs text-white/50 tracking-widest mb-4">お一人様 4,000円〜</p>
-                <p className="text-sm font-light leading-relaxed text-white/65 mb-5">2名様から貸切OK。飲み放題付きコースで宴会・女子会・各種ご宴席に。詳細はお電話またはWEB予約にてお問い合わせください。</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {[['スタンダード', '4,000円'], ['プレミアム', '5,500円']].map(([l, v]) => (
-                    <div key={l} className="text-center border border-white/10 p-3">
-                      <p className="text-[10px] text-white/40 tracking-wider mb-1">{l}</p>
-                      <p className="text-base font-bold text-[#c8a84a]">{v}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="kuukan" className="bg-[#080604]">
-        <div className="relative h-[40vh] md:h-[50vh] overflow-hidden">
-          <Image src="/sec6_para.jpg" alt="店内" fill sizes="100vw" className="object-cover opacity-60" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#080604] to-transparent" />
-          <div className="absolute right-8 top-1/2 -translate-y-1/2 text-white font-black text-3xl md:text-5xl tracking-widest" style={{ writingMode: 'vertical-rl', fontFamily: 'var(--font-noto-serif)', textShadow: '0 2px 20px rgba(0,0,0,0.9)' }}>
-            店内のご案内
-          </div>
-        </div>
-        <div className="max-w-5xl mx-auto px-6 pb-24">
-          <div className="grid md:grid-cols-3 gap-6 -mt-8 relative z-10">
-            <div className="bg-[#0a0a0a] border border-white/10 p-6 flex flex-col">
-              <p className="text-[10px] tracking-widest text-white/40 mb-4">店内見取り図</p>
-              <div className="flex-1 bg-[#111] border border-white/5 p-4">
-                <p className="text-[9px] text-white/30 text-center mb-3 tracking-widest">キッチン</p>
-                <div className="grid grid-cols-3 gap-1 mb-3">
-                  {Array.from({ length: 6 }).map((_, i) => (
-                    <div key={i} className={`h-6 flex items-center justify-center ${i === 4 ? 'bg-[#b01020]/40' : 'bg-white/6'}`}>
-                      {i === 4 && <span className="text-[8px] text-white/60">C</span>}
-                    </div>
-                  ))}
-                </div>
-                <p className="text-[9px] text-white/20 text-center tracking-widest">W.C.</p>
-                <p className="text-[9px] text-white/20 text-center tracking-widest mt-3">入口</p>
-              </div>
-            </div>
-            <div className="border border-white/10 overflow-hidden">
-              <div className="relative aspect-[4/3]">
-                <Image src="/sec6_i2.jpg" alt="テーブル席" fill sizes="33vw" className="object-cover" />
-                <div className="absolute top-3 left-3">
-                  <span className="bg-[#b01020] text-white text-[9px] tracking-widest px-2 py-1">ワイワイ楽しむなら</span>
-                </div>
-              </div>
-              <div className="p-5 bg-white/3">
-                <h3 className="font-bold tracking-wide mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>テーブル席</h3>
-                <p className="text-xs font-light leading-relaxed text-white/55">4名様向けのテーブル席は2卓あり、仕切りもある適度な間を感じずお食事を楽しめます。7名様までのテーブル席も1卓ご用意しています。</p>
-              </div>
-            </div>
-            <div className="border border-white/10 overflow-hidden">
-              <div className="relative aspect-[4/3]">
-                <Image src="/sec6_i3.jpg" alt="カウンター" fill sizes="33vw" className="object-cover" />
-                <div className="absolute top-3 left-3">
-                  <span className="bg-[#b01020] text-white text-[9px] tracking-widest px-2 py-1">焼肉愛好者の特等席</span>
-                </div>
-              </div>
-              <div className="p-5 bg-white/3">
-                <h3 className="font-bold tracking-wide mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>カウンター</h3>
-                <p className="text-xs font-light leading-relaxed text-white/55">肉を焼く様子を目の前でご覧になれるカウンター席は3席。気になることがあれば遠慮なくお声がけください。</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="news" className="py-20 bg-[#0a0a0a] border-t border-white/5">
-        <div className="max-w-3xl mx-auto px-6">
-          <div className="mb-10">
-            <p className="text-[10px] tracking-[0.4em] text-white/30 mb-2">NEWS</p>
-            <h2 className="text-3xl font-bold tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>お知らせ</h2>
-          </div>
-          <div className="divide-y divide-white/8">
-            {newsList.length > 0 ? newsList.map((item: { id: string; title: string; publishedAt: string; category: string }) => (
-              <div key={item.id} className="flex gap-4 md:gap-6 items-baseline py-4 hover:opacity-70 transition-opacity cursor-pointer">
-                <span className="text-[10px] text-white/35 tracking-widest whitespace-nowrap">
+          <div className="divide-y divide-white/10">
+            {newsList.length > 0 ? newsList.map((item: any) => (
+              <div key={item.id} className="flex flex-col md:flex-row gap-4 md:gap-10 items-baseline py-8 hover:bg-white/5 transition-all cursor-pointer group px-4 -mx-4">
+                <span className="text-[11px] text-white/30 tracking-[0.2em] font-sans">
                   {new Date(item.publishedAt).toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('/', '.')}
                 </span>
-                <span className={`text-[9px] tracking-widest px-2 py-0.5 whitespace-nowrap shrink-0 ${item.category === 'blog' ? 'bg-[#c8a84a]/80 text-[#0a0a0a]' : 'bg-[#b01020] text-white'}`}>
-                  {item.category === 'blog' ? 'ブログ' : 'お知らせ'}
+                <span className="text-[9px] tracking-[0.3em] px-3 py-1 bg-[#b01020] text-white font-bold uppercase">
+                  {item.category?.[0] || 'Notice'}
                 </span>
-                <span className="text-sm font-light tracking-wide leading-relaxed">{item.title}</span>
+                <span className="text-base font-medium tracking-wide leading-relaxed group-hover:translate-x-2 transition-transform duration-300">{item.title}</span>
               </div>
-            )) : [
-              { date: '2025.06.20', cat: 'お知らせ', title: '6月のおすすめ希少部位のご案内', blog: false },
-              { date: '2025.06.15', cat: 'ブログ', title: 'タレへのこだわり プッコチ醤油ダレが生まれた理由', blog: true },
-              { date: '2025.06.01', cat: 'お知らせ', title: '京都焼肉なおき、栄にグランドオープンしました', blog: false },
-            ].map((item, i) => (
-              <div key={i} className="flex gap-4 md:gap-6 items-baseline py-4">
-                <span className="text-[10px] text-white/35 tracking-widest whitespace-nowrap">{item.date}</span>
-                <span className={`text-[9px] tracking-widest px-2 py-0.5 whitespace-nowrap shrink-0 ${item.blog ? 'bg-[#c8a84a]/80 text-[#0a0a0a]' : 'bg-[#b01020] text-white'}`}>{item.cat}</span>
-                <span className="text-sm font-light tracking-wide">{item.title}</span>
-              </div>
-            ))}
+            )) : (
+              <p className="text-white/30 text-center py-10">現在、新しいお知らせはありません。</p>
+            )}
           </div>
         </div>
       </section>
 
-      <section className="py-24 bg-[#080604] text-center px-6">
-        <div className="max-w-2xl mx-auto p-12 border border-[#c8a84a]/20 bg-[#0a0a0a]">
-          <div className="text-[#c8a84a] text-4xl mb-6 tracking-tight">★★★★★ 5.0</div>
-          <p className="text-sm mb-10 text-white/60 leading-loose italic">
-            迫力のある見た目と鮮度の高さ、秘伝のタレが忘れられません。深夜まで営業しているので仕事帰りにも重宝しています。
-          </p>
-          
-            href="https://maps.google.com/?cid=16336924147757665245"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block px-12 py-4 bg-[#c8a84a] text-black text-[10px] font-bold tracking-[0.3em] hover:bg-white transition-all uppercase"
-          >
-            全てのレビューを見る
-          </a>
-        </div>
-      </section>
-
-      <section id="access" className="py-20 bg-[#f0ebe0] text-[#1a1208]">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="mb-12">
-            <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-widest px-3 py-1 mb-4">Access and Map</span>
-            <h2 className="text-3xl md:text-5xl font-black tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>アクセス</h2>
+      {/* --- ACCESS & SHOP INFO --- */}
+      <section id="access" className="py-32 bg-[#f4f1ea] text-[#1a1208]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-20">
+            <span className="inline-block bg-[#b01020] text-white text-[10px] tracking-[0.4em] px-5 py-2 mb-6 font-bold uppercase">Access</span>
+            <h2 className="text-5xl md:text-6xl font-black tracking-widest font-serif">アクセス</h2>
           </div>
-          <div className="grid md:grid-cols-2 gap-10">
+          <div className="grid md:grid-cols-2 gap-16 items-start">
             <div>
-              <div className="relative aspect-[4/3] overflow-hidden mb-6 border border-black/10">
+              <div className="relative aspect-video overflow-hidden mb-12 shadow-2xl border-l-8 border-[#b01020]">
                 <Image src="/sec7_i.jpg" alt="店舗外観" fill sizes="50vw" className="object-cover" />
               </div>
-              <table className="w-full text-sm">
+              <table className="w-full text-sm border-t border-black/10">
                 <tbody className="divide-y divide-black/10">
                   {[
                     ['店名', shop?.name ?? '京都焼肉なおき'],
                     ['住所', shop?.address ?? '愛知県名古屋市中区栄4-6-18 パールプラザビル2F'],
                     ['アクセス', shop?.access ?? '地下鉄栄駅より徒歩8分・新栄町駅徒歩圏内'],
                     ['電話', shop?.tel ?? '052-990-6329'],
-                    ['営業時間', shop?.hours ?? '月火木〜日：18:00〜翌4:00 / 金：18:00〜24:00'],
+                    ['営業時間', shop?.business_hours ?? '18:00〜翌4:00'],
                     ['定休日', shop?.holiday ?? '水曜日'],
                   ].map(([label, value]) => (
                     <tr key={label}>
-                      <td className="py-3 pr-4 font-semibold text-[#b01020] tracking-widest whitespace-nowrap w-1/4 align-top text-xs">{label}</td>
-                      <td className="py-3 font-light leading-relaxed text-[#3a2e22] text-sm">{value}</td>
+                      <td className="py-6 pr-6 font-black text-[#b01020] tracking-[0.3em] whitespace-nowrap w-1/4 align-top text-[10px] uppercase">{label}</td>
+                      <td className="py-6 font-medium leading-relaxed text-[#3a2e22] text-sm md:text-base">{value}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <div className="mt-12">
+                <a href="https://retty.me/area/PRE23/ARE63/SUB6304/100001788734/" target="_blank" className="inline-block px-12 py-5 bg-[#1a1208] text-[#f4f1ea] text-[10px] font-black tracking-[0.5em] hover:bg-[#b01020] transition-all uppercase shadow-xl">
+                  ご予約・お問い合せはこちら
+                </a>
+              </div>
             </div>
-            <div className="aspect-square md:aspect-auto md:h-full min-h-[300px] overflow-hidden border border-black/10">
+            <div className="aspect-square md:h-[700px] shadow-2xl border border-black/5 grayscale hover:grayscale-0 transition-all duration-1000">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d812.9!2d136.91404!3d35.16868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60037a0fee0c8b8b%3A0xe2b8e9f4a59dcbdd!2z5Lqs6YO96Zmc56iy44Gq44GK44GN!5e0!3m2!1sja!2sjp!4v1742000000000"
-                width="100%"
-                height="100%"
-                loading="lazy"
-                className="border-0 w-full h-full"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3261.426543781057!2d136.91456577626122!3d35.17088915848773!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60037130e43d1a67%3A0xc3f9b2d973719463!2zS1lPVE8gWUFESU5JS1UgTkFPS0kgKO京都焼肉なおき）!5e0!3m2!1sja!2sjp!4v1700000000000!5m2!1sja!2sjp"
+                width="100%" height="100%" loading="lazy" className="border-0"
               />
             </div>
           </div>
         </div>
       </section>
 
-      <footer className="bg-[#080604] border-t border-white/6 py-10">
-        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-[#c8a84a] text-xl font-black tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>
-            京都焼肉なおき
+      {/* --- FOOTER --- */}
+      <footer className="bg-[#080604] border-t border-white/5 py-20 px-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 text-center md:text-left">
+          <div>
+            <div className="relative w-16 h-20 mb-6 mx-auto md:mx-0 opacity-50">
+              <Image src="/logo.png" alt="なおき" fill className="object-contain grayscale" />
+            </div>
+            <p className="text-[#c8a84a] text-2xl font-black tracking-[0.4em] font-serif mb-2">京都焼肉なおき</p>
+            <p className="text-white/20 text-[9px] tracking-[0.2em] uppercase">Kyoto Style Yakiniku in Nagoya</p>
           </div>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap justify-center gap-10">
             {[
-              { href: 'https://www.instagram.com/yakinikunaoki?igsh=MW85ejY1NGpjMmV4Yg==', label: 'Instagram' },
+              { href: 'https://www.instagram.com/yakinikunaoki', label: 'Instagram' },
               { href: 'https://retty.me/area/PRE23/ARE63/SUB6304/100001788734/', label: 'Retty' },
-              { href: 'https://maps.google.com/?cid=16336924147757665245', label: 'Googleマップ' },
+              { href: '#', label: 'Google Maps' },
             ].map(link => (
-              <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white/70 tracking-widest transition-colors">
+              <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className="text-[10px] text-white/30 hover:text-[#c8a84a] font-bold tracking-[0.3em] uppercase transition-colors">
                 {link.label}
               </a>
             ))}
           </div>
-          <p className="text-[10px] text-white/20 tracking-widest">2025 京都焼肉なおき All Rights Reserved.</p>
+          <p className="text-[9px] text-white/10 tracking-[0.3em] uppercase">
+            &copy; 2026 KYOTO YAKINIKU NAOKI. All Rights Reserved.
+          </p>
         </div>
       </footer>
 
