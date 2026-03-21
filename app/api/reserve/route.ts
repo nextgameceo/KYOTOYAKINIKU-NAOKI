@@ -11,28 +11,32 @@ export async function POST(req: NextRequest) {
     `電話：${tel}`,
   ].join('\n');
 
-  // LINE Notify
-  const lineToken = process.env.LINE_NOTIFY_TOKEN;
-  if (!lineToken) {
-    console.error('LINE_NOTIFY_TOKEN is not set');
-    return NextResponse.json({ error: 'LINE token not configured' }, { status: 500 });
+  const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
+  // 複数人のuserIdをカンマ区切りで環境変数に設定
+  const userIds = (process.env.LINE_USER_IDS || '').split(',').filter(Boolean);
+
+  if (!token || userIds.length === 0) {
+    console.error('LINE設定が不足しています');
+    return NextResponse.json({ error: 'LINE not configured' }, { status: 500 });
   }
 
   try {
-    const res = await fetch('https://notify-api.line.me/api/notify', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${lineToken}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({ message }),
-    });
-
-    if (!res.ok) {
-      const body = await res.text();
-      console.error('LINE Notify error:', body);
-      return NextResponse.json({ error: 'LINE Notify failed' }, { status: 500 });
-    }
+    // 全員に個別送信
+    await Promise.all(
+      userIds.map((userId) =>
+        fetch('https://api.line.me/v2/bot/message/push', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            to: userId.trim(),
+            messages: [{ type: 'text', text: message }],
+          }),
+        })
+      )
+    );
 
     return NextResponse.json({ ok: true });
   } catch (err) {
