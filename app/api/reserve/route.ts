@@ -14,29 +14,27 @@ export async function POST(req: NextRequest) {
       throw new Error("環境変数が不足しています。");
     }
 
-    // --- 深夜時間（24時以降）の補正処理 ---
+    // --- 深夜時間・タイムゾーンの厳格な処理 ---
     const [hoursStr, minutesStr] = time.split(':');
     let hours = parseInt(hoursStr, 10);
     const minutes = parseInt(minutesStr, 10);
     
-    // 日付を Date オブジェクトに変換
-    const targetDate = new Date(date.replace(/\//g, '-'));
+    // 日付をハイフン形式に統一
+    const datePart = date.replace(/\//g, '-'); 
     
-    // 24時以上の数値（25時, 27時など）が来た場合、翌日の時間として計算
-    if (hours >= 24) {
-      targetDate.setDate(targetDate.getDate() + 1); // 日付を1日進める
-      hours = hours - 24; // 時間を 0-23 の範囲に戻す
-    }
+    // 基準となる日時のオブジェクトを作成
+    const startDate = new Date(`${datePart}T00:00:00+09:00`);
+    
+    // 時間と分をセット（24時以降なら自動で翌日に繰り上がります）
+    startDate.setHours(hours);
+    startDate.setMinutes(minutes);
 
-    // ISO形式の時刻文字列を作成 (日本時間 +09:00 固定)
-    const formattedHours = String(hours).padStart(2, '0');
-    const formattedMinutes = String(minutes).padStart(2, '0');
-    const cleanDateStr = targetDate.toISOString().split('T')[0];
-    
-    const startIsoString = `${cleanDateStr}T${formattedHours}:${formattedMinutes}:00+09:00`;
-    const startDateObj = new Date(startIsoString);
-    const endDateObj = new Date(startDateObj.getTime() + 2 * 60 * 60 * 1000);
-    const endIsoString = endDateObj.toISOString().replace(/\.\d+Z$/, '+09:00');
+    // 終了時間を「開始の120分後」に設定
+    const endDate = new Date(startDate.getTime() + 120 * 60 * 1000);
+
+    // ISO文字列に変換（Google APIが確実に解釈できる形式）
+    const startIso = startDate.toISOString();
+    const endIso = endDate.toISOString();
 
     // --- Google Calendar API 認証 ---
     const auth = new google.auth.JWT(
@@ -54,8 +52,8 @@ export async function POST(req: NextRequest) {
       requestBody: {
         summary: `【予約】${name}様 (${party}名)`,
         description: `コース: ${course || '未定'}\n電話: ${tel}\n備考: ${message || 'なし'}`,
-        start: { dateTime: startIsoString, timeZone: 'Asia/Tokyo' },
-        end: { dateTime: endIsoString, timeZone: 'Asia/Tokyo' },
+        start: { dateTime: startIso, timeZone: 'Asia/Tokyo' },
+        end: { dateTime: endIso, timeZone: 'Asia/Tokyo' },
       },
     });
 
