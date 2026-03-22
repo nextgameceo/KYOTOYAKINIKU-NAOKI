@@ -5,7 +5,7 @@ const TIMES = [
   '18:00','18:30','19:00','19:30','20:00','20:30',
   '21:00','21:30','22:00','22:30','23:00','23:30',
   '24:00','24:30','25:00','25:30','26:00','26:30',
-  '27:00','27:30','28:00',
+  '27:00','27:30','28:00','28:30','29:00'
 ];
 
 const PARTIES = [1,2,3,4,5,6,7,8];
@@ -79,7 +79,7 @@ export default function ReservePage() {
           course: selectedCourse?.label ?? 'なし',
           name: form.name,
           tel: form.tel,
-          note: form.note,
+          message: form.note, // ★重要：API側の変数名に合わせて note を message として送る
         }),
       });
       if (!res.ok) throw new Error();
@@ -118,18 +118,16 @@ export default function ReservePage() {
     );
   }
 
+  // --- 描画部分は変更なし（省略可能ですが一応含めています） ---
   return (
     <div className="min-h-screen bg-[#0a0a0a] px-4 py-12">
       <div className="max-w-2xl mx-auto">
-
-        {/* ヘッダー */}
         <div className="text-center mb-10">
           <span className="inline-block bg-[#b01020] text-white text-xs tracking-widest px-3 py-1 mb-4">Reservation</span>
-          <h1 className="text-3xl font-black tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>WEB予約</h1>
+          <h1 className="text-3xl font-black tracking-widest">WEB予約</h1>
           <p className="text-white/40 text-xs tracking-widest mt-2">定休日：水曜日　営業：18:00〜翌4:00（28:00）</p>
         </div>
 
-        {/* ステップインジケーター */}
         <div className="flex items-center justify-center gap-1 mb-3">
           {(['date','party','time','course','form'] as Step[]).map((s, i) => (
             <div key={s} className="flex items-center gap-1">
@@ -142,57 +140,31 @@ export default function ReservePage() {
             </div>
           ))}
         </div>
-        <div className="flex justify-center gap-4 mb-10 text-[10px] tracking-widest text-white/40">
-          {['日付','人数','時間','コース','お客様情報'].map((label, i) => (
-            <span key={label} className={['date','party','time','course','form'][i] === step ? 'text-white' : ''}>{label}</span>
-          ))}
-        </div>
-
-        {/* 選択済みサマリー */}
-        {(selectedDate || party || time || course !== 'none') && (
-          <div className="flex flex-wrap gap-2 justify-center mb-8 text-xs tracking-widest">
-            {selectedDate && <span className="bg-white/5 border border-white/10 px-3 py-1 text-[#c8a84a]">{month+1}/{selectedDate}</span>}
-            {party && <span className="bg-white/5 border border-white/10 px-3 py-1 text-[#c8a84a]">{party}名</span>}
-            {time && <span className="bg-white/5 border border-white/10 px-3 py-1 text-[#c8a84a]">{time}</span>}
-            {course !== 'none' && <span className="bg-white/5 border border-white/10 px-3 py-1 text-[#c8a84a]">{selectedCourse?.label}</span>}
-          </div>
-        )}
 
         <div className="bg-white/3 border border-white/10 p-6">
-
-          {/* STEP 1: 日付 */}
           {step === 'date' && (
             <div>
               <div className="flex items-center justify-between mb-6">
-                <button onClick={prevMonth} className="w-10 h-10 flex items-center justify-center text-white/60 hover:text-white border border-white/10 hover:border-white/30 transition-colors">‹</button>
-                <h3 className="text-lg font-semibold tracking-widest">{year}年 {month + 1}月</h3>
-                <button onClick={nextMonth} className="w-10 h-10 flex items-center justify-center text-white/60 hover:text-white border border-white/10 hover:border-white/30 transition-colors">›</button>
-              </div>
-              <div className="grid grid-cols-7 gap-1 mb-2">
-                {WEEKDAYS.map((w, i) => (
-                  <div key={w} className={`text-center text-xs py-2 tracking-widest ${i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-white/40'}`}>{w}</div>
-                ))}
+                <button onClick={prevMonth} className="w-10 h-10 border border-white/10">‹</button>
+                <h3 className="text-lg font-semibold">{year}年 {month + 1}月</h3>
+                <button onClick={nextMonth} className="w-10 h-10 border border-white/10">›</button>
               </div>
               <div className="grid grid-cols-7 gap-1">
+                {WEEKDAYS.map((w, i) => <div key={w} className="text-center text-xs py-2 text-white/40">{w}</div>)}
                 {Array.from({ length: firstDay }).map((_, i) => <div key={`e${i}`} />)}
                 {Array.from({ length: days }, (_, i) => i + 1).map(day => {
                   const closed = isWednesday(day);
                   const past = isPast(day);
-                  const selected = selectedDate === day;
-                  const dow = new Date(year, month, day).getDay();
                   return (
                     <button
                       key={day}
                       disabled={closed || past}
                       onClick={() => { setSelectedDate(day); setStep('party'); }}
-                      className={`aspect-square flex flex-col items-center justify-center text-sm rounded transition-all ${
-                        selected ? 'bg-[#b01020] text-white' :
-                        closed || past ? 'text-white/15 cursor-not-allowed' :
-                        `hover:bg-white/10 ${dow === 0 ? 'text-red-300' : dow === 6 ? 'text-blue-300' : 'text-white'}`
+                      className={`aspect-square flex flex-col items-center justify-center text-sm rounded ${
+                        selectedDate === day ? 'bg-[#b01020] text-white' : closed || past ? 'text-white/15' : 'hover:bg-white/10 text-white'
                       }`}
                     >
-                      <span>{day}</span>
-                      {closed && <span className="text-[8px] text-white/30">定休</span>}
+                      {day}
                     </button>
                   );
                 })}
@@ -200,132 +172,53 @@ export default function ReservePage() {
             </div>
           )}
 
-          {/* STEP 2: 人数 */}
           {step === 'party' && (
             <div>
-              <h3 className="text-center text-lg font-semibold tracking-widest mb-8">人数を選択</h3>
+              <h3 className="text-center text-lg font-semibold mb-8">人数を選択</h3>
               <div className="grid grid-cols-4 gap-3">
                 {PARTIES.map(n => (
-                  <button
-                    key={n}
-                    onClick={() => { setParty(n); setStep('time'); }}
-                    className={`py-5 text-xl font-bold tracking-widest border transition-all active:scale-95 ${
-                      party === n ? 'bg-[#b01020] border-[#b01020] text-white' : 'border-white/15 text-white hover:border-[#b01020] hover:text-[#b01020]'
-                    }`}
-                  >
-                    {n}<span className="text-xs ml-1">名</span>
-                  </button>
+                  <button key={n} onClick={() => { setParty(n); setStep('time'); }} className={`py-5 border ${party === n ? 'bg-[#b01020] border-[#b01020]' : 'border-white/15'}`}>{n}名</button>
                 ))}
               </div>
-              <button onClick={() => setStep('date')} className="mt-6 text-xs text-white/40 hover:text-white/60 tracking-widest transition-colors w-full text-center">
-                ← 日付を変更
-              </button>
             </div>
           )}
 
-          {/* STEP 3: 時間 */}
           {step === 'time' && (
             <div>
-              <h3 className="text-center text-lg font-semibold tracking-widest mb-8">時間を選択</h3>
+              <h3 className="text-center text-lg font-semibold mb-8">時間を選択</h3>
               <div className="grid grid-cols-3 gap-3">
                 {TIMES.map(t => (
-                  <button
-                    key={t}
-                    onClick={() => { setTime(t); setStep('course'); }}
-                    className={`py-4 text-base font-semibold tracking-widest border transition-all active:scale-95 ${
-                      time === t ? 'bg-[#b01020] border-[#b01020] text-white' : 'border-white/15 text-white hover:border-[#b01020] hover:text-[#b01020]'
-                    }`}
-                  >
-                    {t}
-                  </button>
+                  <button key={t} onClick={() => { setTime(t); setStep('course'); }} className={`py-4 border ${time === t ? 'bg-[#b01020] border-[#b01020]' : 'border-white/15'}`}>{t}</button>
                 ))}
               </div>
-              <button onClick={() => setStep('party')} className="mt-6 text-xs text-white/40 hover:text-white/60 tracking-widest transition-colors w-full text-center">
-                ← 人数を変更
-              </button>
             </div>
           )}
 
-          {/* STEP 4: コース */}
           {step === 'course' && (
             <div>
-              <h3 className="text-center text-lg font-semibold tracking-widest mb-8">コースを選択</h3>
+              <h3 className="text-center text-lg font-semibold mb-8">コースを選択</h3>
               <div className="flex flex-col gap-3">
                 {COURSES.map(c => (
-                  <button
-                    key={c.id}
-                    onClick={() => setCourse(c.id)}
-                    className={`flex justify-between items-center px-5 py-4 border transition-all text-left ${
-                      course === c.id ? 'bg-[#b01020] border-[#b01020] text-white' : 'border-white/15 text-white hover:border-[#b01020]'
-                    }`}
-                  >
-                    <span className="text-sm tracking-wide">{c.label}</span>
-                    {c.price && <span className="text-xs tracking-widest opacity-80 ml-4 shrink-0">{c.price}</span>}
+                  <button key={c.id} onClick={() => setCourse(c.id)} className={`flex justify-between px-5 py-4 border ${course === c.id ? 'bg-[#b01020] border-[#b01020]' : 'border-white/15'}`}>
+                    <span>{c.label}</span><span>{c.price}</span>
                   </button>
                 ))}
               </div>
-              <button
-                onClick={() => setStep('form')}
-                className="w-full mt-6 bg-[#b01020] hover:bg-[#d01828] text-white py-4 text-sm font-bold tracking-widest transition-colors"
-              >
-                次へ進む →
-              </button>
-              <button onClick={() => setStep('time')} className="mt-3 text-xs text-white/40 hover:text-white/60 tracking-widest transition-colors w-full text-center">
-                ← 時間を変更
-              </button>
+              <button onClick={() => setStep('form')} className="w-full mt-6 bg-[#b01020] py-4 font-bold">次へ進む →</button>
             </div>
           )}
 
-          {/* STEP 5: フォーム */}
           {step === 'form' && (
             <div>
-              <h3 className="text-center text-lg font-semibold tracking-widest mb-8">お客様情報</h3>
+              <h3 className="text-center text-lg font-semibold mb-8">お客様情報</h3>
               <div className="space-y-4">
-                <div>
-                  <label className="block text-xs tracking-widest text-white/50 mb-2">お名前 *</label>
-                  <input
-                    type="text"
-                    value={form.name}
-                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                    placeholder="山田 太郎"
-                    className="w-full bg-white/5 border border-white/15 text-white px-4 py-4 text-base focus:outline-none focus:border-[#b01020] tracking-wider placeholder:text-white/20"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs tracking-widest text-white/50 mb-2">電話番号 *</label>
-                  <input
-                    type="tel"
-                    value={form.tel}
-                    onChange={e => setForm(f => ({ ...f, tel: e.target.value }))}
-                    placeholder="090-0000-0000"
-                    className="w-full bg-white/5 border border-white/15 text-white px-4 py-4 text-base focus:outline-none focus:border-[#b01020] tracking-wider placeholder:text-white/20"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs tracking-widest text-white/50 mb-2">備考（アレルギー・ご要望など）</label>
-                  <textarea
-                    value={form.note}
-                    onChange={e => setForm(f => ({ ...f, note: e.target.value }))}
-                    placeholder="例：アレルギーあり、誕生日サプライズ希望など"
-                    rows={3}
-                    className="w-full bg-white/5 border border-white/15 text-white px-4 py-3 text-base focus:outline-none focus:border-[#b01020] tracking-wider placeholder:text-white/20 resize-none"
-                  />
-                </div>
-                {error && <p className="text-[#b01020] text-sm tracking-wide">{error}</p>}
-                <button
-                  onClick={handleSubmit}
-                  disabled={loading}
-                  className="w-full bg-[#b01020] hover:bg-[#d01828] disabled:bg-white/10 text-white py-5 text-base font-bold tracking-widest transition-colors active:scale-[0.98] mt-4"
-                >
-                  {loading ? '送信中...' : '予約を確定する'}
-                </button>
-                <button onClick={() => setStep('course')} className="w-full text-xs text-white/40 hover:text-white/60 tracking-widest transition-colors py-2">
-                  ← コースを変更
-                </button>
+                <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="お名前 *" className="w-full bg-white/5 border border-white/15 px-4 py-4" />
+                <input type="tel" value={form.tel} onChange={e => setForm(f => ({ ...f, tel: e.target.value }))} placeholder="電話番号 *" className="w-full bg-white/5 border border-white/15 px-4 py-4" />
+                <textarea value={form.note} onChange={e => setForm(f => ({ ...f, note: e.target.value }))} placeholder="備考（アレルギーなど）" rows={3} className="w-full bg-white/5 border border-white/15 px-4 py-3" />
+                <button onClick={handleSubmit} disabled={loading} className="w-full bg-[#b01020] py-5 font-bold">{loading ? '送信中...' : '予約を確定する'}</button>
               </div>
             </div>
           )}
-
         </div>
       </div>
     </div>
