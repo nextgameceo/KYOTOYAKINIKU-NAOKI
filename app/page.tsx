@@ -1,4 +1,5 @@
 import { createClient } from 'microcms-js-sdk';
+import Image from 'next/image'; // Next.jsの画像最適化
 import Link from 'next/link';
 
 // クライアント初期化
@@ -9,53 +10,76 @@ const client = createClient({
 
 export default async function MenuPage() {
   try {
-    // キャッシュを無効化して常に最新データを取得する設定
     const data = await client.get({ 
       endpoint: 'menu', 
       queries: { limit: 100 },
       customRequestInit: {
-        cache: 'no-store', 
+        cache: 'no-store', // 常に最新データを取得
       },
     });
 
     if (!data || !data.contents || data.contents.length === 0) {
       return (
-        <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center font-serif">
-          <p className="tracking-widest opacity-40 mb-8">ー 御品書の準備中です ー</p>
-          <Link href="/" className="text-xs text-yellow-600 underline">TOPへ戻る</Link>
+        <div className="min-h-screen bg-black text-white flex items-center justify-center font-serif">
+          <p className="tracking-widest opacity-40 italic">ー 御品書の準備中です ー</p>
         </div>
       );
     }
 
     return (
-      <main className="min-h-screen bg-black text-white font-serif py-24 px-6">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-24">
-            <h1 className="text-4xl md:text-5xl tracking-[0.4em] mb-4">御品書</h1>
-            <p className="text-yellow-600 text-[10px] tracking-[0.5em] uppercase font-sans font-bold">Menu</p>
-            <div className="w-12 h-px bg-yellow-600/30 mx-auto mt-8" />
+      <main className="min-h-screen bg-black text-[#e0d8c3] font-serif py-24 px-6 selection:bg-[#d4af37] selection:text-black">
+        <div className="max-w-6xl mx-auto">
+          
+          {/* ヘッダー */}
+          <div className="text-center mb-24 relative">
+             {/* 共有ロゴ（絶対パス） */}
+            <div className="mb-6 h-40 w-20 relative mx-auto opacity-30">
+               <Image src="/logo.png" alt="" fill className="object-contain grayscale invert" />
+            </div>
+            <h1 className="text-4xl md:text-5xl tracking-[0.4em] mb-4 text-white">御品書</h1>
+            <p className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">Menu</p>
           </div>
 
-          <div className="space-y-16">
+          {/* メニューリスト：2列グリッドで画像を引き立てる */}
+          <div className="grid md:grid-cols-2 gap-x-16 gap-y-20">
             {data.contents.map((item: any) => (
-              <div key={item.id} className="group border-b border-white/5 pb-8 hover:border-yellow-600/30 transition-colors">
-                <div className="flex justify-between items-baseline mb-4">
-                  <h2 className="text-xl md:text-2xl tracking-[0.2em] font-medium">{item.title}</h2>
-                  <span className="text-lg font-sans text-zinc-400 group-hover:text-yellow-600 transition-colors">
-                    ¥{item.price ? Number(item.price).toLocaleString() : '0'}
-                  </span>
-                </div>
-                {item.description && (
-                  <p className="text-zinc-500 text-sm leading-relaxed tracking-widest font-light">
-                    {item.description}
-                  </p>
+              <div key={item.id} className="group flex flex-col gap-6 border-b border-white/5 pb-10">
+                
+                {/* 料理写真：microCMSの画像URLがある場合のみ表示 */}
+                {item.image && item.image.url && (
+                  <div className="relative w-full aspect-[16/10] overflow-hidden bg-zinc-900 border border-white/5 hover:border-[#d4af37]/30 transition-colors">
+                    <Image 
+                      src={item.image.url} // 画像URLを取得
+                      alt={item.title} 
+                      fill 
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-w-768px) 100vw, 50vw" // 画像サイズ最適化
+                    />
+                  </div>
                 )}
+
+                {/* テキスト情報 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-baseline gap-4">
+                    <h2 className="text-xl md:text-2xl tracking-[0.2em] font-medium text-white">{item.title}</h2>
+                    <span className="text-lg font-sans text-zinc-400 font-medium group-hover:text-[#d4af37] transition-colors">
+                      ¥{item.price ? Number(item.price).toLocaleString() : '0'}
+                    </span>
+                  </div>
+                  
+                  {item.description && (
+                    <p className="text-zinc-500 text-sm leading-relaxed tracking-widest font-light font-sans">
+                      {item.description}
+                    </p>
+                  )}
+                </div>
               </div>
             ))}
           </div>
 
+          {/* 戻るボタン */}
           <div className="mt-32 text-center">
-            <Link href="/" className="text-[10px] tracking-[0.5em] text-zinc-600 hover:text-white transition-colors uppercase">
+            <Link href="/" className="text-[10px] tracking-[0.5em] text-zinc-600 hover:text-white transition-colors uppercase font-sans font-bold">
               ← Back to Top
             </Link>
           </div>
@@ -63,14 +87,9 @@ export default async function MenuPage() {
       </main>
     );
   } catch (error) {
-    // エラーが出た場合、原因を画面に表示（本番反映後は消してOK）
     return (
-      <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-10 text-center">
-        <p className="text-red-500 mb-4">データ取得エラーが発生しました</p>
-        <code className="text-[10px] bg-zinc-900 p-4 rounded text-zinc-400">
-          DOMAIN: {process.env.MICROCMS_SERVICE_DOMAIN ? 'OK' : 'MISSING'}<br/>
-          API_KEY: {process.env.MICROCMS_API_KEY ? 'OK' : 'MISSING'}
-        </code>
+      <div className="min-h-screen bg-black text-white flex items-center justify-center font-serif text-center p-10">
+        <p className="tracking-widest opacity-40">情報の取得に失敗しました。microCMSの連携設定を確認してください。</p>
       </div>
     );
   }
