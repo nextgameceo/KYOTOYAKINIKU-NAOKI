@@ -1,96 +1,156 @@
-import { createClient } from 'microcms-js-sdk';
-import Image from 'next/image'; // Next.jsの画像最適化
+import Image from 'next/image';
 import Link from 'next/link';
 
-// クライアント初期化
-const client = createClient({
-  serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN || '', 
-  apiKey: process.env.MICROCMS_API_KEY || '',
-});
-
-export default async function MenuPage() {
-  try {
-    const data = await client.get({ 
-      endpoint: 'menu', 
-      queries: { limit: 100 },
-      customRequestInit: {
-        cache: 'no-store', // 常に最新データを取得
-      },
-    });
-
-    if (!data || !data.contents || data.contents.length === 0) {
-      return (
-        <div className="min-h-screen bg-black text-white flex items-center justify-center font-serif">
-          <p className="tracking-widest opacity-40 italic">ー 御品書の準備中です ー</p>
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-black text-white font-serif selection:bg-[#d4af37] selection:text-black">
+      
+      {/* HERO: ロゴを主役にした静寂な導入 */}
+      <section className="relative h-screen flex flex-col items-center justify-center bg-zinc-50 px-4 text-black border-b border-zinc-200">
+        <div className="mb-12 relative w-64 h-32 md:w-80 md:h-48">
+          <Image 
+            src="/logo.png" 
+            alt="京都焼肉なおき" 
+            fill
+            priority
+            className="object-contain"
+          />
         </div>
-      );
-    }
+        <div className="text-center">
+          <h1 className="text-xl md:text-3xl tracking-[0.3em] leading-loose font-medium">
+            京都二十年の技。<br />
+            二つのタレで紡ぐ、至高の一皿。
+          </h1>
+        </div>
+        
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+          <span className="text-black/30 text-[9px] tracking-[0.6em] uppercase font-sans font-bold">Scroll</span>
+          <div className="w-px h-16 bg-gradient-to-b from-black/20 to-transparent animate-pulse" />
+        </div>
+      </section>
 
-    return (
-      <main className="min-h-screen bg-black text-[#e0d8c3] font-serif py-24 px-6 selection:bg-[#d4af37] selection:text-black">
-        <div className="max-w-6xl mx-auto">
-          
-          {/* ヘッダー */}
-          <div className="text-center mb-24 relative">
-             {/* 共有ロゴ（絶対パス） */}
-            <div className="mb-6 h-40 w-20 relative mx-auto opacity-30">
-               <Image src="/logo.png" alt="" fill className="object-contain grayscale invert" />
-            </div>
-            <h1 className="text-4xl md:text-5xl tracking-[0.4em] mb-4 text-white">御品書</h1>
-            <p className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">Menu</p>
+      {/* CONCEPT / SAUCE: 二つのタレと薬味の深層 */}
+      <section className="relative py-32 bg-[#0a0a0a] px-6 overflow-hidden border-b border-white/5">
+        <div className="absolute inset-0 opacity-10">
+          <Image src="/sec2_bgi2.jpg" alt="" fill className="object-cover" />
+        </div>
+        
+        <div className="relative z-10 max-w-5xl mx-auto">
+          <div className="text-center mb-24">
+            <span className="inline-block bg-[#b01020] text-white text-[9px] tracking-[0.4em] px-5 py-2 mb-6 font-bold uppercase font-sans">The Dual Sauces</span>
+            <h2 className="text-3xl md:text-5xl tracking-[0.3em] mb-6">二つのタレ、一つの至福</h2>
+            <div className="w-16 h-0.5 bg-[#d4af37] mx-auto" />
           </div>
 
-          {/* メニューリスト：2列グリッドで画像を引き立てる */}
-          <div className="grid md:grid-cols-2 gap-x-16 gap-y-20">
-            {data.contents.map((item: any) => (
-              <div key={item.id} className="group flex flex-col gap-6 border-b border-white/5 pb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+            {/* 左：秘伝のみそダレ */}
+            <div className="space-y-8">
+              <h3 className="text-xl md:text-2xl text-[#d4af37] tracking-[0.2em] border-l-2 border-[#d4af37] pl-4">秘伝 みそダレ</h3>
+              <div className="space-y-6 text-zinc-300 leading-loose">
+                <p>京都の名店「大韶園」から唯一分け与えられた、二十年変わらぬ命の味。</p>
                 
-                {/* 料理写真：microCMSの画像URLがある場合のみ表示 */}
-                {item.image && item.image.url && (
-                  <div className="relative w-full aspect-[16/10] overflow-hidden bg-zinc-900 border border-white/5 hover:border-[#d4af37]/30 transition-colors">
-                    <Image 
-                      src={item.image.url} // 画像URLを取得
-                      alt={item.title} 
-                      fill 
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      sizes="(max-w-768px) 100vw, 50vw" // 画像サイズ最適化
-                    />
-                  </div>
-                )}
-
-                {/* テキスト情報 */}
-                <div className="space-y-4">
-                  <div className="flex justify-between items-baseline gap-4">
-                    <h2 className="text-xl md:text-2xl tracking-[0.2em] font-medium text-white">{item.title}</h2>
-                    <span className="text-lg font-sans text-zinc-400 font-medium group-hover:text-[#d4af37] transition-colors">
-                      ¥{item.price ? Number(item.price).toLocaleString() : '0'}
-                    </span>
-                  </div>
-                  
-                  {item.description && (
-                    <p className="text-zinc-500 text-sm leading-relaxed tracking-widest font-light font-sans">
-                      {item.description}
+                {/* 薬味の解説 */}
+                <div className="space-y-6 bg-white/5 p-8 border border-white/10 relative">
+                  <div>
+                    <strong className="text-white block mb-2 tracking-widest group flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-[#b01020] rotate-45" />
+                      自家製 ヤンニンジャン（薬念醤）
+                    </strong>
+                    <p className="text-sm text-zinc-400 leading-relaxed font-sans">
+                      数種類の唐辛子と厳選した薬味を独自の配合で練り上げ、じっくりと時間をかけて寝かせることで生まれる自家製の辛味調味料。単なる辛さを超えた、熟成された深い「コク」と「旨味」が、みそダレに圧倒的な奥行きを与えます。
                     </p>
-                  )}
+                  </div>
+                  <div className="pt-4 border-t border-white/5">
+                    <strong className="text-white block mb-2 tracking-widest flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-[#b01020] rotate-45" />
+                      鮮烈 プッコチ（青唐辛子）
+                    </strong>
+                    <p className="text-sm text-zinc-400 leading-relaxed font-sans">
+                      突き抜けるような辛みと、鮮烈な香りが特徴。濃厚なみそダレと上質な肉の脂の中に、ハッとするような爽快感をもたらし、次の一口を誘う重要なアクセントとなります。
+                    </p>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* 戻るボタン */}
-          <div className="mt-32 text-center">
-            <Link href="/" className="text-[10px] tracking-[0.5em] text-zinc-600 hover:text-white transition-colors uppercase font-sans font-bold">
-              ← Back to Top
-            </Link>
+            {/* 右：黄金の洗いダレ */}
+            <div className="space-y-8">
+              <h3 className="text-xl md:text-2xl text-[#d4af37] tracking-[0.2em] border-l-2 border-[#d4af37] pl-4">黄金 洗いダレ</h3>
+              <div className="space-y-6 text-zinc-300 leading-loose">
+                <p>京都焼肉の伝統が生んだ、琥珀色に輝く出汁の芸術。</p>
+                <p className="text-sm text-zinc-500 leading-relaxed font-sans">
+                  焼きたての肉をさっとくぐらせることで、余分な脂を「洗い」、出汁の旨味を纏わせる。最後の一口まで飽きさせない、端正で奥深い味わいです。
+                </p>
+                {/* 洗いダレをイメージさせる装飾画像 */}
+                <div className="relative h-64 w-full border border-white/10 grayscale opacity-40 overflow-hidden">
+                   <Image src="/sec2_bgi3.jpg" alt="洗いダレ" fill className="object-cover" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </main>
-    );
-  } catch (error) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center font-serif text-center p-10">
-        <p className="tracking-widest opacity-40">情報の取得に失敗しました。microCMSの連携設定を確認してください。</p>
-      </div>
-    );
-  }
+      </section>
+
+      {/* NAVIGATION: 画像とテキストの融合 */}
+      <section className="bg-black divide-y divide-white/5 border-y border-white/5">
+        {[
+          { href: '/menu', label: '御品書', sub: 'MENU', img: '/sec3_i1.jpg' },
+          { href: '/reserve', label: 'ご予約', sub: 'RESERVATION', img: '/sec7_i.jpg' },
+          { href: '/wage', label: '採用情報', sub: 'RECRUIT', img: '/sec6_i1.jpg' },
+        ].map((link) => (
+          <Link key={link.href} href={link.href} className="relative group block overflow-hidden py-24 px-6">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-1000">
+              <Image src={link.img} alt="" fill className="object-cover scale-110 group-hover:scale-100 transition-transform duration-1000" />
+            </div>
+            <div className="relative z-10 max-w-5xl mx-auto flex justify-between items-center">
+              <div>
+                <h3 className="text-2xl md:text-5xl tracking-[0.3em] font-medium mb-3 transition-colors group-hover:text-white">{link.label}</h3>
+                <p className="text-[#d4af37] text-[10px] md:text-xs tracking-[0.6em] font-sans font-bold">{link.sub}</p>
+              </div>
+              <span className="text-white/10 text-4xl md:text-6xl group-hover:text-[#d4af37] transition-all group-hover:translate-x-6 duration-700">→</span>
+            </div>
+          </Link>
+        ))}
+      </section>
+
+      {/* FOOTER: 名古屋・栄 店舗情報 */}
+      <footer className="py-24 bg-[#050505] border-t border-white/5">
+        <div className="max-w-4xl mx-auto text-center px-6 space-y-16">
+          <div className="relative w-24 h-24 mx-auto opacity-30 grayscale invert">
+            <Image src="/logo.png" alt="なおき ロゴ" fill className="object-contain" />
+          </div>
+          
+          <div className="space-y-4">
+            <p className="text-[#d4af37] text-3xl font-black tracking-[0.5em] mb-2 font-serif uppercase">京都焼肉なおき</p>
+            <p className="text-zinc-700 text-[10px] tracking-[0.3em] uppercase font-sans font-bold">Nagoya Sakae / Pearl Plaza 2F</p>
+          </div>
+
+          <div className="space-y-10 text-sm font-light text-zinc-400 leading-relaxed max-w-md mx-auto">
+            <p className="tracking-widest">
+              愛知県名古屋市中区栄4-6-18<br />
+              パールプラザビル2F
+            </p>
+            
+            <div className="space-y-3">
+              <p className="text-[10px] text-zinc-600 uppercase tracking-[0.4em] font-sans font-bold">Contact</p>
+              <p className="text-3xl md:text-4xl font-bold font-sans tracking-tight text-white hover:text-[#d4af37] transition-colors">
+                <a href="tel:0529906329">052-990-6329</a>
+              </p>
+            </div>
+
+            <p className="text-xs pt-4 opacity-80">
+              地下鉄栄駅 12番出口より徒歩8分<br />
+              営業時間：18:00 〜 翌4:00<br />
+              <span className="opacity-50">（金曜のみ 〜24:00 / 水曜定休）</span>
+            </p>
+          </div>
+
+          <div className="text-[9px] text-zinc-800 tracking-[0.4em] uppercase pt-16 font-sans">
+            © 2026 KYOTO YAKINIKU NAOKI. All Rights Reserved.
+          </div>
+        </div>
+      </footer>
+    </main>
+  );
 }
