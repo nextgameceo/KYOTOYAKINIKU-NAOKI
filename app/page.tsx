@@ -66,10 +66,15 @@ export default async function Home() {
               <p className="text-center text-zinc-600 text-sm tracking-widest py-10 italic">現在、新しいお知らせはございません。</p>
             )}
           </div>
+          <div className="mt-16 text-center">
+            <Link href="/news" className="inline-block border border-white/20 px-12 py-4 text-[10px] tracking-[0.4em] text-zinc-400 hover:text-[#d4af37] hover:border-[#d4af37] transition-all uppercase font-sans">
+              View All News
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* 3. CONCEPT / SAUCE (二つのタレ) */}
+      {/* 3. CONCEPT / SAUCE */}
       <section className="relative py-32 bg-black px-6 overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 opacity-10">
           <Image src="/sec2_bgi2.jpg" alt="" fill className="object-cover" />
@@ -77,7 +82,7 @@ export default async function Home() {
         <div className="relative z-10 max-w-5xl mx-auto">
           <div className="text-center mb-24">
             <span className="inline-block bg-[#b01020] text-white text-[9px] tracking-[0.4em] px-5 py-2 mb-6 font-bold uppercase font-sans">The Dual Sauces</span>
-            <h2 className="text-3xl md:text-5xl tracking-[0.3em] mb-6 font-medium">二つのタレ、一つの至福</h2>
+            <h2 className="text-3xl md:text-5xl tracking-[0.3em] mb-6 font-medium text-white">二つのタレ、一つの至福</h2>
             <div className="w-16 h-0.5 bg-[#d4af37] mx-auto" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
@@ -110,111 +115,88 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ★ 4. SET & COURSE MENU セクション (完全移植・和モダン) */}
+      {/* 4. SET & COURSE MENU (詳細内容移植版) */}
       <section id="menu" className="py-32 bg-[#050505] px-6 border-b border-white/5 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-28 space-y-4">
-            <span className="text-[#d4af37] text-[10px] tracking-[0.6em] uppercase font-sans font-bold">Recommended Menus</span>
-            <h2 className="text-3xl md:text-4xl tracking-[0.3em] text-white font-medium">セットとコース</h2>
+            <span className="text-[#d4af37] text-[10px] tracking-[0.6em] uppercase font-sans font-bold">Menu Selection</span>
+            <h2 className="text-3xl md:text-4xl tracking-[0.3em] text-white font-medium">お品書きの真髄</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-20 xl:gap-32 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 xl:gap-40">
             
             {/* 左側：セットメニュー */}
-            <div className="relative group flex flex-col items-center">
-              {/* 写真 (setmenu.jpg) - 参考サイトの黒いフレームデザイン */}
-              <div className="relative w-full aspect-square md:aspect-[4/3] overflow-hidden border border-white/5 shadow-2xl bg-zinc-900 grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000 mb-12">
-                <Image src="/setmenu.jpg" alt="京都焼肉なおき セットメニュー盛り合わせ" fill className="object-cover scale-105 group-hover:scale-100 transition-transform duration-[2000ms]" />
-                {/* 装飾 */}
-                <div className="absolute inset-4 border border-white/10 pointer-events-none" />
-                <div className="absolute top-0 right-0 p-4">
-                    <span className="text-[#d4af37] text-[8px] tracking-[0.6em] uppercase font-sans font-bold [writing-mode:vertical-rl] leading-tight opacity-50">SET MENU</span>
+            <div className="space-y-16">
+              <div className="relative group">
+                <div className="relative w-full aspect-[4/3] overflow-hidden border border-white/5 shadow-2xl mb-10 bg-zinc-900">
+                  <Image src="/setmenu.jpg" alt="セットメニュー" fill className="object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                </div>
+                <div className="space-y-2 text-center">
+                  <span className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">Recommended Sets</span>
+                  <h3 className="text-3xl tracking-[0.2em] text-white">盛り合わせセット</h3>
                 </div>
               </div>
 
-              {/* テキストエリア（縦書きをイメージした配置） */}
-              <div className="w-full text-center space-y-12 max-w-lg">
-                <div className="space-y-10 relative">
-                  <span className="absolute -top-10 left-1/2 -translate-x-1/2 text-white/5 text-8xl font-sans font-black tracking-tighter opacity-30">01</span>
-                  <div className="space-y-2">
-                    <span className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">京都二十年の技を凝縮</span>
-                    <h3 className="text-2xl md:text-3xl tracking-[0.3em] text-white font-medium">至高の盛り合わせ</h3>
+              <div className="space-y-12">
+                {[
+                  { name: "セット A", price: "5,800", desc: "なおきの味を気軽に。カルビ、ロース、ハラミの人気三種に、本日のおすすめ部位を添えて。初めての方に最適な一皿です。" },
+                  { name: "セット B", price: "7,800", desc: "質と量の調和。上カルビや上ロースに加え、希少部位の厚切りを盛り込みました。肉の旨味を存分に堪能したい方へ。" },
+                  { name: "セット C", price: "9,800", desc: "店主・山本直樹の選りすぐり。その日最高の特選部位だけを集めた、まさに「至高」の名に相応しい贅沢なセットです。" }
+                ].map((item, index) => (
+                  <div key={index} className="group border-b border-white/10 pb-8 hover:border-[#d4af37] transition-colors">
+                    <div className="flex justify-between items-end mb-4">
+                      <h4 className="text-xl tracking-widest text-white group-hover:text-[#d4af37] transition-colors">{item.name}</h4>
+                      <p className="text-xl font-sans tracking-tighter text-zinc-300">¥{item.price}<span className="text-[10px] ml-1 text-zinc-600">(税込)</span></p>
+                    </div>
+                    <p className="text-sm leading-relaxed text-zinc-500 font-sans tracking-widest">{item.desc}</p>
                   </div>
-                </div>
-                
-                {/* 文面をパクる */}
-                <div className="text-zinc-400 leading-[2.5] tracking-widest text-base font-sans font-light px-4">
-                  <p>
-                    「京都焼肉なおき」の魅力を、<br />
-                    一口で感じていただける<br />
-                    店主厳選の盛り合わせセット。<br />
-                    アラカルトでは味わえない<br />
-                    希少部位も含めた特別な構成で、<br />
-                    二つのタレとの相性を<br />
-                    心ゆくまでお愉しみいただけます。<br />
-                    まずはこれから。
-                  </p>
-                </div>
-                <div className="pt-10 flex justify-center items-center gap-6 border-t border-white/5">
-                    <span className="text-2xl tracking-tighter text-white font-sans font-medium">¥5,800 <span className="text-xs text-zinc-600 font-light">(税込)〜</span></span>
-                    <Link href="/menu" className="inline-block border border-[#d4af37] px-8 py-3 text-[10px] tracking-[0.5em] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition-all uppercase font-sans rounded-none">
-                      品書へ
-                    </Link>
-                </div>
+                ))}
               </div>
             </div>
 
             {/* 右側：コースメニュー */}
-            <div className="relative group flex flex-col items-center">
-              {/* 写真 (cosuemenu.jpg) - 参考サイトの黒いフレームデザイン */}
-              <div className="relative w-full aspect-square md:aspect-[4/3] overflow-hidden border border-white/5 shadow-2xl bg-zinc-900 grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000 mb-12">
-                <Image src="/cosuemenu.jpg" alt="京都焼肉なおき コースメニューイメージ" fill className="object-cover scale-105 group-hover:scale-100 transition-transform duration-[2000ms]" />
-                 {/* 装飾 */}
-                <div className="absolute inset-4 border border-white/10 pointer-events-none" />
-                <div className="absolute top-0 right-0 p-4">
-                    <span className="text-[#d4af37] text-[8px] tracking-[0.6em] uppercase font-sans font-bold [writing-mode:vertical-rl] leading-tight opacity-50">COURSE MENU</span>
+            <div className="space-y-16">
+              <div className="relative group">
+                <div className="relative w-full aspect-[4/3] overflow-hidden border border-white/5 shadow-2xl mb-10 bg-zinc-900">
+                  <Image src="/cosuemenu.jpg" alt="コースメニュー" fill className="object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                </div>
+                <div className="space-y-2 text-center">
+                  <span className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">Premium Courses</span>
+                  <h3 className="text-3xl tracking-[0.2em] text-white">直樹の物語（コース）</h3>
                 </div>
               </div>
 
-              {/* テキストエリア（縦書きをイメージした配置） */}
-              <div className="w-full text-center space-y-12 max-w-lg">
-                <div className="space-y-10 relative">
-                  <span className="absolute -top-10 left-1/2 -translate-x-1/2 text-white/5 text-8xl font-sans font-black tracking-tighter opacity-30">02</span>
-                  <div className="space-y-2">
-                    <span className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">前菜から〆まで、肉の物語を食す。</span>
-                    <h3 className="text-2xl md:text-3xl tracking-[0.3em] text-white font-medium">なおきの物語。</h3>
+              <div className="space-y-12">
+                {[
+                  { name: "梅 ― UME", price: "8,500", desc: "前菜三種、塩焼二種、秘伝のみそダレ三種、〆の冷麺まで。京都焼肉の流れを端正にまとめた、基本のコースです。" },
+                  { name: "竹 ― TAKE", price: "11,000", desc: "梅の内容に加え、炙りユッケや特選タン元、希少部位の洗いダレ等を追加。大切な会食や接待に、最も選ばれる内容です。" },
+                  { name: "松 ― MATSU", price: "15,000", desc: "究極のフルコース。シャトーブリアンや特選部位の数々を、山本直樹が最高の火入れで。肉の物語の完結がここにあります。" }
+                ].map((item, index) => (
+                  <div key={index} className="group border-b border-white/10 pb-8 hover:border-[#b01020] transition-colors">
+                    <div className="flex justify-between items-end mb-4">
+                      <h4 className="text-xl tracking-widest text-white group-hover:text-[#b01020] transition-colors">{item.name}</h4>
+                      <p className="text-xl font-sans tracking-tighter text-zinc-300">¥{item.price}<span className="text-[10px] ml-1 text-zinc-600">(税込)</span></p>
+                    </div>
+                    <p className="text-sm leading-relaxed text-zinc-500 font-sans tracking-widest">{item.desc}</p>
                   </div>
-                </div>
-                
-                {/* 文面をパクる */}
-                <div className="text-zinc-400 leading-[2.5] tracking-widest text-base font-sans font-light px-4">
-                  <p>
-                    洗いダレで愉しむ<br />
-                    端正な京都焼肉から、<br />
-                    秘伝のみそダレで〆る<br />
-                    濃厚なコク。<br />
-                    前菜から〆まで、店主・山本直樹が<br />
-                    紡ぐ「肉の物語」を、<br />
-                    一連の流れとしてご堪能いただける<br />
-                    完全予約制のフルコースです。<br />
-                    特別な日の一皿に。
-                  </p>
-                </div>
-                <div className="pt-10 flex justify-center items-center gap-6 border-t border-white/5">
-                    <span className="text-2xl tracking-tighter text-white font-sans font-medium">¥8,500 <span className="text-xs text-zinc-600 font-light">(税込)〜</span></span>
-                    <Link href="/reserve" className="inline-block border border-[#b01020] bg-[#b01020] px-8 py-3 text-[10px] tracking-[0.5em] text-white hover:bg-white hover:text-black transition-all uppercase font-sans rounded-none">
-                      予約へ
-                    </Link>
-                </div>
+                ))}
+              </div>
+              
+              <div className="pt-8 text-center">
+                <p className="text-[10px] text-zinc-600 tracking-[0.2em] mb-6 italic">※コース料理は前日までの完全予約制となります。</p>
+                <Link href="/reserve" className="inline-block border border-[#b01020] bg-[#b01020] px-12 py-4 text-[10px] tracking-[0.5em] text-white hover:bg-white hover:text-black transition-all uppercase font-sans">
+                  ご予約はこちら
+                </Link>
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* 6. THE MASTER (山本直樹様 プロフィール) */}
+      {/* 5. THE MASTER (山本直樹様 プロフィール) */}
       <section className="py-32 bg-black px-6 border-b border-white/5 overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
@@ -238,7 +220,7 @@ export default async function Home() {
                 </h2>
               </div>
               
-              <div className="space-y-8 text-zinc-400 leading-[2.2] tracking-widest text-base md:text-lg font-sans font-light">
+              <div className="space-y-8 text-zinc-400 leading-[2.2] tracking-widest text-base md:text-lg font-sans font-light text-left">
                 <p>
                   京都の名店で肉の切り出しからタレの調合まで、<br />
                   二十年余。ひたすらに肉と向き合い、研鑽を積み続けてきた職人。
@@ -262,7 +244,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 7. NAVIGATION */}
+      {/* 6. NAVIGATION */}
       <section className="bg-black divide-y divide-white/5 border-b border-white/5">
         {[
           { href: '/menu', label: '御品書', sub: 'MENU', img: '/sec3_i1.jpg' },
@@ -274,7 +256,7 @@ export default async function Home() {
             <div className="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-1000">
               <Image src={link.img} alt="" fill className="object-cover scale-110 group-hover:scale-100 transition-transform duration-1000" />
             </div>
-            <div className="relative z-10 max-w-5xl mx-auto flex justify-between items-center">
+            <div className="relative z-10 max-w-5xl mx-auto flex justify-between items-center text-white">
               <div>
                 <h3 className="text-2xl md:text-5xl tracking-[0.3em] font-medium mb-3 group-hover:text-white transition-colors">{link.label}</h3>
                 <p className="text-[#d4af37] text-[10px] md:text-xs tracking-[0.6em] font-sans font-bold">{link.sub}</p>
@@ -285,7 +267,7 @@ export default async function Home() {
         ))}
       </section>
 
-      {/* 8. FOOTER */}
+      {/* 7. FOOTER */}
       <footer className="py-24 bg-[#050505]">
         <div className="max-w-4xl mx-auto text-center px-6 space-y-16">
           <div className="relative w-24 h-24 mx-auto opacity-30 grayscale invert">
