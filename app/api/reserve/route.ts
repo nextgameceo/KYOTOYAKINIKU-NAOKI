@@ -14,13 +14,23 @@ export async function POST(req: NextRequest) {
       throw new Error("環境変数が不足しています。");
     }
 
-    // --- 日時ズレ解消の魔法：日本時間 (+09:00) を明示 ---
-    const formattedDate = date.replace(/\//g, '-'); // YYYY-MM-DD
-    const isoStart = `${formattedDate}T${time}:00+09:00`; // 日本時間であることを明示
-    const startDateTime = new Date(isoStart);
-    // 終了時間は2時間後
-    const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000);
+    // --- 日付のクリーニングと日時文字列の作成 ---
+    // スラッシュをハイフンに変換し、確実に YYYY-MM-DD 形式にします
+    const cleanDate = date.replace(/\//g, '-'); 
+    
+    // 日本時間 (+09:00) を明示した文字列を直接作成
+    // 例: "2026-03-24T18:00:00+09:00"
+    const startIsoString = `${cleanDate}T${time}:00+09:00`;
+    
+    // 終了時刻（2時間後）の計算
+    const startDateObj = new Date(startIsoString);
+    if (isNaN(startDateObj.getTime())) {
+      throw new Error(`日付の形式が正しくありません: ${startIsoString}`);
+    }
+    const endDateObj = new Date(startDateObj.getTime() + 2 * 60 * 60 * 1000);
+    const endIsoString = endDateObj.toISOString().replace(/\.\d+Z$/, '+09:00');
 
+    // --- Google Calendar API 認証 ---
     const auth = new google.auth.JWT(
       clientEmail,
       undefined,
@@ -30,23 +40,24 @@ export async function POST(req: NextRequest) {
 
     const calendar = google.calendar({ version: 'v3', auth });
 
+    // --- カレンダーへ挿入 ---
     await calendar.events.insert({
       calendarId: calendarId,
       requestBody: {
         summary: `【予約】${name}様 (${party}名)`,
         description: `コース: ${course || '未定'}\n電話: ${tel}\n備考: ${message || 'なし'}`,
         start: { 
-          // toISOString()を使わず、明示した文字列を直接送るのが最も安全です
-          dateTime: isoStart, 
+          dateTime: startIsoString, // 作成した日本時間の文字列を直接送る
           timeZone: 'Asia/Tokyo' 
         },
         end: { 
-          dateTime: endDateTime.toISOString().replace(/\.\d+Z$/, '+09:00'),
+          dateTime: endIsoString, 
           timeZone: 'Asia/Tokyo' 
         },
       },
     });
 
+    // --- LINE通知 ---
     if (lineToken) {
       try {
         await fetch('https://api.line.me/v2/bot/message/broadcast', {
@@ -58,7 +69,7 @@ export async function POST(req: NextRequest) {
           body: JSON.stringify({
             messages: [{ 
               type: 'text', 
-              text: `【新規予約】\nお名前：${name}様\n日時：${formattedDate} ${time}~\n人数：${party}名\nコース：${course}\n\nカレンダー登録が完了しました。` 
+              text: `【新規予約】\nお名前：${name}様\n日時：${cleanDate} ${time}~\n人数：${party}名\nコース：${course}\n\nカレンダー登録が完了しました。` 
             }]
           }),
         });
