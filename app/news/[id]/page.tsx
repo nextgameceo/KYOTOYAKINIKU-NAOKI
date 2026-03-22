@@ -7,11 +7,15 @@ const client = createClient({
   apiKey: process.env.MICROCMS_API_KEY || '',
 });
 
-export default async function NewsDetailPage({ params }: { params: { id: string } }) {
+// Next.js 15 では params は Promise として定義します
+export default async function NewsDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  // params を await してから id を取り出します
+  const { id } = await params;
+
   try {
     const post = await client.get({ 
       endpoint: 'news', 
-      contentId: params.id,
+      contentId: id,
       customRequestInit: { cache: 'no-store' },
     });
 
@@ -19,7 +23,6 @@ export default async function NewsDetailPage({ params }: { params: { id: string 
       <main className="min-h-screen bg-black text-[#e0d8c3] font-serif py-24 px-6 selection:bg-[#d4af37] selection:text-black">
         <article className="max-w-3xl mx-auto">
           
-          {/* 記事ヘッダー */}
           <header className="mb-16 space-y-6">
             <div className="flex items-center gap-4 text-[10px] tracking-[0.4em] font-sans font-bold text-[#d4af37]">
               <Link href="/news" className="hover:text-white transition-colors uppercase">News</Link>
@@ -33,14 +36,12 @@ export default async function NewsDetailPage({ params }: { params: { id: string 
             </h1>
           </header>
 
-          {/* アイキャッチ画像（ある場合） */}
           {post.image && post.image.url && (
             <div className="relative w-full aspect-video mb-16 border border-white/5 grayscale hover:grayscale-0 transition-all duration-1000">
               <Image src={post.image.url} alt="" fill className="object-cover" />
             </div>
           )}
 
-          {/* 本文：リッチエディタのHTMLをそのまま流し込む */}
           <div 
             className="prose prose-invert prose-yellow max-w-none 
                        tracking-widest leading-[2.2] text-zinc-300 font-sans font-light
@@ -48,7 +49,6 @@ export default async function NewsDetailPage({ params }: { params: { id: string 
             dangerouslySetInnerHTML={{ __html: post.content }} 
           />
 
-          {/* フッター（戻るボタン） */}
           <footer className="mt-32 pt-12 border-t border-white/5 text-center">
             <Link href="/news" className="text-[10px] tracking-[0.5em] text-zinc-600 hover:text-[#d4af37] transition-colors uppercase font-sans font-bold">
               一覧へ戻る
