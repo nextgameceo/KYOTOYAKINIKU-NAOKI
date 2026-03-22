@@ -360,7 +360,7 @@ export default async function Home() {
             </div>
             <p className="text-xs pt-4 opacity-80">
               栄駅 12番出口 徒歩8分<br />
-              18:00 〜 翌4:00（金曜 〜24:00 / 水曜定休）
+              18:00 〜 翌4:00（日曜 〜　翌5:00 / 水曜定休）
             </p>
           </div>
           <div className="text-[9px] text-zinc-800 tracking-[0.4em] uppercase pt-16 font-sans">
