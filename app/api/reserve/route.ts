@@ -12,31 +12,29 @@ export async function POST(req: NextRequest) {
   ].join('\n');
 
   const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
-  // 複数人のuserIdをカンマ区切りで環境変数に設定
-  const userIds = (process.env.LINE_USER_IDS || '').split(',').filter(Boolean);
 
-  if (!token || userIds.length === 0) {
-    console.error('LINE設定が不足しています');
+  if (!token) {
+    console.error('LINE_CHANNEL_ACCESS_TOKEN が設定されていません');
     return NextResponse.json({ error: 'LINE not configured' }, { status: 500 });
   }
 
   try {
-    // 全員に個別送信
-    await Promise.all(
-      userIds.map((userId) =>
-        fetch('https://api.line.me/v2/bot/message/push', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            to: userId.trim(),
-            messages: [{ type: 'text', text: message }],
-          }),
-        })
-      )
-    );
+    const res = await fetch('https://api.line.me/v2/bot/message/broadcast', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages: [{ type: 'text', text: message }],
+      }),
+    });
+
+    if (!res.ok) {
+      const body = await res.text();
+      console.error('LINE broadcast error:', body);
+      return NextResponse.json({ error: 'LINE broadcast failed' }, { status: 500 });
+    }
 
     return NextResponse.json({ ok: true });
   } catch (err) {
