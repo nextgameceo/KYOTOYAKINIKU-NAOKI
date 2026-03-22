@@ -14,19 +14,27 @@ export async function POST(req: NextRequest) {
       throw new Error("環境変数が不足しています。");
     }
 
-    // --- 日付のクリーニングと日時文字列の作成 ---
-    // スラッシュをハイフンに変換し、確実に YYYY-MM-DD 形式にします
-    const cleanDate = date.replace(/\//g, '-'); 
+    // --- 深夜時間（24時以降）の補正処理 ---
+    const [hoursStr, minutesStr] = time.split(':');
+    let hours = parseInt(hoursStr, 10);
+    const minutes = parseInt(minutesStr, 10);
     
-    // 日本時間 (+09:00) を明示した文字列を直接作成
-    // 例: "2026-03-24T18:00:00+09:00"
-    const startIsoString = `${cleanDate}T${time}:00+09:00`;
+    // 日付を Date オブジェクトに変換
+    const targetDate = new Date(date.replace(/\//g, '-'));
     
-    // 終了時刻（2時間後）の計算
-    const startDateObj = new Date(startIsoString);
-    if (isNaN(startDateObj.getTime())) {
-      throw new Error(`日付の形式が正しくありません: ${startIsoString}`);
+    // 24時以上の数値（25時, 27時など）が来た場合、翌日の時間として計算
+    if (hours >= 24) {
+      targetDate.setDate(targetDate.getDate() + 1); // 日付を1日進める
+      hours = hours - 24; // 時間を 0-23 の範囲に戻す
     }
+
+    // ISO形式の時刻文字列を作成 (日本時間 +09:00 固定)
+    const formattedHours = String(hours).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const cleanDateStr = targetDate.toISOString().split('T')[0];
+    
+    const startIsoString = `${cleanDateStr}T${formattedHours}:${formattedMinutes}:00+09:00`;
+    const startDateObj = new Date(startIsoString);
     const endDateObj = new Date(startDateObj.getTime() + 2 * 60 * 60 * 1000);
     const endIsoString = endDateObj.toISOString().replace(/\.\d+Z$/, '+09:00');
 
@@ -46,14 +54,8 @@ export async function POST(req: NextRequest) {
       requestBody: {
         summary: `【予約】${name}様 (${party}名)`,
         description: `コース: ${course || '未定'}\n電話: ${tel}\n備考: ${message || 'なし'}`,
-        start: { 
-          dateTime: startIsoString, // 作成した日本時間の文字列を直接送る
-          timeZone: 'Asia/Tokyo' 
-        },
-        end: { 
-          dateTime: endIsoString, 
-          timeZone: 'Asia/Tokyo' 
-        },
+        start: { dateTime: startIsoString, timeZone: 'Asia/Tokyo' },
+        end: { dateTime: endIsoString, timeZone: 'Asia/Tokyo' },
       },
     });
 
@@ -69,7 +71,7 @@ export async function POST(req: NextRequest) {
           body: JSON.stringify({
             messages: [{ 
               type: 'text', 
-              text: `【新規予約】\nお名前：${name}様\n日時：${cleanDate} ${time}~\n人数：${party}名\nコース：${course}\n\nカレンダー登録が完了しました。` 
+              text: `【新規予約】\nお名前：${name}様\n日時：${date} ${time}~\n人数：${party}名\nコース：${course}\n\nカレンダー登録が完了しました。` 
             }]
           }),
         });
