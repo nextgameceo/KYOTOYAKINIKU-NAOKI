@@ -11,7 +11,7 @@ export default function AccessPage() {
           <div className="mb-6 h-32 w-16 relative mx-auto opacity-30 grayscale invert">
              <Image src="/logo.png" alt="" fill className="object-contain" priority />
           </div>
-          <h1 className="text-4xl md:text-5xl tracking-[0.4em] mb-4 text-white">交通案内</h1>
+          <h1 className="text-4xl md:text-5xl tracking-[0.4em] mb-4 text-white uppercase">交通案内</h1>
           <p className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">Access</p>
         </div>
 
@@ -31,7 +31,7 @@ export default function AccessPage() {
                   <dd className="text-zinc-300">
                     愛知県名古屋市中区栄4-6-18<br />
                     パールプラザビル 2F
-                  </p>
+                  </dd>
                 </div>
 
                 <div>
@@ -39,16 +39,16 @@ export default function AccessPage() {
                   <dd className="text-zinc-300">
                     地下鉄東山線・名城線「栄駅」12番出口より徒歩8分<br />
                     「栄四丁目」交差点よりすぐ
-                  </p>
+                  </dd>
                 </div>
 
                 <div>
                   <dt className="text-[#d4af37] text-xs tracking-[0.3em] font-bold mb-3 uppercase font-serif">Hours</dt>
                   <dd className="text-zinc-300">
                     18:00 〜 翌4:00<br />
-                    <span className="text-zinc-500 text-xs">※日曜日：18:00 〜 29:00</span><br />
-                    <span className="text-zinc-500 text-xs">※定休日：水曜日</span>
-                  </p>
+                    <span className="text-zinc-500 text-xs block mt-1">※日曜日：18:00 〜 29:00</span>
+                    <span className="text-zinc-500 text-xs block">※定休日：水曜日</span>
+                  </dd>
                 </div>
               </dl>
 
@@ -63,36 +63,30 @@ export default function AccessPage() {
             </section>
           </div>
 
-          {/* 右側：Googleマップ（ご提示いただいたiframeコードを統合・和風フレーム付き） */}
+          {/* 右側：Googleマップ */}
           <div className="order-1 lg:order-2 group">
             <div className="relative p-2.5 bg-[#111] border-2 border-[#d4af37]/30 shadow-2xl transition-all group-hover:border-[#d4af37]/60">
               
               {/* 四隅の飾り */}
-              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[#d4af37] -translate-x-1 -translate-y-1" />
-              <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-[#d4af37] translate-x-1 -translate-y-1" />
-              <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[#d4af37] -translate-x-1 translate-y-1" />
-              <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[#d4af37] translate-x-1 translate-y-1" />
+              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[#d4af37] -translate-x-1 -translate-y-1 pointer-events-none" />
+              <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-[#d4af37] translate-x-1 -translate-y-1 pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[#d4af37] -translate-x-1 translate-y-1 pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[#d4af37] translate-x-1 translate-y-1 pointer-events-none" />
 
-              {/* マップ本体 (aspect比を保つレスポンシブなコンテナ) */}
+              {/* マップ本体 */}
               <div className="relative w-full aspect-square md:aspect-video lg:aspect-square overflow-hidden bg-zinc-900 grayscale hover:grayscale-0 transition-all duration-1000 shadow-inner">
-                {/* ご提示いただいたiframeコードをそのまま挿入。
-                  width, height はCSSで制御するため 100% に設定しています。
-                */}
                 <iframe 
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3261.5162929804014!2d136.91166137643071!3d35.16868235795843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6003710feec50c8b%3A0xe2b869f4a598cbdd!2z5Lqs6YO954S86IKJ44Gq44GK44GN!5e0!3m2!1sja!2sjp!4v1774143282171!5m2!1sja!2sjp" 
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 
-                  allowFullScreen="" 
+                  allowFullScreen={true} 
                   loading="lazy" 
                   referrerPolicy="no-referrer-when-downgrade"
                   title="京都焼肉なおき 正確な地図"
                 />
               </div>
             </div>
-            <p className="text-[10px] text-center text-zinc-600 mt-6 tracking-[0.4em] font-sans">
-              ※パールプラザビル2F
-            </p>
           </div>
 
         </div>
