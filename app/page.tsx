@@ -25,7 +25,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-black text-white font-serif selection:bg-[#d4af37] selection:text-black">
       
-      {/* 1. HERO */}
+      {/* 1. HERO (既存) */}
       <section className="relative h-screen flex flex-col items-center justify-center bg-zinc-50 px-4 text-black border-b border-zinc-200">
         <div className="mb-12 relative w-64 h-32 md:w-80 md:h-48">
           <Image src="/logo.png" alt="京都焼肉なおき" fill priority className="object-contain" />
@@ -42,12 +42,12 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 2. NEWS */}
+      {/* 2. NEWS (既存) */}
       <section id="news" className="py-24 bg-[#080808] px-6 border-b border-white/5">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">News</span>
-            <h2 className="text-2xl md:text-3xl tracking-[0.3em] mt-3 font-medium">最新情報</h2>
+            <h2 className="text-2xl md:text-3xl tracking-[0.3em] mt-3 font-medium text-white">最新情報</h2>
           </div>
           <div className="divide-y divide-white/10">
             {news.length > 0 ? (
@@ -66,15 +66,10 @@ export default async function Home() {
               <p className="text-center text-zinc-600 text-sm tracking-widest py-10 italic">現在、新しいお知らせはございません。</p>
             )}
           </div>
-          <div className="mt-16 text-center">
-            <Link href="/news" className="inline-block border border-white/20 px-12 py-4 text-[10px] tracking-[0.4em] text-zinc-400 hover:text-[#d4af37] hover:border-[#d4af37] transition-all uppercase font-sans">
-              View All News
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* 3. CONCEPT / SAUCE */}
+      {/* 3. CONCEPT / SAUCE (既存) */}
       <section className="relative py-32 bg-black px-6 overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 opacity-10">
           <Image src="/sec2_bgi2.jpg" alt="" fill className="object-cover" />
@@ -115,8 +110,83 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 4. SET & COURSE MENU (詳細内容移植版) */}
-      <section id="menu" className="py-32 bg-[#050505] px-6 border-b border-white/5 overflow-hidden">
+      {/* ★ 4. SPACE セクション (新規追加・内観画像統合) */}
+      <section className="py-32 bg-[#050505] px-6 border-b border-white/5 overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          
+          <div className="text-center mb-28 space-y-4">
+            <span className="text-[#d4af37] text-[10px] tracking-[0.6em] uppercase font-sans font-bold">The Refuge</span>
+            <h2 className="text-3xl md:text-4xl tracking-[0.3em] text-white font-medium">栄の隠れ家</h2>
+            <p className="text-zinc-500 font-sans tracking-widest max-w-xl mx-auto pt-4 leading-relaxed text-sm">
+              パールプラザビル2F。扉を開ければ、そこは都会の喧騒を離れた、落ち着きのある洗練された空間。
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-stretch">
+            
+            {/* カウンター席 (interior.jpg.jpg) */}
+            <div className="relative group flex flex-col items-center text-center">
+              <div className="relative w-full aspect-square md:aspect-[3/4] overflow-hidden border border-white/5 shadow-2xl mb-10 bg-zinc-900 grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000">
+                <Image src="/interior.jpg.jpg" alt="カウンター席" fill className="object-cover scale-105 group-hover:scale-100 transition-transform duration-[2000ms]" />
+                <div className="absolute inset-4 border border-white/10 pointer-events-none" />
+                <div className="absolute top-0 left-0 p-4">
+                  <span className="text-[#d4af37] text-[8px] tracking-[0.6em] uppercase font-sans font-bold [writing-mode:vertical-rl] opacity-50">COUNTER</span>
+                </div>
+              </div>
+              <div className="space-y-4 max-w-xs px-4">
+                <h3 className="text-xl tracking-widest text-white group-hover:text-[#d4af37] transition-colors">カウンター席</h3>
+                <p className="text-sm leading-relaxed text-zinc-400 font-sans tracking-widest">
+                  店主・山本直樹の手捌きを目の前で愉しめる、特等席。お一人様やデートに。
+                </p>
+              </div>
+            </div>
+
+            {/* テーブル席 (interior2.jpg.jpg) */}
+            <div className="relative group flex flex-col items-center text-center">
+              <div className="relative w-full aspect-square md:aspect-[3/4] overflow-hidden border border-white/5 shadow-2xl mb-10 bg-zinc-900 grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000">
+                <Image src="/interior2.jpg.jpg" alt="テーブル席" fill className="object-cover scale-105 group-hover:scale-100 transition-transform duration-[2000ms]" />
+                <div className="absolute inset-4 border border-white/10 pointer-events-none" />
+                 <div className="absolute top-0 left-0 p-4">
+                   <span className="text-[#d4af37] text-[8px] tracking-[0.6em] uppercase font-sans font-bold [writing-mode:vertical-rl] opacity-50">TABLE</span>
+                </div>
+              </div>
+              <div className="space-y-4 max-w-xs px-4">
+                <h3 className="text-xl tracking-widest text-white group-hover:text-[#d4af37] transition-colors">落ち着いたテーブル席</h3>
+                <p className="text-sm leading-relaxed text-zinc-400 font-sans tracking-widest">
+                  落ち着いた照明が、心解ける時間を演出。接待や記念日、ご家族での会食に。
+                </p>
+              </div>
+            </div>
+
+            {/* 団体席 (interior3.jpg.jpg) */}
+            <div className="relative group flex flex-col items-center text-center">
+              <div className="relative w-full aspect-square md:aspect-[3/4] overflow-hidden border border-white/5 shadow-2xl mb-10 bg-zinc-900 grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000">
+                <Image src="/interior3.jpg.jpg" alt="団体席" fill className="object-cover scale-105 group-hover:scale-100 transition-transform duration-[2000ms]" />
+                 <div className="absolute inset-4 border border-white/10 pointer-events-none" />
+                 <div className="absolute top-0 left-0 p-4">
+                   <span className="text-[#d4af37] text-[8px] tracking-[0.6em] uppercase font-sans font-bold [writing-mode:vertical-rl] opacity-50">GROUP</span>
+                </div>
+              </div>
+              <div className="space-y-4 max-w-xs px-4">
+                <h3 className="text-xl tracking-widest text-white group-hover:text-[#d4af37] transition-colors">ご宴会・団体席</h3>
+                <p className="text-sm leading-relaxed text-zinc-400 font-sans tracking-widest">
+                  大人数でのご宴会にも対応可能な広々としたお席。貸切のご相談も承ります。
+                </p>
+              </div>
+            </div>
+
+          </div>
+          
+          <div className="mt-24 text-center">
+             <Link href="/access" className="inline-block border border-white/20 px-12 py-4 text-[10px] tracking-[0.4em] text-zinc-400 hover:text-[#d4af37] hover:border-[#d4af37] transition-all uppercase font-sans rounded-none">
+              View Access Map
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. SET & COURSE MENU (既存) */}
+      <section id="menu" className="py-32 bg-black px-6 border-b border-white/5 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           
           <div className="text-center mb-28 space-y-4">
@@ -187,7 +257,7 @@ export default async function Home() {
               
               <div className="pt-8 text-center">
                 <p className="text-[10px] text-zinc-600 tracking-[0.2em] mb-6 italic">※コース料理は前日までの完全予約制となります。</p>
-                <Link href="/reserve" className="inline-block border border-[#b01020] bg-[#b01020] px-12 py-4 text-[10px] tracking-[0.5em] text-white hover:bg-white hover:text-black transition-all uppercase font-sans">
+                <Link href="/reserve" className="inline-block border border-[#b01020] bg-[#b01020] px-12 py-4 text-[10px] tracking-[0.5em] text-white hover:bg-white hover:text-black transition-all uppercase font-sans rounded-none">
                   ご予約はこちら
                 </Link>
               </div>
@@ -196,8 +266,8 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 5. THE MASTER (山本直樹様 プロフィール) */}
-      <section className="py-32 bg-black px-6 border-b border-white/5 overflow-hidden">
+      {/* 6. THE MASTER (既存) */}
+      <section className="py-32 bg-[#050505] px-6 border-b border-white/5 overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
             <div className="md:col-span-5 relative group">
@@ -244,7 +314,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 6. NAVIGATION */}
+      {/* 7. NAVIGATION (既存) */}
       <section className="bg-black divide-y divide-white/5 border-b border-white/5">
         {[
           { href: '/menu', label: '御品書', sub: 'MENU', img: '/sec3_i1.jpg' },
@@ -267,7 +337,7 @@ export default async function Home() {
         ))}
       </section>
 
-      {/* 7. FOOTER */}
+      {/* 8. FOOTER (既存) */}
       <footer className="py-24 bg-[#050505]">
         <div className="max-w-4xl mx-auto text-center px-6 space-y-16">
           <div className="relative w-24 h-24 mx-auto opacity-30 grayscale invert">
