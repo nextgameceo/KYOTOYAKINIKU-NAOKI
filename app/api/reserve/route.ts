@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
+    console.log("使用中のカレンダーID:", process.env.GOOGLE_CALENDAR_ID);
     const { date, party, time, name, tel, course, message } = await req.json();
 
     // ★ スラッシュをハイフンに変換して、確実に読み取れる形式にする
