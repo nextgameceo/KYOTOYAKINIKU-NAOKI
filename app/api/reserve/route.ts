@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    // フォームから送られてくるデータを取得
     const { date, party, time, name, tel, course, message } = await req.json();
 
     const calendarId = "2fe0af61ebe1e42cb0fbc5761f7fd2c9dca60d8286f0a6b7a2705a0197561ca5@group.calendar.google.com";
@@ -13,43 +12,32 @@ export async function POST(req: NextRequest) {
 
     if (!clientEmail || !privateKey) throw new Error("環境変数が不足しています。");
 
-    // --- 【1】深夜時間と日付の計算 ---
+    // --- 【1】滞在時間と深夜時間の計算 ---
+    const stayMinutes = 30; // ★滞在時間を30分に設定
     const [hoursStr, minutesStr] = time.split(':');
     let hours = parseInt(hoursStr, 10);
     const minutes = parseInt(minutesStr, 10);
     
-    // 基準日を作成（スラッシュをハイフンに変換）
-    const startDate = new Date(date.replace(/\//g, '-'));
+    // 基準日の 00:00 JST を作成
+    const startDate = new Date(`${date.replace(/\//g, '-')}T00:00:00+09:00`);
     
-    // 24時以降（27時など）なら日付を翌日に進めて、時間を 0-23 の範囲に調整
-    if (hours >= 24) {
-      startDate.setDate(startDate.getDate() + 1);
-      hours -= 24;
-    }
+    // setHours は 24以上の数値（27時など）も自動で翌日に繰り越します
+    startDate.setHours(hours);
+    startDate.setMinutes(minutes);
 
-    // --- 【2】日本時間を明示した文字列を直接作成 (時差解消の肝) ---
-    const YYYY = startDate.getFullYear();
-    const MM = String(startDate.getMonth() + 1).padStart(2, '0');
-    const DD = String(startDate.getDate()).padStart(2, '0');
-    const HH = String(hours).padStart(2, '0');
-    const mm = String(minutes).padStart(2, '0');
-    
-    // 開始時間（日本時間 +09:00 を明記）
-    const startIso = `${YYYY}-${MM}-${DD}T${HH}:${mm}:00+09:00`;
+    // 終了時間を「開始の30分後」に設定
+    const endDate = new Date(startDate.getTime() + stayMinutes * 60 * 1000);
 
-    // 終了時間を「2時間後」として計算
-    const endEff = new Date(`${YYYY}-${MM}-${DD}T${HH}:${mm}:00+09:00`);
-    endEff.setHours(endEff.getHours() + 2);
-    
-    const endYYYY = endEff.getFullYear();
-    const endMM = String(endEff.getMonth() + 1).padStart(2, '0');
-    const endDD = String(endEff.getDate()).padStart(2, '0');
-    const endHH = String(endEff.getHours()).padStart(2, '0');
-    const endmm = String(endEff.getMinutes()).padStart(2, '0');
-    
-    const endIso = `${endYYYY}-${endMM}-${endDD}T${endHH}:${endmm}:00+09:00`;
+    // 日本時間形式の文字列を作成（時差ボケ防止）
+    const toJstIso = (d: Date) => {
+      const pad = (n: number) => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:00+09:00`;
+    };
 
-    // --- 【3】Google API 実行 ---
+    const startIso = toJstIso(startDate);
+    const endIso = toJstIso(endDate);
+
+    // --- 【2】Google API 実行 ---
     const auth = new google.auth.JWT(
       clientEmail,
       undefined,
@@ -59,47 +47,45 @@ export async function POST(req: NextRequest) {
 
     const calendar = google.calendar({ version: 'v3', auth });
 
-    // 備考欄を確実に反映させるための文字列作成
+    // 備考欄に全ての情報を集約
     const eventDescription = [
-      `コース: ${course || '未選択'}`,
-      `電話番号: ${tel}`,
-      `備考: ${message || 'なし'}`, // ここで message を確実に代入
+      `【お名前】: ${name}様`,
+      `【人数】: ${party}名`,
+      `【コース】: ${course || '未選択'}`,
+      `【電話番号】: ${tel}`,
+      `【備考】: ${message || 'なし'}`,
       `---`,
-      `システム経由予約`
+      `システム経由の自動予約（滞在${stayMinutes}分）`
     ].join('\n');
 
     await calendar.events.insert({
       calendarId: calendarId,
       requestBody: {
         summary: `【予約】${name}様 (${party}名)`,
-        description: eventDescription, // ここに備考を含めた説明を設定
+        description: eventDescription,
         start: { dateTime: startIso, timeZone: 'Asia/Tokyo' },
         end: { dateTime: endIso, timeZone: 'Asia/Tokyo' },
       },
     });
 
-    // --- 【4】LINE通知（変更なし） ---
+    // --- 【3】LINE通知 ---
     if (lineToken) {
-      try {
-        await fetch('https://api.line.me/v2/bot/message/broadcast', {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${lineToken}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            messages: [{ 
-              type: 'text', 
-              text: `【新規予約】\nお名前：${name}様\n日時：${date} ${time}~\n人数：${party}名\nコース：${course}\n備考：${message || 'なし'}\n\nカレンダー登録が完了しました。` 
-            }]
-          }),
-        });
-      } catch (e) {
-        console.error("LINE通知送信エラー:", e);
-      }
+      await fetch('https://api.line.me/v2/bot/message/broadcast', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${lineToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [{ 
+            type: 'text', 
+            text: `【新規予約】\nお名前：${name}様\n日時：${date} ${time}~\n人数：${party}名\nコース：${course}\n備考：${message || 'なし'}\n\nカレンダーに登録しました。` 
+          }]
+        }),
+      });
     }
 
     return NextResponse.json({ ok: true });
 
   } catch (err: any) {
     console.error('予約処理エラーログ:', err.message);
-    return NextResponse.json({ error: '予約処理に失敗しました', detail: err.message }, { status: 500 });
+    return NextResponse.json({ error: 'エラー', detail: err.message }, { status: 500 });
   }
 }
