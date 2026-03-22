@@ -5,18 +5,17 @@ export async function POST(req: NextRequest) {
   try {
     const { date, party, time, name, tel, course, message } = await req.json();
 
-    // 日時を正しく組み合わせる（Invalid time 対策）
-    const dateTimeStr = `${date}T${time}:00`;
+    // ★ スラッシュをハイフンに変換して、確実に読み取れる形式にする
+    const formattedDate = date.replace(/\//g, '-');
+    const dateTimeStr = `${formattedDate}T${time}:00`;
     const startDateTime = new Date(dateTimeStr);
     
-    // 万が一変換に失敗した場合のチェック
     if (isNaN(startDateTime.getTime())) {
        throw new Error(`日時の形式が正しくありません: ${dateTimeStr}`);
     }
 
-    const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000); // 2時間後
+    const endDateTime = new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000);
 
-    // 認証設定
     const auth = new google.auth.JWT(
       process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
       undefined,
@@ -42,12 +41,11 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // LINE通知（エラーが起きてもカレンダー登録が優先されるよう、最後に配置）
     const lineToken = process.env.LINE_CHANNEL_ACCESS_TOKEN;
     if (lineToken) {
       const lineMessage = [
         '【🔥 新規予約が入りました】',
-        `■ 日時：${date} ${time}〜`,
+        `■ 日時：${formattedDate} ${time}〜`,
         `■ 人数：${party}名`,
         `■ 名前：${name} 様`,
         `■ 電話：${tel}`,
