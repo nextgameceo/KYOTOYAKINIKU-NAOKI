@@ -91,7 +91,7 @@ export default function WagePage() {
             <div className="text-center mb-16">
               <span className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">Today's Benefit</span>
               <h2 className="text-3xl md:text-4xl tracking-[0.3em] mt-3 text-white">本日の賄い</h2>
-              <p className="text-xs text-zinc-600 mt-4 tracking-widest font-sans">※microCMSから自動取得しています</p>
+              <p className="text-xs text-zinc-600 mt-4 tracking-widest font-sans"></p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
@@ -151,7 +151,7 @@ export default function WagePage() {
                 ['募集職種', 'ホールスタッフ（アルバイト）'],
                 ['給与', '時給 1,100円〜（経験により優遇） 深夜割増あり（22時以降 +25%）'],
                 ['勤務時間', '18:00〜翌4:00（シフト制） 週2日〜・1日3時間〜 相談可'],
-                ['待遇', '絶品まかない有り・交通費支給・制服貸与・昇給あり'],
+                ['待遇', '絶品まかない有り・交通費支給・制服貸与'],
                 ['応募資格', '未経験歓迎・学生可・Wワーク可・18歳以上（高校生不可）'],
                 ['勤務地', '名古屋市中区栄4-6-18 パールプラザビル2F'],
                 ['応募方法', '以下のフォーム、またはお電話：052-990-6329'],
