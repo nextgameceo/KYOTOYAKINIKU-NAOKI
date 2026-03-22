@@ -3,6 +3,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
+    // 診断用ログ（本番では消しますが、原因特定のために！）
+console.log("チェック1 (ID):", process.env.GOOGLE_CALENDAR_ID ? "設定あり" : "未設定！");
+console.log("チェック2 (Email):", process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ? "設定あり" : "未設定！");
+console.log("チェック3 (Key):", process.env.GOOGLE_PRIVATE_KEY ? "設定あり" : "未設定！");
     console.log("使用中のカレンダーID:", process.env.GOOGLE_CALENDAR_ID);
     const { date, party, time, name, tel, course, message } = await req.json();
 
