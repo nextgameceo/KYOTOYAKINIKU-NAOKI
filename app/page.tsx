@@ -47,7 +47,7 @@ export default async function Home() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">News</span>
-            <h2 className="text-2xl md:text-3xl tracking-[0.3em] mt-3">最新情報</h2>
+            <h2 className="text-2xl md:text-3xl tracking-[0.3em] mt-3 font-medium">最新情報</h2>
           </div>
           <div className="divide-y divide-white/10">
             {news.length > 0 ? (
@@ -82,28 +82,28 @@ export default async function Home() {
         <div className="relative z-10 max-w-5xl mx-auto">
           <div className="text-center mb-24">
             <span className="inline-block bg-[#b01020] text-white text-[9px] tracking-[0.4em] px-5 py-2 mb-6 font-bold uppercase font-sans">The Dual Sauces</span>
-            <h2 className="text-3xl md:text-5xl tracking-[0.3em] mb-6">二つのタレ、一つの至福</h2>
+            <h2 className="text-3xl md:text-5xl tracking-[0.3em] mb-6 font-medium">二つのタレ、一つの至福</h2>
             <div className="w-16 h-0.5 bg-[#d4af37] mx-auto" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
             <div className="space-y-8">
-              <h3 className="text-xl md:text-2xl text-[#d4af37] tracking-[0.2em] border-l-2 border-[#d4af37] pl-4">秘伝 みそダレ</h3>
+              <h3 className="text-xl md:text-2xl text-[#d4af37] tracking-[0.2em] border-l-2 border-[#d4af37] pl-4 font-medium">秘伝 みそダレ</h3>
               <div className="space-y-6 text-zinc-300 leading-loose">
                 <p>京都の名店「大韶園」直伝、二十年変わらぬ命の味。</p>
                 <div className="space-y-6 bg-white/5 p-8 border border-white/10">
                   <p className="text-sm leading-relaxed">
                     <strong className="text-white block mb-2 tracking-widest">自家製 ヤンニンジャン（薬念醤）</strong>
-                    熟成された深いコクと旨味が、タレに圧倒的な奥行きを与えます。
+                    熟成された深いコクと旨味が、みそダレに圧倒的な奥行きを与えます。
                   </p>
-                  <p className="text-sm leading-relaxed">
+                  <p className="text-sm leading-relaxed border-t border-white/5 pt-4">
                     <strong className="text-white block mb-2 tracking-widest">鮮烈 プッコチ（青唐辛子）</strong>
-                    突き抜ける辛みと香りが、肉の脂の中に爽快なアクセントをもたらします。
+                    突き抜けるような辛みと、鮮烈な香りが、濃厚な脂の中に爽快感をもたらします。
                   </p>
                 </div>
               </div>
             </div>
             <div className="space-y-8">
-              <h3 className="text-xl md:text-2xl text-[#d4af37] tracking-[0.2em] border-l-2 border-[#d4af37] pl-4">黄金 洗いダレ</h3>
+              <h3 className="text-xl md:text-2xl text-[#d4af37] tracking-[0.2em] border-l-2 border-[#d4af37] pl-4 font-medium">黄金 洗いダレ</h3>
               <div className="space-y-6 text-zinc-300 leading-loose">
                 <p>京都焼肉の伝統が生んだ、琥珀色に輝く出汁の芸術。</p>
                 <div className="relative h-64 w-full border border-white/10 grayscale opacity-40 overflow-hidden shadow-2xl">
@@ -115,12 +115,60 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 4. NAVIGATION (Accessを追加) */}
+      {/* 4. THE MASTER (山本直樹様 プロフィール) */}
+      <section className="py-32 bg-[#050505] px-6 border-b border-white/5 overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-16 items-center">
+            <div className="md:col-span-5 relative group">
+              <div className="relative aspect-[3/4] overflow-hidden border border-white/10 grayscale group-hover:grayscale-0 transition-all duration-1000 shadow-2xl">
+                <Image src="/tencho.jpg" alt="京都焼肉なおき 店主 山本直樹" fill className="object-cover scale-105 group-hover:scale-100 transition-transform duration-[2000ms]" />
+                <div className="absolute inset-4 border border-white/10 pointer-events-none" />
+                <div className="absolute top-0 left-0 w-6 h-6 border-t border-l border-[#d4af37]/50" />
+                <div className="absolute bottom-0 right-0 w-6 h-6 border-b border-r border-[#d4af37]/50" />
+              </div>
+              <div className="absolute -bottom-8 -left-8 bg-[#b01020] px-6 py-10 hidden lg:block shadow-2xl">
+                <p className="text-white text-[10px] tracking-[0.6em] font-bold uppercase font-serif [writing-mode:vertical-rl] leading-tight">Master Yamamoto Naoki</p>
+              </div>
+            </div>
+
+            <div className="md:col-span-7 space-y-10 md:pl-16">
+              <div className="space-y-3">
+                <span className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">The Master</span>
+                <h2 className="text-4xl md:text-5xl tracking-[0.3em] text-white leading-tight font-medium">
+                  店主、<br className="md:hidden" /><span className="text-[#d4af37]">山本 直樹。</span>
+                </h2>
+              </div>
+              
+              <div className="space-y-8 text-zinc-400 leading-[2.2] tracking-widest text-base md:text-lg font-sans font-light">
+                <p>
+                  京都の名店で肉の切り出しからタレの調合まで、<br />
+                  二十年余。ひたすらに肉と向き合い、研鑽を積み続けてきた職人。
+                </p>
+                <p>
+                  「山本さん」「大将」と親しみを持って呼んでいただくことも多いですが、<br />
+                  肉の一片、タレの一滴に妥協を許さないその姿勢には、二十年の矜持が宿ります。
+                </p>
+                <p className="text-zinc-200 border-l-2 border-[#b01020] pl-6 py-4 bg-white/5">
+                  栄の喧騒を離れたこの場所だからこそ、<br />
+                  一期一会の肉と秘伝のタレを、最高の状態でお愉しみいただきたい。<br />
+                  扉を開けた先で、山本直樹が至高の一皿をご用意してお待ちしております。
+                </p>
+              </div>
+
+              <div className="pt-6">
+                <p className="text-[#d4af37] font-serif tracking-[0.2em] italic text-xl border-t border-white/5 pt-6 inline-block">「二つのタレが、肉の物語を完結させる。」</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. NAVIGATION */}
       <section className="bg-black divide-y divide-white/5 border-b border-white/5">
         {[
           { href: '/menu', label: '御品書', sub: 'MENU', img: '/sec3_i1.jpg' },
           { href: '/news', label: '最新情報', sub: 'NEWS', img: '/sec2_bgi2.jpg' },
-          { href: '/access', label: '交通案内', sub: 'ACCESS', img: '/sec2_bgi3.jpg' }, // アクセスを追加
+          { href: '/access', label: '交通案内', sub: 'ACCESS', img: '/sec2_bgi3.jpg' },
           { href: '/wage', label: '採用情報', sub: 'RECRUIT', img: '/sec6_i1.jpg' },
         ].map((link) => (
           <Link key={link.href} href={link.href} className="relative group block overflow-hidden py-24 px-6">
@@ -138,7 +186,7 @@ export default async function Home() {
         ))}
       </section>
 
-      {/* 5. FOOTER */}
+      {/* 6. FOOTER */}
       <footer className="py-24 bg-[#050505]">
         <div className="max-w-4xl mx-auto text-center px-6 space-y-16">
           <div className="relative w-24 h-24 mx-auto opacity-30 grayscale invert">
@@ -161,7 +209,7 @@ export default async function Home() {
             </div>
             <p className="text-xs pt-4 opacity-80">
               栄駅 12番出口 徒歩8分<br />
-              18:00 〜 翌4:00（日曜 〜29:00 / 水曜定休）
+              18:00 〜 翌4:00（金曜 〜24:00 / 水曜定休）
             </p>
           </div>
           <div className="text-[9px] text-zinc-800 tracking-[0.4em] uppercase pt-16 font-sans">
