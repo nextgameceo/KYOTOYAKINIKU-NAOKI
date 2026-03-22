@@ -9,7 +9,7 @@ const client = createClient({
 });
 
 export default async function Home() {
-  // 最新のお知らせを3件取得
+  // 最新のお知らせを取得
   let news = [];
   try {
     const res = await client.get({
@@ -42,14 +42,13 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 2. NEWS: 最新のお知らせを挿入 */}
+      {/* 2. NEWS */}
       <section id="news" className="py-24 bg-[#080808] px-6 border-b border-white/5">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">News</span>
             <h2 className="text-2xl md:text-3xl tracking-[0.3em] mt-3">最新情報</h2>
           </div>
-
           <div className="divide-y divide-white/10">
             {news.length > 0 ? (
               news.map((post: any) => (
@@ -57,7 +56,7 @@ export default async function Home() {
                   <span className="text-[10px] tracking-[0.3em] font-sans font-bold text-zinc-600 group-hover:text-[#d4af37]">
                     {new Date(post.publishedAt).toLocaleDateString('ja-JP').replace(/\//g, ' . ')}
                   </span>
-                  <h3 className="text-lg md:text-xl tracking-widest text-zinc-300 group-hover:text-white flex-1">
+                  <h3 className="text-lg md:text-xl tracking-widest text-zinc-300 group-hover:text-white flex-1 line-clamp-1">
                     {post.title}
                   </h3>
                   <span className="text-[#d4af37] opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0 hidden md:block">→</span>
@@ -67,7 +66,6 @@ export default async function Home() {
               <p className="text-center text-zinc-600 text-sm tracking-widest py-10 italic">現在、新しいお知らせはございません。</p>
             )}
           </div>
-
           <div className="mt-16 text-center">
             <Link href="/news" className="inline-block border border-white/20 px-12 py-4 text-[10px] tracking-[0.4em] text-zinc-400 hover:text-[#d4af37] hover:border-[#d4af37] transition-all uppercase font-sans">
               View All News
@@ -76,7 +74,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 3. CONCEPT / SAUCE (ヤンニンジャン・プッコチ解説) */}
+      {/* 3. CONCEPT / SAUCE */}
       <section className="relative py-32 bg-black px-6 overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 opacity-10">
           <Image src="/sec2_bgi2.jpg" alt="" fill className="object-cover" />
@@ -93,11 +91,11 @@ export default async function Home() {
               <div className="space-y-6 text-zinc-300 leading-loose">
                 <p>京都の名店「大韶園」直伝、二十年変わらぬ命の味。</p>
                 <div className="space-y-6 bg-white/5 p-8 border border-white/10">
-                  <p className="text-sm">
+                  <p className="text-sm leading-relaxed">
                     <strong className="text-white block mb-2 tracking-widest">自家製 ヤンニンジャン（薬念醤）</strong>
                     熟成された深いコクと旨味が、タレに圧倒的な奥行きを与えます。
                   </p>
-                  <p className="text-sm">
+                  <p className="text-sm leading-relaxed">
                     <strong className="text-white block mb-2 tracking-widest">鮮烈 プッコチ（青唐辛子）</strong>
                     突き抜ける辛みと香りが、肉の脂の中に爽快なアクセントをもたらします。
                   </p>
@@ -106,9 +104,9 @@ export default async function Home() {
             </div>
             <div className="space-y-8">
               <h3 className="text-xl md:text-2xl text-[#d4af37] tracking-[0.2em] border-l-2 border-[#d4af37] pl-4">黄金 洗いダレ</h3>
-              <div className="space-y-6 text-zinc-300 leading-loose font-sans">
+              <div className="space-y-6 text-zinc-300 leading-loose">
                 <p>京都焼肉の伝統が生んだ、琥珀色に輝く出汁の芸術。</p>
-                <div className="relative h-64 w-full border border-white/10 grayscale opacity-40 overflow-hidden">
+                <div className="relative h-64 w-full border border-white/10 grayscale opacity-40 overflow-hidden shadow-2xl">
                    <Image src="/sec2_bgi3.jpg" alt="洗いダレ" fill className="object-cover" />
                 </div>
               </div>
@@ -117,11 +115,12 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 4. NAVIGATION */}
+      {/* 4. NAVIGATION (Accessを追加) */}
       <section className="bg-black divide-y divide-white/5 border-b border-white/5">
         {[
           { href: '/menu', label: '御品書', sub: 'MENU', img: '/sec3_i1.jpg' },
-          { href: '/news', label: '最新情報', sub: 'NEWS', img: '/sec3_i1.jpg' }, // お知らせ一覧へ
+          { href: '/news', label: '最新情報', sub: 'NEWS', img: '/sec2_bgi2.jpg' },
+          { href: '/access', label: '交通案内', sub: 'ACCESS', img: '/sec2_bgi3.jpg' }, // アクセスを追加
           { href: '/wage', label: '採用情報', sub: 'RECRUIT', img: '/sec6_i1.jpg' },
         ].map((link) => (
           <Link key={link.href} href={link.href} className="relative group block overflow-hidden py-24 px-6">
@@ -140,26 +139,29 @@ export default async function Home() {
       </section>
 
       {/* 5. FOOTER */}
-      <footer className="py-24 bg-[#050505] border-t border-white/5">
+      <footer className="py-24 bg-[#050505]">
         <div className="max-w-4xl mx-auto text-center px-6 space-y-16">
           <div className="relative w-24 h-24 mx-auto opacity-30 grayscale invert">
             <Image src="/logo.png" alt="なおき ロゴ" fill className="object-contain" />
           </div>
           <div className="space-y-4">
             <p className="text-[#d4af37] text-3xl font-black tracking-[0.5em] mb-2 font-serif uppercase">京都焼肉なおき</p>
-            <p className="text-zinc-700 text-[10px] tracking-[0.3em] uppercase font-sans font-bold italic">Nagoya Sakae / Pearl Plaza 2F</p>
+            <p className="text-zinc-700 text-[10px] tracking-[0.3em] uppercase font-sans font-bold">Nagoya Sakae / Pearl Plaza 2F</p>
           </div>
-          <div className="space-y-10 text-sm font-light text-zinc-400 max-w-md mx-auto leading-relaxed">
+          <div className="space-y-10 text-sm font-light text-zinc-400 max-w-md mx-auto leading-relaxed font-sans">
+            <p className="tracking-widest italic text-zinc-500">
+              — 二つのタレが織りなす、至極の京都焼肉 —
+            </p>
             <p className="tracking-widest">愛知県名古屋市中区栄4-6-18<br />パールプラザビル2F</p>
             <div className="space-y-3">
-              <p className="text-[10px] text-zinc-600 uppercase tracking-[0.4em] font-sans font-bold">Contact</p>
-              <p className="text-3xl md:text-4xl font-bold font-sans tracking-tight text-white hover:text-[#d4af37] transition-colors">
+              <p className="text-[10px] text-zinc-600 uppercase tracking-[0.4em] font-bold">Contact</p>
+              <p className="text-3xl md:text-4xl font-bold tracking-tight text-white hover:text-[#d4af37] transition-colors">
                 <a href="tel:0529906329">052-990-6329</a>
               </p>
             </div>
             <p className="text-xs pt-4 opacity-80">
               栄駅 12番出口 徒歩8分<br />
-              18:00 〜 翌4:00（金曜 〜24:00 / 水曜定休）
+              18:00 〜 翌4:00（日曜 〜29:00 / 水曜定休）
             </p>
           </div>
           <div className="text-[9px] text-zinc-800 tracking-[0.4em] uppercase pt-16 font-sans">
