@@ -1,5 +1,3 @@
-// app/api/reserve/route.ts
-
 import { google } from 'googleapis';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -15,7 +13,7 @@ export async function POST(req: NextRequest) {
     const lineToken = process.env.LINE_CHANNEL_ACCESS_TOKEN;
     const lineUserId = process.env.LINE_USER_ID;
 
-    // --- 日付・時刻計算 (カレンダー成功済み) ---
+    // --- 日付・時刻計算 (カレンダー成功ロジックを継承) ---
     const [y, m, d] = date.split('/').map(Number);
     const [hStr, minStr] = time.split(':');
     let h = parseInt(hStr, 10);
@@ -30,7 +28,36 @@ export async function POST(req: NextRequest) {
       return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}T${pad(dt.getHours())}:${pad(dt.getMinutes())}:00+09:00`;
     };
 
-    // 1. Googleカレンダー登録
+    // --- 1. LINE通知を「確実に待機して」実行 ---
+    if (lineToken && lineUserId) {
+      console.log("LINE通知を開始します...");
+      const linePayload = {
+        to: lineUserId.trim(),
+        messages: [{
+          type: 'text',
+          text: `【新規予約通知】\nお名前：${name}様\n日時：${date} ${time}~\n人数：${party}名\nコース：${course}\n備考：${memo}`
+        }]
+      };
+
+      const lineResponse = await fetch('https://api.line.me/v2/bot/message/push', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${lineToken.trim()}`,
+        },
+        body: JSON.stringify(linePayload),
+      });
+
+      if (!lineResponse.ok) {
+        const errorDetail = await lineResponse.text();
+        console.error("LINE送信失敗:", errorDetail);
+      } else {
+        console.log("LINE通知が正常に送信されました。");
+      }
+    }
+
+    // --- 2. Googleカレンダー登録 ---
+    console.log("Googleカレンダー登録を開始します...");
     const auth = new google.auth.JWT(
       clientEmail,
       undefined,
@@ -38,6 +65,7 @@ export async function POST(req: NextRequest) {
       ['https://www.googleapis.com/auth/calendar']
     );
     const calendar = google.calendar({ version: 'v3', auth });
+    
     await calendar.events.insert({
       calendarId,
       requestBody: {
@@ -48,32 +76,10 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // 2. LINE通知 (送信ロジックをより堅牢に修正)
-    if (lineToken && lineUserId) {
-      const lineRes = await fetch('https://api.line.me/v2/bot/message/push', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${lineToken.trim()}`, // 空白除去を追加
-        },
-        body: JSON.stringify({
-          to: lineUserId.trim(), // 空白除去を追加
-          messages: [{
-            type: 'text',
-            text: `【新規予約通知】\nお名前：${name}様\n日時：${date} ${time}~\n人数：${party}名\nコース：${course}\n備考：${memo}`
-          }]
-        }),
-      });
-
-      if (!lineRes.ok) {
-        const errorData = await lineRes.json();
-        console.error("LINE送信失敗詳細:", errorData);
-      }
-    }
-
     return NextResponse.json({ ok: true });
+
   } catch (err: any) {
-    console.error("エラー:", err);
-    return NextResponse.json({ error: '失敗', detail: err.message }, { status: 500 });
+    console.error("システム全体エラー:", err);
+    return NextResponse.json({ error: '処理失敗', detail: err.message }, { status: 500 });
   }
 }
