@@ -1,9 +1,20 @@
 import { google } from 'googleapis';
 import { NextRequest, NextResponse } from 'next/server';
+import { Redis } from '@upstash/redis';
+
+// Redisの初期化 (満席チェック用)
+const redis = Redis.fromEnv();
 
 export async function POST(req: NextRequest) {
   console.log("--- 予約処理開始 ---");
   try {
+    // 1. 満席状態の確認
+    const status = await redis.get('RESERVE_STATUS');
+    if (status === 'CLOSED') {
+      console.log("予約停止中のため処理を中断しました");
+      return NextResponse.json({ error: 'ただいま満席のため予約を停止しております' }, { status: 403 });
+    }
+
     const body = await req.json();
     const { date, party, time, name, tel, course } = body;
     const memo = body.message || body.note || "なし";
@@ -12,7 +23,7 @@ export async function POST(req: NextRequest) {
     const lineUserId = process.env.LINE_USER_ID;
     const calendarId = "2fe0af61ebe1e42cb0fbc5761f7fd2c9dca60d8286f0a6b7a2705a0197561ca5@group.calendar.google.com";
 
-    // --- 日付・時刻計算 (深夜枠対応) ---
+    // --- 日付・時刻計算 (深夜枠対応: 24時以降は翌日の日付へ) ---
     const [y, m, d] = date.split('/').map(Number);
     const [hStr, minStr] = time.split(':');
     let hours = parseInt(hStr, 10);
@@ -23,23 +34,17 @@ export async function POST(req: NextRequest) {
     targetDate.setMinutes(minutes);
     const endDate = new Date(targetDate.getTime() + 30 * 60 * 1000);
 
-    // Googleカレンダー用のISOフォーマット関数
     const toIsoString = (dt: Date) => {
       const pad = (n: number) => String(n).padStart(2, '0');
-      const year = dt.getFullYear();
-      const month = pad(dt.getMonth() + 1);
-      const day = pad(dt.getDate());
-      const hour = pad(dt.getHours());
-      const min = pad(dt.getMinutes());
-      return `${year}-${month}-${day}T${hour}:${min}:00+09:00`;
+      return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}T${pad(dt.getHours())}:${pad(dt.getMinutes())}:00+09:00`;
     };
 
     const startStr = toIsoString(targetDate);
     const endStr = toIsoString(endDate);
 
-    // --- 1. LINE通知 (成功実績ありのコード) ---
+    // --- 2. LINE通知 ---
     if (lineToken && lineUserId) {
-      await fetch('https://api.line.me/v2/bot/message/push', {
+      const lineRes = await fetch('https://api.line.me/v2/bot/message/push', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,11 +58,10 @@ export async function POST(req: NextRequest) {
           }]
         }),
       });
-      console.log("LINE送信完了");
+      if (lineRes.ok) console.log("LINE送信完了");
     }
 
-    // --- 2. Googleカレンダー登録 ---
-    console.log("カレンダー登録準備: " + startStr);
+    // --- 3. Googleカレンダー登録 ---
     const auth = new google.auth.JWT(
       process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
       undefined,
