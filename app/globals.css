@@ -5,44 +5,48 @@
 @layer base {
   :root {
     --washi: #f0ebe0;
-    --ink: #0a0a0a;
+    --washi2: #e8e0d0;
+    --ink: #0a0805;
+    --ink2: #140f08;
     --red: #b01020;
     --gold: #c8a84a;
+    --cream: #faf6ee;
+    --smoke: #8a7d6e;
   }
 
   html {
     scroll-behavior: smooth;
-    /* フォーカス時のアウトラインをアクセシビリティのために保持 */
-    -webkit-text-size-adjust: 100%;
   }
 
   body {
     overflow-x: hidden;
-    /* スクロールバーの幅分のレイアウトシフトを防ぐ */
-    scrollbar-gutter: stable;
+    -webkit-font-smoothing: antialiased;
   }
 
-  /* フォーカス時のアウトラインをカスタマイズ（アクセシビリティ対応） */
-  :focus-visible {
-    outline: 2px solid var(--gold);
-    outline-offset: 2px;
+  /* 和紙テクスチャ */
+  .washi-texture {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)' opacity='0.04'/%3E%3C/svg%3E");
   }
 
-  /* date input のカラースキームをダーク対応 */
-  input[type='date'],
-  input[type='number'] {
-    color-scheme: dark;
+  /* 墨のにじみ効果 */
+  .sumi-border {
+    border-image: linear-gradient(
+      to right,
+      transparent,
+      rgba(200, 168, 74, 0.4),
+      transparent
+    ) 1;
   }
 }
 
 @layer utilities {
+  .text-gold { color: #c8a84a; }
+  .bg-washi { background-color: #f0ebe0; }
   .text-washi { color: #f0ebe0; }
-  .bg-washi   { background-color: #f0ebe0; }
-  .text-gold  { color: #c8a84a; }
-  .bg-red-naoki { background-color: #b01020; }
 
-  /* テキストの省略（複数行対応） */
-  .line-clamp-1 { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
-  .line-clamp-2 { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-  .line-clamp-6 { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; }
+  /* スマホタップ最適化 */
+  .touch-target {
+    min-height: 48px;
+    min-width: 48px;
+  }
 }
