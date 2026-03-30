@@ -1,13 +1,12 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 const links = [
   { href: '/', label: 'トップ' },
   { href: '/#concept', label: 'こだわり' },
-  { href: '/menu', label: 'メニュー' },
-  { href: '/news', label: 'お知らせ' }, // ← 追加（ニュース一覧ページへのリンク）
+  { href: '/menu', label: 'お品書き' },
   { href: '/reserve', label: 'WEB予約' },
   { href: '/#access', label: 'アクセス' },
   { href: '/wage', label: '採用情報' },
@@ -15,123 +14,105 @@ const links = [
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
-  // スクロール量に応じてナビの背景を変化させる
-  const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // モバイルメニューが開いているときはスクロールを無効化
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [open]);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 flex items-stretch h-14 border-b border-white/10 transition-all duration-300 ${
-        scrolled ? 'bg-[#0a0a0a]/98 backdrop-blur-md shadow-lg' : 'bg-[#0a0a0a]/95 backdrop-blur-sm'
-      }`}
-      aria-label="メインナビゲーション"
-    >
-      <div className="flex items-center flex-1 px-4 gap-6">
-        <Link
-          href="/"
-          className="font-['Zen_Old_Mincho',serif] text-[#c8a84a] text-lg font-black tracking-widest shrink-0"
-          aria-label="京都焼肉なおき トップページ"
-        >
-          なおき
-        </Link>
-        <ul className="hidden md:flex gap-1 h-full" role="menubar">
-          {links.map((l) => {
-            // 現在のページのリンクをアクティブ表示
-            const isActive =
-              l.href === '/'
-                ? pathname === '/'
-                : pathname.startsWith(l.href.replace('/#', '/'));
-            return (
-              <li key={l.href} className="h-full" role="none">
-                <Link
-                  href={l.href}
-                  role="menuitem"
-                  className={`flex items-center h-full px-4 text-xs tracking-widest border-b-2 transition-all whitespace-nowrap ${
-                    isActive
-                      ? 'text-white border-[#b01020]'
-                      : 'text-white/70 hover:text-white border-transparent hover:border-[#b01020]'
-                  }`}
-                >
-                  {l.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-
-      <div className="flex items-stretch">
-        {/* デスクトップ用電話リンク */}
-        <a
-          href="tel:052-990-6329"
-          className="hidden md:flex flex-col justify-center px-4 text-white bg-white/5 border-l border-white/10 hover:bg-white/10 transition-colors"
-          aria-label="電話予約：052-990-6329"
-        >
-          <span className="text-[10px] text-white/40 tracking-widest">ご予約・お問い合わせ</span>
-          <span className="text-sm font-semibold tracking-wide">052-990-6329</span>
-        </a>
-
-        <Link
-          href="/reserve"
-          className="flex items-center justify-center bg-[#b01020] hover:bg-[#d01828] text-white text-xs tracking-widest px-5 transition-colors whitespace-nowrap"
-        >
-          WEB予約
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-4 bg-[#0a0805]/95 backdrop-blur-md border-b border-[#c8a84a]/20">
+        {/* ロゴ */}
+        <Link href="/" className="flex items-center gap-2">
+          <div className="relative w-7 h-9">
+            <Image src="/logo.png" alt="なおき" fill className="object-contain" />
+          </div>
+          <span
+            className="text-[#c8a84a] text-sm font-black tracking-[0.3em]"
+            style={{ fontFamily: 'var(--font-noto-serif)' }}
+          >
+            なおき
+          </span>
         </Link>
 
-        {/* ハンバーガーメニューボタン（モバイル） */}
-        <button
-          className="md:hidden flex items-center justify-center w-14 text-white border-l border-white/10"
-          onClick={() => setOpen(!open)}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? 'メニューを閉じる' : 'メニューを開く'}
-        >
-          {open ? '✕' : '☰'}
-        </button>
-      </div>
-
-      {/* モバイルメニュー */}
-      {open && (
-        <div
-          id="mobile-menu"
-          className="absolute top-14 left-0 right-0 bg-[#0a0a0a] border-b border-white/10 md:hidden z-50"
-          role="menu"
-        >
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              role="menuitem"
-              onClick={() => setOpen(false)}
-              className="block px-6 py-4 text-sm text-white/70 hover:text-white border-b border-white/5 tracking-widest"
-            >
-              {l.label}
-            </Link>
+        {/* PC用リンク */}
+        <ul className="hidden md:flex items-center gap-6 h-full">
+          {links.map(l => (
+            <li key={l.href}>
+              <Link
+                href={l.href}
+                className="text-[11px] tracking-[0.25em] text-white/60 hover:text-[#c8a84a] transition-colors"
+                style={{ fontFamily: 'var(--font-noto-serif)' }}
+              >
+                {l.label}
+              </Link>
+            </li>
           ))}
-          {/* モバイル用電話リンク */}
+        </ul>
+
+        {/* 右側 */}
+        <div className="flex items-center gap-2">
           <a
             href="tel:052-990-6329"
-            onClick={() => setOpen(false)}
-            role="menuitem"
-            className="block px-6 py-4 text-sm text-[#c8a84a] border-b border-white/5 tracking-widest"
-            aria-label="電話予約：052-990-6329"
+            className="hidden md:flex items-center gap-1 text-[11px] text-white/50 hover:text-white tracking-widest transition-colors"
           >
-            📞 052-990-6329
+            <span>☎</span> 052-990-6329
           </a>
+          <Link
+            href="/reserve"
+            className="hidden md:flex items-center justify-center bg-[#b01020] hover:bg-[#d01828] text-white text-[11px] tracking-widest px-4 py-2 transition-colors"
+            style={{ fontFamily: 'var(--font-noto-serif)' }}
+          >
+            WEB予約
+          </Link>
+          {/* スマホハンバーガー */}
+          <button
+            className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
+            onClick={() => setOpen(!open)}
+            aria-label="メニュー"
+          >
+            <span className={`block w-6 h-px bg-white/70 transition-all ${open ? 'rotate-45 translate-y-1.5' : ''}`} />
+            <span className={`block w-6 h-px bg-white/70 transition-all ${open ? 'opacity-0' : ''}`} />
+            <span className={`block w-6 h-px bg-white/70 transition-all ${open ? '-rotate-45 -translate-y-1.5' : ''}`} />
+          </button>
+        </div>
+      </nav>
+
+      {/* スマホメニュー */}
+      {open && (
+        <div
+          className="fixed inset-0 z-40 bg-[#0a0805]/98 backdrop-blur-md flex flex-col pt-20 px-8"
+          onClick={() => setOpen(false)}
+        >
+          {/* 装飾ライン */}
+          <div className="w-12 h-px bg-[#c8a84a]/50 mb-8" />
+          <nav className="flex flex-col gap-0 divide-y divide-white/8">
+            {links.map(l => (
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between py-5 text-lg text-white/80 hover:text-[#c8a84a] tracking-[0.2em] transition-colors"
+                style={{ fontFamily: 'var(--font-noto-serif)' }}
+              >
+                <span>{l.label}</span>
+                <span className="text-[#c8a84a]/50 text-xs">›</span>
+              </Link>
+            ))}
+          </nav>
+          <div className="mt-10 pt-8 border-t border-white/8">
+            <a
+              href="tel:052-990-6329"
+              className="flex items-center gap-3 text-white/50 text-sm tracking-widest"
+            >
+              <span className="text-[#c8a84a]">☎</span> 052-990-6329
+            </a>
+          </div>
+          {/* 縦書き装飾 */}
+          <div
+            className="absolute right-8 top-24 text-white/5 text-6xl font-black pointer-events-none"
+            style={{ writingMode: 'vertical-rl', fontFamily: 'var(--font-noto-serif)' }}
+          >
+            京都焼肉なおき
+          </div>
         </div>
       )}
-    </nav>
+    </>
   );
 }
