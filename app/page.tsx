@@ -1,272 +1,441 @@
-import { client } from '@/lib/microcms';
-import type { News } from '@/lib/microcms';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// Google Places API の設定
-const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
-const PLACE_ID = 'ChIJN8vF6KOfA2ARu7jK7NqjQ0M';
+export const revalidate = 60;
 
-// Google レビューの型定義
-type GoogleReview = {
-  author_name: string;
-  rating: number;
-  text: string;
-  time: number;
-};
-
-export default async function Home() {
-  // ─── お知らせ取得 (microCMS) ───────────────────────────
-  let news: News[] = [];
+async function getCMS(endpoint: string) {
   try {
-    const res = await client.get({
-      endpoint: 'news',
-      queries: { limit: 3, orders: '-publishedAt' },
-      customRequestInit: { cache: 'no-store' },
-    });
-    news = res.contents ?? [];
-  } catch (e) {
-    console.error('News fetch error:', e);
-  }
-
-  // ─── Google レビュー取得 ───────────────────────────────
-  let reviews: GoogleReview[] = [];
-  try {
-    if (GOOGLE_MAPS_API_KEY) {
-      const googleRes = await fetch(
-        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE_ID}&fields=reviews,rating&key=${GOOGLE_MAPS_API_KEY}&language=ja`,
-        { next: { revalidate: 3600 } } // 1時間ごとに再検証（ISR）
-      );
-      if (googleRes.ok) {
-        const googleData = await googleRes.json();
-        if (googleData.result?.reviews) {
-          reviews = googleData.result.reviews;
-        } else {
-          console.error('Google API Response Error:', googleData.status);
-        }
+    const res = await fetch(
+      `https://${process.env.MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/${endpoint}`,
+      {
+        headers: { 'X-MICROCMS-API-KEY': process.env.MICROCMS_API_KEY || '' },
+        next: { revalidate: 60 },
       }
-    }
-  } catch (e) {
-    console.error('Google fetch error:', e);
+    );
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
   }
+}
+
+export default async function HomePage() {
+  const [shopData, newsData, menuData] = await Promise.all([
+    getCMS('shop-info'),
+    getCMS('news'),
+    getCMS('menu'),
+  ]);
+
+  const shop = shopData?.contents?.[0] || null;
+  const newsList = newsData?.contents || [];
+  const menuList = menuData?.contents || [];
 
   return (
-    <main className="min-h-screen bg-black text-white font-serif selection:bg-[#d4af37] selection:text-black">
+    <div className="bg-[#0a0805] text-white overflow-x-hidden washi-texture">
 
-      {/* ─── 1. HERO ─────────────────────────────────────── */}
-      <section className="relative h-screen flex flex-col items-center justify-center bg-zinc-50 px-4 text-black border-b border-zinc-200">
-        <div className="mb-12 relative w-64 h-32 md:w-80 md:h-48">
+      {/* HERO */}
+      <section className="relative min-h-screen flex flex-col overflow-hidden">
+        {/* 背景画像 */}
+        <div className="absolute inset-0">
           <Image
-            src="/logo.png"
-            alt="京都焼肉なおき ロゴ"
+            src="/kv_i1.jpg"
+            alt="京都焼肉なおき"
             fill
+            className="object-cover opacity-60"
             priority
-            className="object-contain"
           />
+          {/* 墨グラデーション */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0805]/70 via-transparent to-[#0a0805]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0805]/50 to-transparent" />
         </div>
-        <div className="text-center">
-          <h1 className="text-xl md:text-3xl tracking-[0.3em] leading-loose font-medium">
+
+        {/* メインコンテンツ */}
+        <div className="relative z-10 flex flex-col justify-end min-h-screen pb-24 px-6 md:px-12">
+          {/* 金線装飾 */}
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-8 h-px bg-[#c8a84a]/60" />
+            <span className="text-[#c8a84a] text-[10px] tracking-[0.5em] font-[var(--font-montserrat)]">
+              KYOTO YAKINIKU
+            </span>
+          </div>
+
+          {/* キャッチコピー */}
+          <h1
+            className="text-4xl md:text-6xl font-black leading-tight tracking-wide mb-4"
+            style={{ fontFamily: 'var(--font-noto-serif)', textShadow: '0 2px 30px rgba(0,0,0,0.8)' }}
+          >
             京都二十年の技。<br />
-            二つのタレで紡ぐ、至高の一皿。
+            <span className="text-[#c8a84a]">二つのタレ</span>で紡ぐ、<br />
+            至高の一皿。
           </h1>
+
+          <p className="text-white/60 text-sm tracking-widest mb-8 font-light">
+            名古屋・栄　深夜4時まで営業
+          </p>
+
+          {/* CTAボタン */}
+          <div className="flex gap-3">
+            <Link
+              href="/reserve"
+              className="flex-1 flex items-center justify-center py-4 bg-[#b01020] hover:bg-[#d01828] text-white text-sm font-bold tracking-widest transition-colors active:scale-95"
+              style={{ fontFamily: 'var(--font-noto-serif)' }}
+            >
+              WEB予約
+            </Link>
+            <Link
+              href="/menu"
+              className="flex-1 flex items-center justify-center py-4 border border-[#c8a84a]/50 hover:border-[#c8a84a] text-[#c8a84a] text-sm tracking-widest transition-colors active:scale-95"
+              style={{ fontFamily: 'var(--font-noto-serif)' }}
+            >
+              お品書き
+            </Link>
+          </div>
         </div>
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-          <span className="text-black/30 text-[9px] tracking-[0.6em] uppercase font-sans font-bold">
-            Scroll
-          </span>
-          <div className="w-px h-16 bg-gradient-to-b from-black/20 to-transparent animate-pulse" />
+
+        {/* 5パネル縦スライダー（スマホ横スクロール） */}
+        <div className="relative z-10 flex gap-1 px-6 pb-6 overflow-x-auto scrollbar-none -mt-16 md:hidden">
+          {[
+            { src: '/kv_i1.jpg', label: '鮮度抜群' },
+            { src: '/kv_i2.jpg', label: 'お一人様歓迎' },
+            { src: '/kv_i3.jpg', label: '宴会OK' },
+            { src: '/kv_i4.jpg', label: '隠れ家' },
+            { src: '/kv_i5.jpg', label: '深夜4時まで' },
+          ].map((slide, i) => (
+            <div key={i} className="relative flex-shrink-0 w-24 h-32 overflow-hidden rounded-sm">
+              <Image src={slide.src} alt={slide.label} fill className="object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+              <span className="absolute bottom-1.5 left-0 right-0 text-center text-[9px] text-white/80 tracking-wide">{slide.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* スクロールインジケーター */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none z-10 hidden md:flex">
+          <span className="text-white/30 text-[9px] tracking-[0.4em] font-[var(--font-montserrat)]">SCROLL</span>
+          <div className="w-px h-10 bg-gradient-to-b from-[#c8a84a]/60 to-transparent animate-pulse" />
         </div>
       </section>
 
-      {/* ─── 2. NEWS ─────────────────────────────────────── */}
-      <section id="news" className="py-24 bg-[#080808] px-6 border-b border-white/5">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">
-              News
+      {/* NEWS TICKER */}
+      {newsList.length > 0 && (
+        <section className="bg-[#c8a84a]/10 border-y border-[#c8a84a]/20 py-3 px-4">
+          <div className="flex items-center gap-4 max-w-3xl mx-auto">
+            <span className="text-[#c8a84a] text-[10px] tracking-widest shrink-0 border border-[#c8a84a]/40 px-2 py-0.5">
+              NEWS
             </span>
-            <h2 className="text-2xl md:text-3xl tracking-[0.3em] mt-3 font-medium text-white">
-              最新情報
-            </h2>
+            <Link
+              href="/news"
+              className="text-xs text-white/70 tracking-wide truncate hover:text-white transition-colors"
+            >
+              {newsList[0]?.title}
+            </Link>
+            <Link href="/news" className="text-[#c8a84a] text-xs tracking-widest shrink-0 hover:text-white transition-colors">
+              →
+            </Link>
           </div>
-          <div className="divide-y divide-white/10">
-            {news.length > 0 ? (
-              news.map((post) => (
-                <Link
-                  key={post.id}
-                  href={`/news/${post.id}`}
-                  className="group flex flex-col md:flex-row md:items-center gap-4 md:gap-12 py-8 hover:px-4 transition-all duration-500"
-                >
-                  <span className="text-[10px] tracking-[0.3em] font-sans font-bold text-zinc-600 group-hover:text-[#d4af37] shrink-0">
-                    {new Date(post.publishedAt).toLocaleDateString('ja-JP').replace(/\//g, ' . ')}
-                  </span>
-                  <h3 className="text-lg md:text-xl tracking-widest text-zinc-300 group-hover:text-white flex-1 line-clamp-1">
-                    {post.title}
-                  </h3>
-                  <span className="text-[#d4af37] opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0 hidden md:block">
-                    →
-                  </span>
-                </Link>
-              ))
-            ) : (
-              <p className="text-center text-zinc-600 text-sm tracking-widest py-10 italic">
-                現在、新しいお知らせはございません。
-              </p>
-            )}
+        </section>
+      )}
+
+      {/* CONCEPT */}
+      <section id="concept" className="py-20 md:py-32">
+        <div className="max-w-4xl mx-auto px-6">
+          {/* セクションヘッダー */}
+          <div className="flex items-center gap-4 mb-12">
+            <div className="w-6 h-px bg-[#c8a84a]/50" />
+            <span className="text-[#c8a84a] text-[10px] tracking-[0.4em] font-[var(--font-montserrat)]">CONCEPT</span>
           </div>
-          {news.length > 0 && (
-            <div className="text-center mt-12">
-              <Link
-                href="/news"
-                className="text-[10px] tracking-[0.5em] text-zinc-600 hover:text-[#d4af37] transition-colors uppercase font-sans font-bold"
+
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <div>
+              <h2
+                className="text-3xl md:text-4xl font-black leading-snug mb-6"
+                style={{ fontFamily: 'var(--font-noto-serif)' }}
               >
-                すべてのお知らせを見る →
-              </Link>
+                東新町の長い夜を、<br />
+                <span className="text-[#c8a84a]">贅沢</span>に締めくくる
+              </h2>
+              <div className="w-8 h-px bg-[#b01020] mb-6" />
+              <p className="text-sm font-light leading-[2.2] text-white/65 mb-8">
+                名古屋市中区、東新町・女子大エリア。栄・新栄町駅から徒歩圏内の
+                京都焼肉なおきは、京都二十年の技と秘伝のタレで、
+                上質な肉をリーズナブルにご提供しています。<br /><br />
+                朝4時まで営業。一人焼肉・デート・宴会・女子会、
+                今日の締めくくりにもぜひ。
+              </p>
+              <div className="bg-[#140f08] border border-[#c8a84a]/20 inline-block px-6 py-4">
+                <p className="text-[10px] tracking-widest text-white/40 mb-1">営業時間</p>
+                <p className="text-xl font-bold tracking-widest text-[#c8a84a]" style={{ fontFamily: 'var(--font-noto-serif)' }}>
+                  18:00 〜 翌4:00
+                </p>
+                <p className="text-[10px] tracking-widest text-white/30 mt-1">水曜定休</p>
+              </div>
+            </div>
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <Image src="/sec2_bgi1.jpg" alt="こだわり" fill className="object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0805]/60 to-transparent" />
+              <div
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/90 font-black text-xl tracking-widest"
+                style={{ writingMode: 'vertical-rl', fontFamily: 'var(--font-noto-serif)', textShadow: '0 2px 15px rgba(0,0,0,0.9)' }}
+              >
+                一口でわかる、肉の違い。
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* KODAWARI */}
+      <section className="py-20 bg-[#140f08]">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="flex items-center gap-4 mb-12">
+            <div className="w-6 h-px bg-[#c8a84a]/50" />
+            <span className="text-[#c8a84a] text-[10px] tracking-[0.4em] font-[var(--font-montserrat)]">KODAWARI</span>
+          </div>
+          <h2
+            className="text-3xl md:text-5xl font-black leading-none tracking-tight mb-12"
+            style={{ fontFamily: 'var(--font-noto-serif)' }}
+          >
+            語られない<br />
+            <span className="text-[#c8a84a]">ひと手間</span>
+          </h2>
+          <div className="grid md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x divide-white/8">
+            {[
+              { num: '一', label: 'カット', title: '手切りへの徹底', body: '肉は一枚一枚すべて手切り。部位によって切り方を変え、余分な脂は丁寧に取り除きます。' },
+              { num: '二', label: '品質', title: '鮮度を守る管理', body: '必要な分だけを解凍して使用。仕入れ直後に丁寧に処理し、鮮やかな色合いの赤身をお出しします。' },
+              { num: '三', label: '想い', title: '心を尽くす', body: 'それがなおきの美味しさの基準。素材の力を信じ、丁寧なひと手間を積み重ねます。' },
+            ].map(item => (
+              <div key={item.num} className="py-8 md:py-0 md:px-8 first:md:pl-0 last:md:pr-0">
+                <div className="flex items-center gap-3 mb-4">
+                  <span
+                    className="text-[#c8a84a] text-2xl font-black"
+                    style={{ fontFamily: 'var(--font-noto-serif)' }}
+                  >
+                    {item.num}
+                  </span>
+                  <span className="text-[10px] tracking-widest text-white/40 border border-white/15 px-2 py-0.5">
+                    {item.label}
+                  </span>
+                </div>
+                <h3
+                  className="text-base font-bold tracking-wide mb-3"
+                  style={{ fontFamily: 'var(--font-noto-serif)' }}
+                >
+                  {item.title}
+                </h3>
+                <p className="text-sm font-light leading-relaxed text-white/55">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MENU HIGHLIGHTS */}
+      <section id="menu" className="py-20">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="flex items-center justify-between mb-12">
+            <div className="flex items-center gap-4">
+              <div className="w-6 h-px bg-[#c8a84a]/50" />
+              <span className="text-[#c8a84a] text-[10px] tracking-[0.4em] font-[var(--font-montserrat)]">MENU</span>
+            </div>
+            <Link
+              href="/menu"
+              className="text-[11px] text-white/40 tracking-widest hover:text-[#c8a84a] transition-colors"
+            >
+              お品書きを全て見る →
+            </Link>
+          </div>
+
+          {/* 必食3選 */}
+          <h2
+            className="text-4xl md:text-6xl font-black tracking-widest mb-12 text-center"
+            style={{ fontFamily: 'var(--font-noto-serif)' }}
+          >
+            必食<span className="text-[#b01020]">3</span>選
+          </h2>
+
+          <div className="flex flex-col gap-0">
+            {[
+              { img: '/sec3_i1.jpg', name: 'ネギタン塩', price: '1,080', desc: '舌先は薄めに、やわらかい部分は厚めに。手切りならではの一皿。' },
+              { img: '/sec3_i2.jpg', name: '赤身3種盛り（塩）', price: '2,420', desc: 'その日仕入れた和牛のみ。贅沢に厚切りで3種類。' },
+              { img: '/sec3_i3.jpg', name: 'ミノ湯引き', price: '980', desc: 'てっさをイメージした薄切り。ネギをたっぷり巻いてどうぞ。' },
+            ].map((item, i) => (
+              <div key={i} className={`flex gap-4 py-6 border-b border-white/8 items-center ${i === 0 ? 'border-t border-white/8' : ''}`}>
+                <div className="relative w-20 h-20 md:w-28 md:h-28 flex-shrink-0 overflow-hidden">
+                  <Image src={item.img} alt={item.name} fill className="object-cover" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3
+                    className="text-base md:text-xl font-bold tracking-wide mb-1"
+                    style={{ fontFamily: 'var(--font-noto-serif)' }}
+                  >
+                    {item.name}
+                  </h3>
+                  <p className="text-xs text-white/50 leading-relaxed mb-2">{item.desc}</p>
+                  <p className="text-[#c8a84a] font-bold tracking-widest">¥{item.price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* microCMSメニュー */}
+          {menuList.length > 0 && (
+            <div className="mt-12">
+              <h3
+                className="text-center text-xl font-bold tracking-widest mb-8 text-[#c8a84a]"
+                style={{ fontFamily: 'var(--font-noto-serif)' }}
+              >
+                御品書
+              </h3>
+              <div className="flex flex-col gap-0 divide-y divide-white/8">
+                {menuList.slice(0, 6).map((item: { id: string; name: string; price: number; description: string; image?: { url: string } }) => (
+                  <div key={item.id} className="flex gap-4 py-5 items-center">
+                    {item.image?.url && (
+                      <div className="relative w-16 h-16 flex-shrink-0 overflow-hidden">
+                        <Image src={item.image.url} alt={item.name} fill className="object-cover" />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-baseline gap-2">
+                        <h4 className="text-sm font-semibold tracking-wide truncate" style={{ fontFamily: 'var(--font-noto-serif)' }}>
+                          {item.name}
+                        </h4>
+                        <span className="text-[#c8a84a] text-sm tracking-widest shrink-0">
+                          ¥{item.price?.toLocaleString()}
+                        </span>
+                      </div>
+                      {item.description && (
+                        <p className="text-xs text-white/45 mt-1 leading-relaxed line-clamp-1">{item.description}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {menuList.length > 6 && (
+                <div className="text-center mt-6">
+                  <Link
+                    href="/menu"
+                    className="inline-flex items-center gap-2 border border-[#c8a84a]/30 hover:border-[#c8a84a] text-[#c8a84a] text-xs tracking-widest px-8 py-3 transition-colors"
+                  >
+                    全てのお品書きを見る →
+                  </Link>
+                </div>
+              )}
             </div>
           )}
-        </div>
-      </section>
 
-      {/* ─── 3. REVIEWS (Google 自動取得) ────────────────── */}
-      <section className="py-24 bg-[#050505] border-b border-white/5">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="text-[#d4af37] text-[10px] tracking-[0.6em] uppercase font-sans font-bold">
-              Reviews
-            </span>
-            <h2 className="text-2xl md:text-3xl tracking-[0.3em] mt-3 font-medium text-white">
-              お客様の声
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {reviews.length > 0 ? (
-              reviews.slice(0, 3).map((r, i) => (
-                <div
-                  key={i}
-                  className="bg-white/5 p-8 border border-white/10 flex flex-col justify-between group hover:border-[#d4af37]/30 transition-all duration-500"
-                >
-                  <div>
-                    <div className="text-[#d4af37] mb-4 text-xs" aria-label={`評価：${r.rating}点`}>
-                      {'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}
-                    </div>
-                    <p className="text-sm text-zinc-400 leading-loose italic line-clamp-6">
-                      &ldquo;{r.text}&rdquo;
-                    </p>
-                  </div>
-                  <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
-                    <span className="text-[10px] text-zinc-600 tracking-widest uppercase">
-                      — {r.author_name}
-                    </span>
-                    <Image
-                      src="/logo.png"
-                      alt=""
-                      width={15}
-                      height={15}
-                      className="opacity-10 grayscale invert"
-                    />
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="col-span-full text-center text-zinc-600 text-sm italic py-10">
-                Googleレビューを読み込み中です...
-              </p>
-            )}
+          {/* メニューCTA */}
+          <div className="text-center mt-10">
+            <Link
+              href="/menu"
+              className="inline-flex items-center gap-3 border border-white/20 hover:border-[#c8a84a] text-white hover:text-[#c8a84a] text-sm tracking-widest px-10 py-4 transition-all group"
+              style={{ fontFamily: 'var(--font-noto-serif)' }}
+            >
+              フルメニューを見る
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* ─── 4. CONCEPT / SAUCE ──────────────────────────── */}
-      <section
-        id="concept"
-        className="relative py-32 bg-black px-6 overflow-hidden border-b border-white/5"
-      >
-        <div className="absolute inset-0 opacity-10">
-          <Image src="/sec2_bgi2.jpg" alt="" fill className="object-cover" />
-        </div>
-        <div className="relative z-10 max-w-5xl mx-auto">
-          <div className="text-center mb-24">
-            <span className="inline-block bg-[#b01020] text-white text-[9px] tracking-[0.4em] px-5 py-2 mb-6 font-bold uppercase font-sans">
-              The Dual Sauces
-            </span>
-            <h2 className="text-3xl md:text-5xl tracking-[0.3em] mb-6 font-medium text-white">
-              二つのタレ、一つの至福
-            </h2>
+      {/* TARE */}
+      <section className="py-20 bg-[#140f08]">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="flex items-center gap-4 mb-12">
+            <div className="w-6 h-px bg-[#c8a84a]/50" />
+            <span className="text-[#c8a84a] text-[10px] tracking-[0.4em] font-[var(--font-montserrat)]">SPECIAL SAUCE</span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            <div className="space-y-8">
-              <h3 className="text-xl md:text-2xl text-[#d4af37] border-l-2 border-[#d4af37] pl-4 font-medium">
-                秘伝 みそダレ
-              </h3>
-              <p className="text-zinc-300 leading-loose">
-                京都の名店「大韶園」直伝、二十年変わらぬ命の味。
-              </p>
-            </div>
-            <div className="space-y-8">
-              <h3 className="text-xl md:text-2xl text-[#d4af37] border-l-2 border-[#d4af37] pl-4 font-medium">
-                黄金 洗いダレ
-              </h3>
-              <p className="text-zinc-300 leading-loose">
-                京都焼肉の伝統が生んだ、琥珀色に輝く出汁の芸術。
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 5. ACCESS（簡易） ───────────────────────────── */}
-      <section id="access" className="py-24 bg-[#080808] px-6 border-b border-white/5">
-        <div className="max-w-4xl mx-auto text-center">
-          <span className="text-[#d4af37] text-[10px] tracking-[0.5em] uppercase font-sans font-bold">
-            Access
-          </span>
-          <h2 className="text-2xl md:text-3xl tracking-[0.3em] mt-3 font-medium text-white mb-12">
-            交通案内
-          </h2>
-          <p className="text-zinc-400 text-sm leading-loose mb-2">
-            愛知県名古屋市中区栄4-6-18 パールプラザビル2F
-          </p>
-          <p className="text-zinc-500 text-xs tracking-widest mb-8">
-            地下鉄東山線・名城線「栄駅」12番出口より徒歩8分
-          </p>
-          <Link
-            href="/access"
-            className="inline-block text-[10px] tracking-[0.5em] border border-[#d4af37]/40 text-[#d4af37] px-8 py-3 hover:bg-[#d4af37] hover:text-black transition-all uppercase font-sans font-bold"
+          <h2
+            className="text-3xl font-black tracking-widest mb-3"
+            style={{ fontFamily: 'var(--font-noto-serif)' }}
           >
-            詳しいアクセスを見る →
-          </Link>
+            こだわりのタレ
+          </h2>
+          <p className="text-sm text-white/50 font-light leading-relaxed mb-10">
+            店主の修業元・京都大韶園と同じタレを使用。肉の旨みを最大限に引き出す秘伝の味わいです。
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { img: '/yannninnjyann.jpg', name: '秘伝みそダレ', desc: '京都仕込みの白みそベース' },
+              { img: '/sec3-popup_i2.jpg', name: '自家製洗いダレ', desc: 'さっぱり醤油ベース' },
+              { img: '/sec3-popup_i3.jpg', name: 'ヤンニンジャン', desc: '京都大韶園と同じ秘伝' },
+              { img: '/sec3-popup_i5.jpg', name: 'プッコチ醤油ダレ', desc: '青唐辛子の爽やかな辛み' },
+            ].map(tare => (
+              <div key={tare.name} className="group">
+                <div className="relative aspect-square overflow-hidden mb-3 border-t-2 border-[#b01020]">
+                  <Image src={tare.img} alt={tare.name} fill sizes="25vw" className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-85" />
+                </div>
+                <h3 className="text-xs font-bold tracking-wide text-[#c8a84a] mb-1" style={{ fontFamily: 'var(--font-noto-serif)' }}>
+                  {tare.name}
+                </h3>
+                <p className="text-[10px] text-white/45 leading-relaxed">{tare.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ─── 6. FOOTER ───────────────────────────────────── */}
-      <footer className="py-24 bg-[#050505] text-center px-6">
-        <div className="relative w-24 h-24 mx-auto mb-12 opacity-30 grayscale invert">
-          <Image src="/logo.png" alt="なおき ロゴ" fill className="object-contain" />
+      {/* JIMAN */}
+      <section className="py-20">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-6 h-px bg-[#c8a84a]/50" />
+            <span className="text-[#c8a84a] text-[10px] tracking-[0.4em] font-[var(--font-montserrat)]">RECOMMEND</span>
+          </div>
+          <h2
+            className="text-2xl font-black tracking-widest mb-10"
+            style={{ fontFamily: 'var(--font-noto-serif)' }}
+          >
+            なおき自慢の一皿
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              { img: '/sec4_i1.jpg', tag: '常連人気', name: '生センマイ', price: '750' },
+              { img: '/sec5_i1.jpg', tag: '〆の定番', name: 'チゲスープ', price: '900' },
+              { img: '/sec5_i2.jpg', tag: '絶品', name: 'レバー山椒焼き', price: '680' },
+            ].map(item => (
+              <div key={item.name} className="relative overflow-hidden group aspect-[4/3]">
+                <Image src={item.img} alt={item.name} fill sizes="33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute top-3 left-3">
+                  <span className="bg-[#b01020] text-white text-[9px] tracking-widest px-2 py-0.5">{item.tag}</span>
+                </div>
+                <div className="absolute bottom-4 left-4">
+                  <h3 className="text-base font-bold tracking-wide text-white mb-1" style={{ fontFamily: 'var(--font-noto-serif)' }}>
+                    {item.name}
+                  </h3>
+                  <p className="text-[#c8a84a] text-sm tracking-widest">¥{item.price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <p className="text-[#d4af37] text-3xl font-black tracking-[0.5em] mb-4">京都焼肉なおき</p>
-        <p className="text-zinc-500 text-sm tracking-widest">
-          愛知県名古屋市中区栄4-6-18 パールプラザビル2F
-        </p>
-        <p className="text-zinc-600 text-xs tracking-widest mt-2">
-          営業時間：18:00〜翌4:00　定休日：水曜日
-        </p>
-        <p className="text-2xl text-white mt-8 font-bold">
-          <a href="tel:0529906329" aria-label="電話番号：052-990-6329">
-            052-990-6329
-          </a>
-        </p>
-        <nav className="flex justify-center gap-6 mt-10 text-[10px] text-zinc-700 tracking-widest uppercase font-sans">
-          <Link href="/menu" className="hover:text-white transition-colors">Menu</Link>
-          <Link href="/reserve" className="hover:text-white transition-colors">Reserve</Link>
-          <Link href="/access" className="hover:text-white transition-colors">Access</Link>
-          <Link href="/news" className="hover:text-white transition-colors">News</Link>
-          <Link href="/wage" className="hover:text-white transition-colors">Recruit</Link>
-        </nav>
-        <p className="text-[9px] text-zinc-800 tracking-[0.4em] uppercase mt-16">
-          © 2026 KYOTO YAKINIKU NAOKI.
-        </p>
-      </footer>
+      </section>
 
-    </main>
-  );
-}
+      {/* COURSE */}
+      <section className="py-20 bg-[#140f08]">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="flex items-center gap-4 mb-12">
+            <div className="w-6 h-px bg-[#c8a84a]/50" />
+            <span className="text-[#c8a84a] text-[10px] tracking-[0.4em] font-[var(--font-montserrat)]">COURSE</span>
+          </div>
+          <h2
+            className="text-2xl font-black tracking-widest mb-8"
+            style={{ fontFamily: 'var(--font-noto-serif)' }}
+          >
+            コース・セットメニュー
+          </h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              {
+                img: '/sec4_i2.jpg',
+                tag: 'お一人でも',
+                name: 'おひとり様セット',
+                price: '2,000円〜',
+                desc: '塩・タレ・おまかせ3種類。初めての方にもおすすめ。',
+              },
+              {
+                img: '/sec6_i1.jpg',
+                tag: '宴会・貸切',
+                name: '宴会コース（飲み放題付き）',
+                price: '4,000円〜',
+                desc: '2名様​​​​​​​​​​​​​​​​
