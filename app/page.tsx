@@ -35,31 +35,25 @@ export default async function HomePage() {
 
       {/* HERO */}
       <section className="relative min-h-screen flex flex-col overflow-hidden">
-        {/* 背景画像 */}
         <div className="absolute inset-0">
           <Image
-            src="/kv_i1.jpg"
-            alt="京都焼肉なおき"
+            src="/tencho.jpg"
+            alt="店長 山本直樹"
             fill
-            className="object-cover opacity-60"
+            className="object-cover object-top opacity-70"
             priority
           />
-          {/* 墨グラデーション */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0805]/70 via-transparent to-[#0a0805]" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0805]/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0805]/60 via-[#0a0805]/30 to-[#0a0805]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0805]/60 to-transparent" />
         </div>
 
-        {/* メインコンテンツ */}
         <div className="relative z-10 flex flex-col justify-end min-h-screen pb-24 px-6 md:px-12">
-          {/* 金線装飾 */}
           <div className="flex items-center gap-4 mb-6">
             <div className="w-8 h-px bg-[#c8a84a]/60" />
             <span className="text-[#c8a84a] text-[10px] tracking-[0.5em] font-[var(--font-montserrat)]">
               KYOTO YAKINIKU
             </span>
           </div>
-
-          {/* キャッチコピー */}
           <h1
             className="text-4xl md:text-6xl font-black leading-tight tracking-wide mb-4"
             style={{ fontFamily: 'var(--font-noto-serif)', textShadow: '0 2px 30px rgba(0,0,0,0.8)' }}
@@ -68,12 +62,9 @@ export default async function HomePage() {
             <span className="text-[#c8a84a]">二つのタレ</span>で紡ぐ、<br />
             至高の一皿。
           </h1>
-
           <p className="text-white/60 text-sm tracking-widest mb-8 font-light">
             名古屋・栄　深夜4時まで営業
           </p>
-
-          {/* CTAボタン */}
           <div className="flex gap-3">
             <Link
               href="/reserve"
@@ -92,8 +83,7 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* 5パネル縦スライダー（スマホ横スクロール） */}
-        <div className="relative z-10 flex gap-1 px-6 pb-6 overflow-x-auto scrollbar-none -mt-16 md:hidden">
+        <div className="relative z-10 flex gap-1 px-6 pb-6 overflow-x-auto -mt-16 md:hidden">
           {[
             { src: '/kv_i1.jpg', label: '鮮度抜群' },
             { src: '/kv_i2.jpg', label: 'お一人様歓迎' },
@@ -104,12 +94,13 @@ export default async function HomePage() {
             <div key={i} className="relative flex-shrink-0 w-24 h-32 overflow-hidden rounded-sm">
               <Image src={slide.src} alt={slide.label} fill className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-              <span className="absolute bottom-1.5 left-0 right-0 text-center text-[9px] text-white/80 tracking-wide">{slide.label}</span>
+              <span className="absolute bottom-1.5 left-0 right-0 text-center text-[9px] text-white/80 tracking-wide">
+                {slide.label}
+              </span>
             </div>
           ))}
         </div>
 
-        {/* スクロールインジケーター */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none z-10 hidden md:flex">
           <span className="text-white/30 text-[9px] tracking-[0.4em] font-[var(--font-montserrat)]">SCROLL</span>
           <div className="w-px h-10 bg-gradient-to-b from-[#c8a84a]/60 to-transparent animate-pulse" />
@@ -136,15 +127,77 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* MASTER */}
+      <section className="py-20 bg-[#140f08]">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="flex items-center gap-4 mb-12">
+            <div className="w-6 h-px bg-[#c8a84a]/50" />
+            <span className="text-[#c8a84a] text-[10px] tracking-[0.4em] font-[var(--font-montserrat)]">
+              MASTER
+            </span>
+          </div>
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <Image
+                src="/tencho.jpg"
+                alt="店長 山本直樹"
+                fill
+                className="object-cover object-top"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#140f08]/80 to-transparent" />
+              <div className="absolute bottom-4 left-4">
+                <p className="text-[10px] tracking-[0.3em] text-[#c8a84a]/70 mb-1">店長</p>
+                <p
+                  className="text-xl font-black tracking-widest text-white"
+                  style={{ fontFamily: 'var(--font-noto-serif)' }}
+                >
+                  山本 直樹
+                </p>
+              </div>
+            </div>
+            <div>
+              <div
+                className="text-[#c8a84a]/20 text-8xl font-black leading-none mb-2 select-none"
+                style={{ fontFamily: 'var(--font-noto-serif)' }}
+              >
+                。
+              </div>
+              <h2
+                className="text-2xl md:text-3xl font-black leading-snug mb-6 tracking-wide"
+                style={{ fontFamily: 'var(--font-noto-serif)' }}
+              >
+                肉と向き合い続けた<br />
+                <span className="text-[#c8a84a]">二十年</span>の積み重ね
+              </h2>
+              <div className="w-8 h-px bg-[#b01020] mb-6" />
+              <p className="text-sm font-light leading-[2.4] text-white/65 mb-6">
+                京都の焼肉店で二十年間、肉のカットからタレの配合まで
+                徹底的に学んできました。<br /><br />
+                なおきでは、そのすべてを名古屋のお客様に届けたい
+                という想いで、毎日包丁を握っています。<br /><br />
+                一枚の肉に全力を注ぐ。それが私のこだわりです。
+              </p>
+              <div className="flex items-center gap-4">
+                <div className="w-8 h-px bg-[#c8a84a]/40" />
+                <p
+                  className="text-sm text-white/40 tracking-widest"
+                  style={{ fontFamily: 'var(--font-noto-serif)' }}
+                >
+                  京都焼肉なおき　店長　山本 直樹
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CONCEPT */}
       <section id="concept" className="py-20 md:py-32">
         <div className="max-w-4xl mx-auto px-6">
-          {/* セクションヘッダー */}
           <div className="flex items-center gap-4 mb-12">
             <div className="w-6 h-px bg-[#c8a84a]/50" />
             <span className="text-[#c8a84a] text-[10px] tracking-[0.4em] font-[var(--font-montserrat)]">CONCEPT</span>
           </div>
-
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div>
               <h2
@@ -229,7 +282,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* MENU HIGHLIGHTS */}
+      {/* MENU */}
       <section id="menu" className="py-20">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center justify-between mb-12">
@@ -237,22 +290,16 @@ export default async function HomePage() {
               <div className="w-6 h-px bg-[#c8a84a]/50" />
               <span className="text-[#c8a84a] text-[10px] tracking-[0.4em] font-[var(--font-montserrat)]">MENU</span>
             </div>
-            <Link
-              href="/menu"
-              className="text-[11px] text-white/40 tracking-widest hover:text-[#c8a84a] transition-colors"
-            >
+            <Link href="/menu" className="text-[11px] text-white/40 tracking-widest hover:text-[#c8a84a] transition-colors">
               お品書きを全て見る →
             </Link>
           </div>
-
-          {/* 必食3選 */}
           <h2
             className="text-4xl md:text-6xl font-black tracking-widest mb-12 text-center"
             style={{ fontFamily: 'var(--font-noto-serif)' }}
           >
             必食<span className="text-[#b01020]">3</span>選
           </h2>
-
           <div className="flex flex-col gap-0">
             {[
               { img: '/sec3_i1.jpg', name: 'ネギタン塩', price: '1,080', desc: '舌先は薄めに、やわらかい部分は厚めに。手切りならではの一皿。' },
@@ -277,7 +324,6 @@ export default async function HomePage() {
             ))}
           </div>
 
-          {/* microCMSメニュー */}
           {menuList.length > 0 && (
             <div className="mt-12">
               <h3
@@ -323,7 +369,6 @@ export default async function HomePage() {
             </div>
           )}
 
-          {/* メニューCTA */}
           <div className="text-center mt-10">
             <Link
               href="/menu"
@@ -592,7 +637,7 @@ export default async function HomePage() {
                 className="mt-6 flex items-center justify-center gap-2 bg-[#b01020] text-white py-4 text-sm font-bold tracking-widest hover:bg-[#d01828] transition-colors"
                 style={{ fontFamily: 'var(--font-noto-serif)' }}
               >
-                ☎ 052-990-6329
+                052-990-6329
               </a>
             </div>
             <div className="aspect-square overflow-hidden border border-black/10">
