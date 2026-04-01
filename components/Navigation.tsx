@@ -17,8 +17,7 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-4 bg-[#0a0805]/95 backdrop-blur-md border-b border-[#c8a84a]/20">
-        {/* ロゴ */}
+      <nav className="fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-4 bg-[#2a2a2a]/95 backdrop-blur-md border-b border-white/10">
         <Link href="/" className="flex items-center gap-2">
           <div className="relative w-7 h-9">
             <Image src="/logo.png" alt="なおき" fill className="object-contain" />
@@ -31,7 +30,6 @@ export default function Navigation() {
           </span>
         </Link>
 
-        {/* PC用リンク */}
         <ul className="hidden md:flex items-center gap-6 h-full">
           {links.map(l => (
             <li key={l.href}>
@@ -46,13 +44,12 @@ export default function Navigation() {
           ))}
         </ul>
 
-        {/* 右側 */}
         <div className="flex items-center gap-2">
           <a
             href="tel:052-990-6329"
             className="hidden md:flex items-center gap-1 text-[11px] text-white/50 hover:text-white tracking-widest transition-colors"
           >
-            <span>☎</span> 052-990-6329
+            ☎ 052-990-6329
           </a>
           <Link
             href="/reserve"
@@ -61,7 +58,6 @@ export default function Navigation() {
           >
             WEB予約
           </Link>
-          {/* スマホハンバーガー */}
           <button
             className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
             onClick={() => setOpen(!open)}
@@ -74,13 +70,11 @@ export default function Navigation() {
         </div>
       </nav>
 
-      {/* スマホメニュー */}
       {open && (
         <div
-          className="fixed inset-0 z-40 bg-[#0a0805]/98 backdrop-blur-md flex flex-col pt-20 px-8"
+          className="fixed inset-0 z-40 bg-[#2a2a2a]/98 backdrop-blur-md flex flex-col pt-20 px-8"
           onClick={() => setOpen(false)}
         >
-          {/* 装飾ライン */}
           <div className="w-12 h-px bg-[#c8a84a]/50 mb-8" />
           <nav className="flex flex-col gap-0 divide-y divide-white/8">
             {links.map(l => (
@@ -104,7 +98,6 @@ export default function Navigation() {
               <span className="text-[#c8a84a]">☎</span> 052-990-6329
             </a>
           </div>
-          {/* 縦書き装飾 */}
           <div
             className="absolute right-8 top-24 text-white/5 text-6xl font-black pointer-events-none"
             style={{ writingMode: 'vertical-rl', fontFamily: 'var(--font-noto-serif)' }}
