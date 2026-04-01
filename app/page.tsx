@@ -31,24 +31,23 @@ export default async function HomePage() {
   const menuList = menuData?.contents || [];
 
   return (
-    <div className="bg-[#0a0805] text-white overflow-x-hidden washi-texture">
+    <div className="bg-[#0a0805] text-white overflow-x-hidden">
 
       {/* HERO */}
       <section className="relative min-h-screen flex flex-col overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-[#0a0805] via-[#140f08] to-[#0a0805]" />
-          <div className="absolute inset-0 opacity-30 washi-texture" />
         </div>
         <div className="relative z-10 flex flex-col items-center justify-center min-h-[80vh] px-6 pt-8">
 
-          {/* ロゴ */}
+          {/* ロゴ：白い半透明背景で黒文字を見やすく、赤はそのまま */}
           <div className="relative w-36 h-48 md:w-52 md:h-64 mb-8">
+            <div className="absolute inset-0 bg-white/12 rounded-sm" />
             <Image
               src="/logo.png"
               alt="京都焼肉なおき"
               fill
-              className="object-contain"
-              style={{ filter: 'brightness(0) invert(1)' }}
+              className="object-contain relative z-10"
               priority
             />
           </div>
@@ -284,10 +283,7 @@ export default async function HomePage() {
           <div className="mt-10 border border-white/10 bg-white/3 p-6">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-4 h-px bg-[#c8a84a]/50" />
-              <h3
-                className="text-sm font-bold tracking-widest text-[#c8a84a]"
-                style={{ fontFamily: 'var(--font-noto-serif)' }}
-              >
+              <h3 className="text-sm font-bold tracking-widest text-[#c8a84a]" style={{ fontFamily: 'var(--font-noto-serif)' }}>
                 おひとり様セット
               </h3>
               <div className="flex-1 h-px bg-[#c8a84a]/20" />
@@ -298,28 +294,17 @@ export default async function HomePage() {
                 { id: 'B', label: 'Bセット', sub: '赤身タレ焼きセット', price: '2,000' },
                 { id: 'C', label: 'Cセット', sub: '本日のおまかせセット', price: '2,000' },
               ].map(set => (
-                <div
-                  key={set.id}
-                  className="flex items-center gap-4 border border-white/10 px-5 py-4"
-                >
-                  <span
-                    className="text-[#c8a84a] text-2xl font-black w-8 shrink-0"
-                    style={{ fontFamily: 'var(--font-noto-serif)' }}
-                  >
+                <div key={set.id} className="flex items-center gap-4 border border-white/10 px-5 py-4">
+                  <span className="text-[#c8a84a] text-2xl font-black w-8 shrink-0" style={{ fontFamily: 'var(--font-noto-serif)' }}>
                     {set.id}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p
-                      className="text-sm font-bold text-white tracking-wide"
-                      style={{ fontFamily: 'var(--font-noto-serif)' }}
-                    >
+                    <p className="text-sm font-bold text-white tracking-wide" style={{ fontFamily: 'var(--font-noto-serif)' }}>
                       {set.label}
                     </p>
                     <p className="text-xs text-white/50 tracking-wide mt-0.5">{set.sub}</p>
                   </div>
-                  <span className="text-[#c8a84a] font-bold tracking-widest shrink-0">
-                    ¥{set.price}
-                  </span>
+                  <span className="text-[#c8a84a] font-bold tracking-widest shrink-0">¥{set.price}</span>
                 </div>
               ))}
             </div>
@@ -333,17 +318,14 @@ export default async function HomePage() {
             <div className="mt-16">
               <div className="flex items-center gap-4 mb-8">
                 <div className="w-6 h-px bg-[#c8a84a]/50" />
-                <h3
-                  className="text-xl font-bold tracking-widest text-[#c8a84a]"
-                  style={{ fontFamily: 'var(--font-noto-serif)' }}
-                >
+                <h3 className="text-xl font-bold tracking-widest text-[#c8a84a]" style={{ fontFamily: 'var(--font-noto-serif)' }}>
                   御品書
                 </h3>
                 <div className="flex-1 h-px bg-[#c8a84a]/20" />
               </div>
               <div className="flex flex-col gap-0 divide-y divide-white/8">
                 {menuList.slice(0, 6).map((item: { id: string; name: string; price: number; description: string; image?: { url: string } }) => (
-                  <div key={item.id} className="flex gap-4 py-5 items-center">
+                  <div key={item.id} className="flex gap-4 py-5 items-center bg-[#140f08] px-4">
                     {item.image?.url && (
                       <div className="relative w-16 h-16 flex-shrink-0 overflow-hidden">
                         <Image src={item.image.url} alt={item.name} fill className="object-cover" />
@@ -351,18 +333,15 @@ export default async function HomePage() {
                     )}
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-baseline gap-2">
-                        <h4
-                          className="text-sm font-semibold tracking-wide truncate text-white"
-                          style={{ fontFamily: 'var(--font-noto-serif)' }}
-                        >
+                        <h4 className="text-sm font-bold tracking-wide truncate text-white" style={{ fontFamily: 'var(--font-noto-serif)' }}>
                           {item.name}
                         </h4>
-                        <span className="text-[#c8a84a] text-sm tracking-widest shrink-0">
+                        <span className="text-[#c8a84a] text-sm font-bold tracking-widest shrink-0">
                           ¥{item.price?.toLocaleString()}
                         </span>
                       </div>
                       {item.description && (
-                        <p className="text-xs text-white/45 mt-1 leading-relaxed line-clamp-1">
+                        <p className="text-xs text-white/50 mt-1 leading-relaxed line-clamp-1">
                           {item.description}
                         </p>
                       )}
@@ -372,10 +351,7 @@ export default async function HomePage() {
               </div>
               {menuList.length > 6 && (
                 <div className="text-center mt-6">
-                  <Link
-                    href="/menu"
-                    className="inline-flex items-center gap-2 border border-[#c8a84a]/30 hover:border-[#c8a84a] text-[#c8a84a] text-xs tracking-widest px-8 py-3 transition-colors"
-                  >
+                  <Link href="/menu" className="inline-flex items-center gap-2 border border-[#c8a84a]/30 hover:border-[#c8a84a] text-[#c8a84a] text-xs tracking-widest px-8 py-3 transition-colors">
                     全てのお品書きを見る →
                   </Link>
                 </div>
@@ -384,11 +360,7 @@ export default async function HomePage() {
           )}
 
           <div className="text-center mt-10">
-            <Link
-              href="/menu"
-              className="inline-flex items-center gap-3 border border-white/20 hover:border-[#c8a84a] text-white hover:text-[#c8a84a] text-sm tracking-widest px-10 py-4 transition-all group"
-              style={{ fontFamily: 'var(--font-noto-serif)' }}
-            >
+            <Link href="/menu" className="inline-flex items-center gap-3 border border-white/20 hover:border-[#c8a84a] text-white hover:text-[#c8a84a] text-sm tracking-widest px-10 py-4 transition-all group" style={{ fontFamily: 'var(--font-noto-serif)' }}>
               フルメニューを見る<span className="group-hover:translate-x-1 transition-transform">→</span>
             </Link>
           </div>
@@ -477,10 +449,7 @@ export default async function HomePage() {
               <div key={course.rank} className={`border ${course.border} ${course.bg}`}>
                 <div className="p-6">
                   <div className="flex items-start gap-4 mb-4">
-                    <span
-                      className={`text-4xl font-black ${course.color}`}
-                      style={{ fontFamily: 'var(--font-noto-serif)' }}
-                    >
+                    <span className={`text-4xl font-black ${course.color}`} style={{ fontFamily: 'var(--font-noto-serif)' }}>
                       {course.rank}
                     </span>
                     <div className="pt-1">
@@ -668,13 +637,7 @@ export default async function HomePage() {
                 { href: 'https://retty.me/area/PRE23/ARE63/SUB6304/100001788734/', label: 'Retty →' },
                 { href: 'https://maps.google.com/?cid=16336924147757665245', label: 'Googleマップ →' },
               ].map(link => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-white/35 hover:text-[#c8a84a] tracking-widest transition-colors"
-                >
+                <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className="text-xs text-white/35 hover:text-[#c8a84a] tracking-widest transition-colors">
                   {link.label}
                 </a>
               ))}
