@@ -35,13 +35,10 @@ export default async function HomePage() {
 
       {/* HERO */}
       <section className="relative min-h-screen flex flex-col overflow-hidden">
-        {/* 背景 */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-[#0a0805] via-[#140f08] to-[#0a0805]" />
           <div className="absolute inset-0 opacity-30 washi-texture" />
         </div>
-
-        {/* ロゴ中央配置 */}
         <div className="relative z-10 flex flex-col items-center justify-center min-h-[80vh] px-6 pt-8">
           <div className="relative w-36 h-48 md:w-52 md:h-64 mb-8">
             <Image
@@ -54,7 +51,7 @@ export default async function HomePage() {
           </div>
           <div className="flex items-center gap-4 mb-5">
             <div className="w-10 h-px bg-[#c8a84a]/40" />
-            <span className="text-[#c8a84a] text-[10px] tracking-[0.6em] font-[var(--font-montserrat)]">
+            <span className="text-white text-[10px] tracking-[0.6em] font-[var(--font-montserrat)]">
               KYOTO YAKINIKU NAOKI
             </span>
             <div className="w-10 h-px bg-[#c8a84a]/40" />
@@ -266,7 +263,7 @@ export default async function HomePage() {
                   <Image src={item.img} alt={item.name} fill className="object-cover" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-base md:text-xl font-bold tracking-wide mb-1" style={{ fontFamily: 'var(--font-noto-serif)' }}>{item.name}</h3>
+                  <h3 className="text-base md:text-xl font-bold tracking-wide mb-1 text-white" style={{ fontFamily: 'var(--font-noto-serif)' }}>{item.name}</h3>
                   <p className="text-xs text-white/50 leading-relaxed mb-2">{item.desc}</p>
                   <p className="text-[#c8a84a] font-bold tracking-widest">¥{item.price}</p>
                 </div>
@@ -274,7 +271,7 @@ export default async function HomePage() {
             ))}
           </div>
 
-          {/* 御品書（microCMS） */}
+          {/* 御品書 */}
           {menuList.length > 0 && (
             <div className="mt-16">
               <div className="flex items-center gap-4 mb-8">
@@ -294,7 +291,9 @@ export default async function HomePage() {
                     )}
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-baseline gap-2">
-                        <h4 className="text-sm font-semibold tracking-wide truncate" style={{ fontFamily: 'var(--font-noto-serif)' }}>{item.name}</h4>
+                        <h4 className="text-sm font-semibold tracking-wide truncate text-white" style={{ fontFamily: 'var(--font-noto-serif)' }}>
+                          {item.name}
+                        </h4>
                         <span className="text-[#c8a84a] text-sm tracking-widest shrink-0">¥{item.price?.toLocaleString()}</span>
                       </div>
                       {item.description && (
@@ -322,7 +321,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* TARE — How to Enjoy */}
+      {/* TARE */}
       <section className="py-20 bg-[#0a0805]">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center gap-4 mb-4">
@@ -333,81 +332,49 @@ export default async function HomePage() {
             こだわりのタレ
           </h2>
           <p className="text-sm text-white/45 font-light leading-relaxed mb-12">
-            Selected meats, enjoy them with your favorite sauce
+            厳選したお肉を、お好みのタレでお楽しみください
           </p>
-
           <div className="flex flex-col gap-0 divide-y divide-white/8">
-            {/* Yakiniku Sauce */}
-            <div className="grid grid-cols-[100px_1fr] md:grid-cols-[140px_1fr] gap-6 py-8 items-center">
-              <div className="relative aspect-square overflow-hidden rounded-full border border-[#c8a84a]/20">
-                <Image src="/yannninnjyann.jpg" alt="Yakiniku Sauce" fill className="object-cover" />
+            {[
+              {
+                num: '01',
+                name: 'Yakiniku Sauce',
+                sub: '秘伝みそダレ',
+                desc: '京都仕込みの秘伝みそダレ。お肉にはすでに下味がついています。お好みで壺からタレを追加してお召し上がりください。',
+              },
+              {
+                num: '02',
+                name: 'Dipping Sauce',
+                sub: '自家製洗いダレ',
+                desc: 'あっさりとした味わいに変えたい時に。余分な脂を落として、大根おろしと一緒にどうぞ。',
+              },
+              {
+                num: '03',
+                name: 'Black Tare',
+                sub: 'ヤンニンジャン',
+                desc: '旨みたっぷりのスパイシーな薬味。みそダレとの相性が抜群です。',
+              },
+              {
+                num: '04',
+                name: 'Red Tare',
+                sub: 'プッコチ醤油ダレ',
+                desc: '青唐辛子を効かせた醤油ダレ。癖になる辛さがお肉の旨みを引き立てます。',
+              },
+            ].map(tare => (
+              <div key={tare.num} className="py-8 grid grid-cols-[48px_1fr] gap-5 items-start">
+                <div className="flex flex-col items-center gap-2 pt-1">
+                  <span className="text-[#b01020] text-[10px] tracking-widest font-[var(--font-montserrat)]">{tare.num}</span>
+                  <div className="w-px h-8 bg-[#c8a84a]/20" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black tracking-wide mb-1" style={{ fontFamily: 'var(--font-noto-serif)' }}>
+                    {tare.name}
+                  </h3>
+                  <p className="text-xs text-[#c8a84a] tracking-widest mb-3">{tare.sub}</p>
+                  <p className="text-sm font-light leading-relaxed text-white/60">{tare.desc}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-[10px] tracking-widest text-[#b01020] mb-1 font-[var(--font-montserrat)]">01</p>
-                <h3 className="text-xl font-black tracking-wide mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>
-                  Yakiniku Sauce
-                </h3>
-                <p className="text-xs text-[#c8a84a] tracking-widest mb-2">秘伝みそダレ</p>
-                <p className="text-sm font-light leading-relaxed text-white/60">
-                  Secret miso sauce. These meats are already seasoned.<br />
-                  Add more sauce from the pot if you like.
-                </p>
-              </div>
-            </div>
-
-            {/* Dipping Sauce */}
-            <div className="grid grid-cols-[100px_1fr] md:grid-cols-[140px_1fr] gap-6 py-8 items-center">
-              <div className="relative aspect-square overflow-hidden rounded-full border border-[#c8a84a]/20">
-                <Image src="/sec3-popup_i2.jpg" alt="Dipping Sauce" fill className="object-cover" />
-              </div>
-              <div>
-                <p className="text-[10px] tracking-widest text-[#b01020] mb-1 font-[var(--font-montserrat)]">02</p>
-                <h3 className="text-xl font-black tracking-wide mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>
-                  Dipping Sauce
-                </h3>
-                <p className="text-xs text-[#c8a84a] tracking-widest mb-2">自家製洗いダレ</p>
-                <p className="text-sm font-light leading-relaxed text-white/60">
-                  For a lighter change of flavor, rinse off the excess fat<br />
-                  and enjoy with grated daikon radish.
-                </p>
-              </div>
-            </div>
-
-            {/* Black Tare */}
-            <div className="grid grid-cols-[100px_1fr] md:grid-cols-[140px_1fr] gap-6 py-8 items-center">
-              <div className="relative aspect-square overflow-hidden rounded-full border border-[#c8a84a]/20">
-                <Image src="/sec3-popup_i3.jpg" alt="Black Tare" fill className="object-cover" />
-              </div>
-              <div>
-                <p className="text-[10px] tracking-widest text-[#b01020] mb-1 font-[var(--font-montserrat)]">03</p>
-                <h3 className="text-xl font-black tracking-wide mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>
-                  Black Tare
-                </h3>
-                <p className="text-xs text-[#c8a84a] tracking-widest mb-2">ヤンニンジャン</p>
-                <p className="text-sm font-light leading-relaxed text-white/60">
-                  Spicy Umami Sauce (Yanninnjan)<br />
-                  Perfect with miso sauce.
-                </p>
-              </div>
-            </div>
-
-            {/* Red Tare */}
-            <div className="grid grid-cols-[100px_1fr] md:grid-cols-[140px_1fr] gap-6 py-8 items-center">
-              <div className="relative aspect-square overflow-hidden rounded-full border border-[#c8a84a]/20">
-                <Image src="/sec3-popup_i5.jpg" alt="Red Tare" fill className="object-cover" />
-              </div>
-              <div>
-                <p className="text-[10px] tracking-widest text-[#b01020] mb-1 font-[var(--font-montserrat)]">04</p>
-                <h3 className="text-xl font-black tracking-wide mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>
-                  Red Tare
-                </h3>
-                <p className="text-xs text-[#c8a84a] tracking-widest mb-2">プッコチ醤油ダレ</p>
-                <p className="text-sm font-light leading-relaxed text-white/60">
-                  Ppukkochi Sauce (Korean green chili pepper soy sauce)<br />
-                  A spicy kick you will get addicted to.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -425,71 +392,80 @@ export default async function HomePage() {
           <p className="text-sm text-white/45 font-light mb-10">貸切対応可（要相談）　2名様〜</p>
 
           <div className="flex flex-col gap-4">
-            {/* おひとり様セット */}
-            <div className="border border-white/10 overflow-hidden hover:border-[#c8a84a]/30 transition-colors group">
-              <div className="relative aspect-video overflow-hidden">
-                <Image src="/sec4_i2.jpg" alt="おひとり様セット" fill sizes="100vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute bottom-3 left-4">
-                  <span className="bg-[#b01020] text-white text-[9px] tracking-widest px-2 py-0.5">お一人様</span>
-                </div>
-              </div>
-              <div className="p-5">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-base font-bold tracking-wide" style={{ fontFamily: 'var(--font-noto-serif)' }}>
-                    おひとり様セット
-                  </h3>
-                  <span className="text-[#c8a84a] text-sm tracking-widest shrink-0 ml-4">各 2,000円</span>
-                </div>
-                <p className="text-xs text-white/50 leading-relaxed mb-4">
-                  塩・タレ・おまかせの3種類からお選びいただけます。初めての方にもおすすめ。
-                </p>
-                <div className="grid grid-cols-3 gap-2">
-                  {[['A', '塩焼き'], ['B', '赤身タレ'], ['C', 'おまかせ']].map(([id, label]) => (
-                    <div key={id} className="text-center border border-white/10 py-2 px-1">
-                      <p className="text-[9px] text-white/30 tracking-wider mb-0.5">SET {id}</p>
-                      <p className="text-xs text-white/70 tracking-wide">{label}</p>
+            {/* 松竹梅コース */}
+            {[
+              {
+                rank: '松',
+                rankEn: 'MATSU',
+                color: 'text-[#c8a84a]',
+                border: 'border-[#c8a84a]/40',
+                bg: 'bg-[#c8a84a]/5',
+                desc: '厳選された最高級部位を中心に、オーナー山本直樹が自信を持ってお出しする特別コース。特別な日のご会食に。',
+                price: 'お電話にてご確認ください',
+                includes: ['特選和牛盛り合わせ', '希少部位数種', '前菜・サラダ', 'ドリンク2杯付き', 'デザート'],
+              },
+              {
+                rank: '竹',
+                rankEn: 'TAKE',
+                color: 'text-white',
+                border: 'border-white/20',
+                bg: 'bg-white/3',
+                desc: '上質な赤身を中心に、なおき自慢のホルモンもお楽しみいただける人気のスタンダードコース。',
+                price: 'お電話にてご確認ください',
+                includes: ['上赤身盛り合わせ', 'ホルモン盛り合わせ', '前菜・サラダ', 'ドリンク2杯付き'],
+              },
+              {
+                rank: '梅',
+                rankEn: 'UME',
+                color: 'text-white/70',
+                border: 'border-white/10',
+                bg: 'bg-white/2',
+                desc: '気軽に京都焼肉なおきの味を楽しめるエントリーコース。初めてのご来店にもおすすめです。',
+                price: 'お電話にてご確認ください',
+                includes: ['赤身盛り合わせ', 'ホルモン数種', 'ドリンク2杯付き'],
+              },
+            ].map(course => (
+              <div key={course.rank} className={`border ${course.border} ${course.bg} overflow-hidden`}>
+                <div className="p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <span
+                        className={`text-4xl font-black ${course.color}`}
+                        style={{ fontFamily: 'var(--font-noto-serif)' }}
+                      >
+                        {course.rank}
+                      </span>
+                      <div>
+                        <p className="text-[10px] tracking-[0.3em] text-white/30 font-[var(--font-montserrat)]">{course.rankEn}</p>
+                        <p className="text-xs text-white/40 tracking-widest">{course.price}</p>
+                      </div>
                     </div>
-                  ))}
+                  </div>
+                  <p className="text-sm font-light leading-relaxed text-white/60 mb-5">{course.desc}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {course.includes.map(item => (
+                      <span key={item} className="text-[10px] tracking-wide text-white/50 border border-white/10 px-2 py-1">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-
-            {/* 宴会コース */}
-            <div className="border border-white/10 overflow-hidden hover:border-[#c8a84a]/30 transition-colors group">
-              <div className="relative aspect-video overflow-hidden">
-                <Image src="/sec6_i1.jpg" alt="宴会コース" fill sizes="100vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute bottom-3 left-4">
-                  <span className="bg-[#b01020] text-white text-[9px] tracking-widest px-2 py-0.5">宴会・貸切</span>
-                </div>
-              </div>
-              <div className="p-5">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-base font-bold tracking-wide" style={{ fontFamily: 'var(--font-noto-serif)' }}>
-                    宴会コース（飲み放題付き）
-                  </h3>
-                  <span className="text-[#c8a84a] text-sm tracking-widest shrink-0 ml-4">4,000円〜</span>
-                </div>
-                <p className="text-xs text-white/50 leading-relaxed mb-4">
-                  2名様から貸切OK。飲み放題付きのコースで宴会・女子会・歓送迎会などに。<br />
-                  詳細はお電話またはWEB予約にてご相談ください。
-                </p>
-                <div className="grid grid-cols-2 gap-2">
-                  {[['スタンダード', '4,000円/人'], ['プレミアム', '5,500円/人']].map(([label, price]) => (
-                    <div key={label} className="text-center border border-white/10 py-3 px-2">
-                      <p className="text-[9px] text-white/30 tracking-wider mb-1">{label}</p>
-                      <p className="text-sm font-bold text-[#c8a84a]">{price}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
 
-          <p className="text-[10px] text-white/30 tracking-widest text-center mt-6">
-            ※価格は全て税込みです。詳細はお電話にてご確認ください。
-          </p>
+          <div className="mt-8 text-center">
+            <a
+              href="tel:052-990-6329"
+              className="inline-flex items-center gap-2 bg-[#b01020] hover:bg-[#d01828] text-white text-sm font-bold tracking-widest px-10 py-4 transition-colors"
+              style={{ fontFamily: 'var(--font-noto-serif)' }}
+            >
+              詳細はお電話で →
+            </a>
+            <p className="text-[10px] text-white/25 tracking-widest mt-3">
+              ※コース内容・価格は変更になる場合があります。詳細はお電話にてご確認ください。
+            </p>
+          </div>
         </div>
       </section>
 
@@ -522,7 +498,7 @@ export default async function HomePage() {
                     <span className="bg-[#b01020] text-white text-[9px] tracking-widest px-2 py-0.5">{item.tag}</span>
                   </div>
                 </div>
-                <h3 className="text-sm font-bold tracking-wide mb-0.5" style={{ fontFamily: 'var(--font-noto-serif)' }}>{item.name}</h3>
+                <h3 className="text-sm font-bold tracking-wide mb-0.5 text-white" style={{ fontFamily: 'var(--font-noto-serif)' }}>{item.name}</h3>
                 <p className="text-xs text-white/45">{item.desc}</p>
               </div>
             ))}
