@@ -50,6 +50,7 @@ function toJSTIsoString(dt: Date): string {
 }
 
 export async function POST(req: NextRequest) {
+
   // 1. 満席確認
   try {
     const status = await redis.get('RESERVE_STATUS');
@@ -61,7 +62,6 @@ export async function POST(req: NextRequest) {
     }
   } catch (redisErr) {
     console.error('Redis確認エラー:', redisErr);
-    // Redisエラーは予約処理を止めない
   }
 
   // 2. バリデーション
@@ -69,7 +69,10 @@ export async function POST(req: NextRequest) {
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json({ error: 'リクエストの形式が正しくありません。' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'リクエストの形式が正しくありません。' },
+      { status: 400 }
+    );
   }
 
   const validationError = validateBody(body);
@@ -85,7 +88,7 @@ export async function POST(req: NextRequest) {
   const startStr = toJSTIsoString(start);
   const endStr = toJSTIsoString(end);
 
-  // 4. LINE通知（失敗しても予約処理は続行）
+  // 4. LINE通知（失敗しても続行）
   const lineToken = process.env.LINE_CHANNEL_ACCESS_TOKEN;
   if (lineToken) {
     try {
@@ -125,9 +128,12 @@ export async function POST(req: NextRequest) {
     console.warn('LINE_CHANNEL_ACCESS_TOKEN が未設定');
   }
 
-  // 5. Googleカレンダー登録（失敗しても予約処理は続行）
+  // 5. Googleカレンダー登録（失敗しても続行）
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-  const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+  const rawKey = process.env.GOOGLE_PRIVATE_KEY ?? '';
+  const privateKey = rawKey.includes('\\n')
+    ? rawKey.replace(/\\n/g, '\n')
+    : rawKey;
   const calendarId = process.env.GOOGLE_CALENDAR_ID ?? 'n07y22@gmail.com';
 
   if (!clientEmail || !privateKey) {
@@ -161,6 +167,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // 6. 成功レスポンス（LINE・カレンダーの失敗に関わらず200を返す）
+  // 6. 成功レスポンス
   return NextResponse.json({ ok: true });
 }
