@@ -33,11 +33,10 @@ export default async function HomePage() {
   return (
     <div className="bg-[#0a0805] text-white overflow-x-hidden">
 
-      {/* HERO */}
-      <section className="relative min-h-screen flex flex-col overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0805] via-[#140f08] to-[#0a0805]" />
-        </div>
+     {/* HERO */}
+<section className="relative min-h-screen flex flex-col overflow-hidden">
+  <div className="absolute inset-0 bg-black" />
+
         <div className="relative z-10 flex flex-col items-center justify-center min-h-[80vh] px-6 pt-8">
 
           {/* ロゴ */}
