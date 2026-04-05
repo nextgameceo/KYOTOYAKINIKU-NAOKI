@@ -42,10 +42,10 @@ export default async function HomePage() {
           {/* ロゴ */}
           <div className="relative w-40 h-56 md:w-56 md:h-72 mb-8">
             <img
-              src="/830C6018-7E46-4B39-B45F-1F816F4B6444.png"
-              alt="京都焼肉なおき"
-              className="w-full h-full object-contain"
-            />
+  src="/80076D37-4666-47CF-84E1-B5CCD2CCBA09.png"
+  alt="京都焼肉なおき"
+  className="w-full h-full object-contain"
+/>
           </div>
 
           <div className="flex items-center gap-4 mb-5">
