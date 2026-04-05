@@ -1,8 +1,5 @@
 import { google } from 'googleapis';
 import { NextRequest, NextResponse } from 'next/server';
-import { Redis } from '@upstash/redis';
-
-const redis = Redis.fromEnv();
 
 type ReserveBody = {
   date: string;
@@ -32,7 +29,6 @@ function buildDateTime(date: string, time: string): { start: Date; end: Date } {
   const [hStr, minStr] = time.split(':');
   const hours = parseInt(hStr, 10);
   const minutes = parseInt(minStr, 10);
-
   const start = new Date(y, m - 1, d, hours, minutes, 0);
   if (hours < 5) {
     start.setDate(start.getDate() + 1);
@@ -49,25 +45,11 @@ function toJSTIsoString(dt: Date): string {
   );
 }
 
-// カレンダーIDを直接指定
 const CALENDAR_ID = '2fe0af61ebe1e42cb0fbc5761f7fd2c9dca60d8286f0a6b7a2705a0197561ca5@group.calendar.google.com';
 
 export async function POST(req: NextRequest) {
 
-  // 1. 満席確認
-  try {
-    const status = await redis.get('RESERVE_STATUS');
-    if (status === 'CLOSED') {
-      return NextResponse.json(
-        { error: 'ただいま満席のため予約を停止しております' },
-        { status: 403 }
-      );
-    }
-  } catch (redisErr) {
-    console.error('Redis確認エラー:', redisErr);
-  }
-
-  // 2. バリデーション
+  // 1. バリデーション
   let body: Partial<ReserveBody>;
   try {
     body = await req.json();
@@ -86,12 +68,12 @@ export async function POST(req: NextRequest) {
   const { date, time, party, name, tel, course } = body as ReserveBody;
   const memo = body.message?.trim() || 'なし';
 
-  // 3. 日付計算
+  // 2. 日付計算
   const { start, end } = buildDateTime(date, time);
   const startStr = toJSTIsoString(start);
   const endStr = toJSTIsoString(end);
 
-  // 4. LINE通知（失敗しても続行）
+  // 3. LINE通知（失敗しても続行）
   const lineToken = process.env.LINE_CHANNEL_ACCESS_TOKEN;
   if (lineToken) {
     try {
@@ -127,19 +109,15 @@ export async function POST(req: NextRequest) {
     } catch (lineErr) {
       console.error('LINE通知例外:', lineErr);
     }
-  } else {
-    console.warn('LINE_CHANNEL_ACCESS_TOKEN が未設定');
   }
 
-  // 5. Googleカレンダー登録（失敗しても続行）
+  // 4. Googleカレンダー登録（失敗しても続行）
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
   const rawKey = process.env.GOOGLE_PRIVATE_KEY ?? '';
-  const privateKey = rawKey.includes('\\n')
-    ? rawKey.replace(/\\n/g, '\n')
-    : rawKey;
+  const privateKey = rawKey.replace(/\\n/g, '\n');
 
   if (!clientEmail || !privateKey) {
-    console.warn('Google認証情報未設定 - カレンダー登録スキップ');
+    console.warn('Google認証情報未設定');
   } else {
     try {
       const auth = new google.auth.JWT(
@@ -169,6 +147,5 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // 6. 成功レスポンス
   return NextResponse.json({ ok: true });
 }
