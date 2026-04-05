@@ -43,7 +43,7 @@ export default async function HomePage() {
           {/* ロゴ */}
           <div className="relative w-40 h-56 md:w-56 md:h-72 mb-8">
             <img
-              src="/IMG_8469.png"
+              src="/830C6018-7E46-4B39-B45F-1F816F4B6444.png"
               alt="京都焼肉なおき"
               className="w-full h-full object-contain"
             />
@@ -321,11 +321,18 @@ export default async function HomePage() {
                 <div className="flex-1 h-px bg-[#c8a84a]/20" />
               </div>
               <div className="flex flex-col gap-0 divide-y divide-white/8">
-                {menuList.slice(0, 6).map((item: { id: string; name: string; price: number; description: string; image?: { url: string } }) => (
+                {menuList.slice(0, 6).map((item: {
+                  id: string;
+                  title: string;
+                  price: number;
+                  description?: string;
+                  category?: string;
+                  image?: { url: string };
+                }) => (
                   <div key={item.id} className="flex gap-4 py-5 items-center bg-[#140f08] px-4">
                     {item.image?.url && (
                       <div className="relative w-16 h-16 flex-shrink-0 overflow-hidden">
-                        <Image src={item.image.url} alt={item.name} fill className="object-cover" />
+                        <Image src={item.image.url} alt={item.title} fill className="object-cover" />
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
@@ -334,12 +341,17 @@ export default async function HomePage() {
                           className="text-sm font-bold tracking-wide truncate"
                           style={{ fontFamily: 'var(--font-noto-serif)', color: '#ffffff' }}
                         >
-                          {item.name}
+                          {item.title}
                         </h4>
                         <span className="text-[#c8a84a] text-sm font-bold tracking-widest shrink-0">
                           ¥{item.price?.toLocaleString()}
                         </span>
                       </div>
+                      {item.category && (
+                        <span className="inline-block text-[9px] tracking-widest text-[#b01020] border border-[#b01020]/30 px-2 py-0.5 mt-1">
+                          {item.category}
+                        </span>
+                      )}
                       {item.description && (
                         <p className="text-xs text-white/50 mt-1 leading-relaxed line-clamp-1">
                           {item.description}
@@ -405,7 +417,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* COURSE — 松竹梅（公式情報） */}
+      {/* COURSE */}
       <section className="py-20 bg-[#140f08]">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center gap-4 mb-12">
@@ -419,7 +431,6 @@ export default async function HomePage() {
           <p className="text-xs text-[#c8a84a]/70 tracking-widest mb-10">
             ※ 2,200円で2時間の飲み放題も追加できます
           </p>
-
           <div className="flex flex-col gap-4">
             {[
               {
@@ -470,20 +481,17 @@ export default async function HomePage() {
                     </span>
                   </div>
                   <p className="text-sm font-light leading-relaxed text-white/60 mb-5">{course.desc}</p>
-                  <div className="border-t border-white/8 pt-4">
-                    <div className="flex flex-wrap gap-2">
-                      {course.includes.map(item => (
-                        <span key={item} className="text-[11px] tracking-wide text-white/70 border border-white/15 px-3 py-1">
-                          {item}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="border-t border-white/8 pt-4 flex flex-wrap gap-2">
+                    {course.includes.map(item => (
+                      <span key={item} className="text-[11px] tracking-wide text-white/70 border border-white/15 px-3 py-1">
+                        {item}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </div>
             ))}
           </div>
-
           <div className="mt-8 text-center">
             <a
               href="tel:052-990-6329"
