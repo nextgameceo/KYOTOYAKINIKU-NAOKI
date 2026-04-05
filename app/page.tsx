@@ -41,13 +41,11 @@ export default async function HomePage() {
         <div className="relative z-10 flex flex-col items-center justify-center min-h-[80vh] px-6 pt-8">
 
           {/* ロゴ */}
-          <div className="relative w-36 h-48 md:w-52 md:h-64 mb-8">
-            <Image
+          <div className="relative w-40 h-56 md:w-56 md:h-72 mb-8">
+            <img
               src="/IMG_8469.png"
               alt="京都焼肉なおき"
-              fill
-              className="object-contain"
-              priority
+              className="w-full h-full object-contain"
             />
           </div>
 
@@ -146,16 +144,16 @@ export default async function HomePage() {
                 。
               </div>
               <h2 className="text-2xl md:text-3xl font-black leading-snug mb-6 tracking-wide" style={{ fontFamily: 'var(--font-noto-serif)' }}>
-                肉と向き合い続けた<br />
-                <span className="text-[#c8a84a]">二十年</span>の積み重ね
+                京都で20年以上、<br />
+                <span className="text-[#c8a84a]">肉と向き合って</span>きた。
               </h2>
               <div className="w-8 h-px bg-[#b01020] mb-6" />
               <p className="text-sm font-light leading-[2.4] text-white/65 mb-6">
-                京都の焼肉店で二十年間、肉のカットからタレの配合まで
-                徹底的に学んできました。<br /><br />
-                なおきでは、そのすべてを名古屋のお客様に届けたい
-                という想いで、毎日包丁を握っています。<br /><br />
-                一枚の肉に全力を注ぐ。それが私のこだわりです。
+                部位によって変える切り方、秘伝のタレの配合——
+                一つひとつに、積み重ねてきた理由があります。<br /><br />
+                目利きした上質な肉を、リーズナブルに。<br />
+                名古屋にも本物の焼肉を届けたいという一心で、
+                今日も包丁を握っています。
               </p>
               <div className="flex items-center gap-4">
                 <div className="w-8 h-px bg-[#c8a84a]/40" />
@@ -332,7 +330,10 @@ export default async function HomePage() {
                     )}
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-baseline gap-2">
-                        <h4 className="text-sm font-bold tracking-wide truncate text-white" style={{ fontFamily: 'var(--font-noto-serif)' }}>
+                        <h4
+                          className="text-sm font-bold tracking-wide truncate"
+                          style={{ fontFamily: 'var(--font-noto-serif)', color: '#ffffff' }}
+                        >
                           {item.name}
                         </h4>
                         <span className="text-[#c8a84a] text-sm font-bold tracking-widest shrink-0">
@@ -404,7 +405,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* COURSE */}
+      {/* COURSE — 松竹梅（公式情報） */}
       <section className="py-20 bg-[#140f08]">
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center gap-4 mb-12">
@@ -414,70 +415,85 @@ export default async function HomePage() {
           <h2 className="text-2xl font-black tracking-widest mb-2" style={{ fontFamily: 'var(--font-noto-serif)' }}>
             コース・セットメニュー
           </h2>
-          <p className="text-sm text-white/45 font-light mb-10">貸切対応可（要相談）　2名様〜</p>
+          <p className="text-sm text-white/45 font-light mb-2">前日までにご予約ください　2名様〜</p>
+          <p className="text-xs text-[#c8a84a]/70 tracking-widest mb-10">
+            ※ 2,200円で2時間の飲み放題も追加できます
+          </p>
+
           <div className="flex flex-col gap-4">
             {[
               {
                 rank: '松',
                 rankEn: 'MATSU',
+                price: '7,000円',
                 color: 'text-[#c8a84a]',
                 border: 'border-[#c8a84a]/40',
                 bg: 'bg-[#c8a84a]/5',
-                desc: '厳選された最高級部位を中心に、オーナー山本直樹が自信を持ってお出しする特別コース。特別な日のご会食に。',
-                includes: ['特選和牛盛り合わせ', '希少部位数種', '前菜・サラダ', 'ドリンク2杯付き', 'デザート'],
+                includes: ['前菜', 'お刺身', '塩焼き', 'タレ焼き', 'メもの', 'デザート', 'ドリンク'],
+                desc: 'オーナー自らが選び抜いた最高品質のコース。お刺身・デザートも付いた特別な一夜に。',
               },
               {
                 rank: '竹',
                 rankEn: 'TAKE',
+                price: '5,500円',
                 color: 'text-white',
                 border: 'border-white/20',
                 bg: 'bg-white/3',
-                desc: '上質な赤身を中心に、なおき自慢のホルモンもお楽しみいただける人気のスタンダードコース。',
-                includes: ['上赤身盛り合わせ', 'ホルモン盛り合わせ', '前菜・サラダ', 'ドリンク2杯付き'],
+                includes: ['前菜', '塩焼き', 'タレ焼き', 'メもの', 'デザート', 'ドリンク'],
+                desc: 'ご友人やお仲間との飲み会・ご宴会に。満足感抜群のスタンダードコース。',
               },
               {
                 rank: '梅',
                 rankEn: 'UME',
+                price: '4,000円',
                 color: 'text-white/70',
                 border: 'border-white/10',
                 bg: 'bg-white/5',
-                desc: '気軽に京都焼肉なおきの味を楽しめるエントリーコース。初めてのご来店にもおすすめです。',
-                includes: ['赤身盛り合わせ', 'ホルモン数種', 'ドリンク2杯付き'],
+                includes: ['前菜', '塩焼き', 'タレ焼き', 'ソーセージ', 'メもの', 'ドリンク'],
+                desc: '気軽になおきの味を楽しめるエントリーコース。初めてのご来店にもおすすめです。',
               },
             ].map(course => (
               <div key={course.rank} className={`border ${course.border} ${course.bg}`}>
                 <div className="p-6">
-                  <div className="flex items-start gap-4 mb-4">
-                    <span className={`text-4xl font-black ${course.color}`} style={{ fontFamily: 'var(--font-noto-serif)' }}>
-                      {course.rank}
-                    </span>
-                    <div className="pt-1">
-                      <p className="text-[10px] tracking-[0.3em] text-white/30 font-[var(--font-montserrat)]">{course.rankEn}</p>
-                      <p className="text-xs text-white/40 tracking-widest">詳細はお電話にてご確認ください</p>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-4">
+                      <span className={`text-4xl font-black ${course.color}`} style={{ fontFamily: 'var(--font-noto-serif)' }}>
+                        {course.rank}
+                      </span>
+                      <div>
+                        <p className="text-[10px] tracking-[0.3em] text-white/30 font-[var(--font-montserrat)]">{course.rankEn}</p>
+                        <p className="text-xs text-white/40 tracking-widest">コース</p>
+                      </div>
                     </div>
+                    <span className="text-[#c8a84a] text-xl font-black tracking-widest" style={{ fontFamily: 'var(--font-noto-serif)' }}>
+                      {course.price}
+                    </span>
                   </div>
                   <p className="text-sm font-light leading-relaxed text-white/60 mb-5">{course.desc}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {course.includes.map(item => (
-                      <span key={item} className="text-[10px] tracking-wide text-white/50 border border-white/10 px-2 py-1">
-                        {item}
-                      </span>
-                    ))}
+                  <div className="border-t border-white/8 pt-4">
+                    <div className="flex flex-wrap gap-2">
+                      {course.includes.map(item => (
+                        <span key={item} className="text-[11px] tracking-wide text-white/70 border border-white/15 px-3 py-1">
+                          {item}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
+
           <div className="mt-8 text-center">
             <a
               href="tel:052-990-6329"
               className="inline-flex items-center gap-2 bg-[#b01020] hover:bg-[#d01828] text-white text-sm font-bold tracking-widest px-10 py-4 transition-colors"
               style={{ fontFamily: 'var(--font-noto-serif)' }}
             >
-              詳細はお電話で →
+              ご予約・お問い合わせ →
             </a>
             <p className="text-[10px] text-white/25 tracking-widest mt-3">
-              ※コース内容・価格は変更になる場合があります。詳細はお電話にてご確認ください。
+              ※前日までにご予約ください。貸切対応可（要相談）
             </p>
           </div>
         </div>
