@@ -2,13 +2,11 @@ import { google } from 'googleapis';
 import { NextRequest, NextResponse } from 'next/server';
 import { Redis } from '@upstash/redis';
 
-// Redisの初期化（満席チェック用）
 const redis = Redis.fromEnv();
 
-// ─── 型定義 ───────────────────────────────────────────────
 type ReserveBody = {
-  date: string;   // "YYYY/MM/DD" または "YYYY-MM-DD"
-  time: string;   // "HH:MM"
+  date: string;
+  time: string;
   party: string;
   name: string;
   tel: string;
@@ -16,7 +14,6 @@ type ReserveBody = {
   message?: string;
 };
 
-// ─── バリデーション ────────────────────────────────────────
 function validateBody(body: Partial<ReserveBody>): string | null {
   if (!body.date) return 'ご来店日が未入力です。';
   if (!body.time) return '時間が未入力です。';
@@ -29,9 +26,7 @@ function validateBody(body: Partial<ReserveBody>): string | null {
   return null;
 }
 
-// ─── 日付文字列をDateオブジェクトに変換（深夜枠対応） ────
 function buildDateTime(date: string, time: string): { start: Date; end: Date } {
-  // "YYYY/MM/DD" と "YYYY-MM-DD" の両形式に対応
   const normalized = date.replace(/\//g, '-');
   const [y, m, d] = normalized.split('-').map(Number);
   const [hStr, minStr] = time.split(':');
@@ -39,19 +34,13 @@ function buildDateTime(date: string, time: string): { start: Date; end: Date } {
   const minutes = parseInt(minStr, 10);
 
   const start = new Date(y, m - 1, d, hours, minutes, 0);
-
-  // 深夜枠（0:00〜4:00）は翌日扱いにする
   if (hours < 5) {
     start.setDate(start.getDate() + 1);
   }
-
-  // 滞在時間を2時間と想定（元のコードは30分固定だったため修正）
   const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
-
   return { start, end };
 }
 
-// ─── ISO文字列変換（JST固定） ─────────────────────────────
 function toJSTIsoString(dt: Date): string {
   const pad = (n: number) => String(n).padStart(2, '0');
   return (
@@ -60,14 +49,9 @@ function toJSTIsoString(dt: Date): string {
   );
 }
 
-// ─── Google カレンダーID ──────────────────────────────────
-const CALENDAR_ID =
-  '2fe0af61ebe1e42cb0fbc5761f7fd2c9dca60d8286f0a6b7a2705a0197561ca5@group.calendar.google.com';
-
-// ─── POST ハンドラ ─────────────────────────────────────────
 export async function POST(req: NextRequest) {
   try {
-    // 1. 満席状態の確認
+    // 1. 満席確認
     const status = await redis.get('RESERVE_STATUS');
     if (status === 'CLOSED') {
       return NextResponse.json(
@@ -76,34 +60,32 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. リクエストボディの取得とバリデーション
+    // 2. バリデーション
     const body: Partial<ReserveBody> = await req.json();
     const validationError = validateBody(body);
     if (validationError) {
-      return NextResponse.json({ error: validationError, message: validationError }, { status: 400 });
+      return NextResponse.json({ error: validationError }, { status: 400 });
     }
 
     const { date, time, party, name, tel, course } = body as ReserveBody;
     const memo = body.message?.trim() || 'なし';
 
-    // 3. 日付・時刻計算
+    // 3. 日付計算
     const { start, end } = buildDateTime(date, time);
     const startStr = toJSTIsoString(start);
     const endStr = toJSTIsoString(end);
 
     // 4. LINE通知
     const lineToken = process.env.LINE_CHANNEL_ACCESS_TOKEN;
-    const lineUserId = process.env.LINE_USER_ID;
-    if (lineToken && lineUserId) {
+    if (lineToken) {
       try {
-        const lineRes = await fetch('https://api.line.me/v2/bot/message/push', {
+        await fetch('https://api.line.me/v2/bot/message/broadcast', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${lineToken.trim()}`,
           },
           body: JSON.stringify({
-            to: lineUserId.trim(),
             messages: [
               {
                 type: 'text',
@@ -120,43 +102,44 @@ export async function POST(req: NextRequest) {
             ],
           }),
         });
-        if (!lineRes.ok) {
-          const errText = await lineRes.text();
-          console.error('LINE通知エラー:', errText);
-        }
       } catch (lineErr) {
-        // LINE通知の失敗は予約処理全体を止めない
         console.error('LINE通知例外:', lineErr);
       }
     }
 
     // 5. Googleカレンダー登録
+    const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
     const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
-    if (!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || !privateKey) {
+    const calendarId = process.env.GOOGLE_CALENDAR_ID ?? 'n07y22@gmail.com';
+
+    if (!clientEmail || !privateKey) {
       console.warn('Google認証情報が未設定のためカレンダー登録をスキップします。');
     } else {
-      const auth = new google.auth.JWT(
-        process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-        undefined,
-        privateKey,
-        ['https://www.googleapis.com/auth/calendar']
-      );
-      const calendar = google.calendar({ version: 'v3', auth });
-      await calendar.events.insert({
-        calendarId: CALENDAR_ID,
-        requestBody: {
-          summary: `【予約】${name}様（${party}名）`,
-          description: [
-            `コース：${course}`,
-            `電話：${tel}`,
-            `備考：${memo}`,
-          ].join('\n'),
-          start: { dateTime: startStr, timeZone: 'Asia/Tokyo' },
-          end: { dateTime: endStr, timeZone: 'Asia/Tokyo' },
-          // 色分け：コースによってカレンダーの色を変える（任意）
-          colorId: course.includes('松') ? '11' : course.includes('竹') ? '5' : '1',
-        },
-      });
+      try {
+        const auth = new google.auth.JWT(
+          clientEmail,
+          undefined,
+          privateKey,
+          ['https://www.googleapis.com/auth/calendar']
+        );
+        const calendar = google.calendar({ version: 'v3', auth });
+        await calendar.events.insert({
+          calendarId,
+          requestBody: {
+            summary: `【予約】${name}様（${party}名）`,
+            description: [
+              `コース：${course}`,
+              `電話：${tel}`,
+              `備考：${memo}`,
+            ].join('\n'),
+            start: { dateTime: startStr, timeZone: 'Asia/Tokyo' },
+            end: { dateTime: endStr, timeZone: 'Asia/Tokyo' },
+            colorId: course.includes('松') ? '11' : course.includes('竹') ? '5' : '1',
+          },
+        });
+      } catch (calErr) {
+        console.error('カレンダー登録エラー:', calErr);
+      }
     }
 
     return NextResponse.json({ ok: true });
