@@ -1,27 +1,28 @@
-'use client';
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import WageForm from './WageForm';
 
-export default function WagePage() {
-  const [form, setForm] = useState({ name: '', tel: '', age: '' });
-  const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+export const revalidate = 60;
 
-  const handleSubmit = async () => {
-    if (!form.name || !form.tel || !form.age) return;
-    setStatus('loading');
-    try {
-      const res = await fetch('/api/send-recruit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      if (!res.ok) throw new Error();
-      setStatus('done');
-    } catch {
-      setStatus('error');
-    }
-  };
+async function getCMS(endpoint: string) {
+  try {
+    const res = await fetch(
+      `https://${process.env.MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/${endpoint}`,
+      {
+        headers: { 'X-MICROCMS-API-KEY': process.env.MICROCMS_API_KEY || '' },
+        next: { revalidate: 60 },
+      }
+    );
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+export default async function WagePage() {
+  const wageData = await getCMS('wage');
+  const wageList = wageData?.contents || [];
 
   return (
     <main className="min-h-screen bg-[#0a0805] text-white">
@@ -75,7 +76,6 @@ export default function WagePage() {
             </h2>
             <div className="flex-1 h-px bg-[#c8a84a]/20" />
           </div>
-
           <div className="flex flex-col gap-0 divide-y divide-white/8">
             {[
               { label: '募集職種', value: 'ホールスタッフ（アルバイト）' },
@@ -102,7 +102,7 @@ export default function WagePage() {
         </div>
       </section>
 
-      {/* まかない */}
+      {/* まかない（microCMS） */}
       <section className="py-16 px-6 max-w-4xl mx-auto">
         <div className="flex items-center gap-4 mb-10">
           <div className="w-6 h-px bg-[#c8a84a]/50" />
@@ -115,29 +115,65 @@ export default function WagePage() {
           <div className="flex-1 h-px bg-[#c8a84a]/20" />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
-          {[
-            { src: '/sec3_i1.jpg', label: 'ネギタン塩' },
-            { src: '/sec3_i2.jpg', label: '赤身3種盛り' },
-            { src: '/sec3_i3.jpg', label: 'ミノ湯引き' },
-          ].map(item => (
-            <div key={item.label} className="relative aspect-square overflow-hidden group">
-              <Image
-                src={item.src}
-                alt={item.label}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-              <span
-                className="absolute bottom-3 left-3 text-xs font-bold text-white tracking-wide"
-                style={{ fontFamily: 'var(--font-noto-serif)' }}
-              >
-                {item.label}
-              </span>
+        {wageList.length > 0 ? (
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
+              {wageList.map((item: {
+                id: string;
+                title?: string;
+                name?: string;
+                image?: { url: string };
+                description?: string;
+              }) => (
+                <div key={item.id} className="relative aspect-square overflow-hidden group">
+                  {item.image?.url ? (
+                    <Image
+                      src={item.image.url}
+                      alt={item.title ?? item.name ?? 'まかない'}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-[#140f08] flex items-center justify-center">
+                      <span className="text-white/20 text-xs tracking-widest">画像なし</span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                  <span
+                    className="absolute bottom-3 left-3 text-xs font-bold text-white tracking-wide"
+                    style={{ fontFamily: 'var(--font-noto-serif)' }}
+                  >
+                    {item.title ?? item.name ?? ''}
+                  </span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
+            {[
+              { src: '/sec3_i1.jpg', label: 'ネギタン塩' },
+              { src: '/sec3_i2.jpg', label: '赤身3種盛り' },
+              { src: '/sec3_i3.jpg', label: 'ミノ湯引き' },
+            ].map(item => (
+              <div key={item.label} className="relative aspect-square overflow-hidden group">
+                <Image
+                  src={item.src}
+                  alt={item.label}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                <span
+                  className="absolute bottom-3 left-3 text-xs font-bold text-white tracking-wide"
+                  style={{ fontFamily: 'var(--font-noto-serif)' }}
+                >
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className="bg-[#140f08] border border-[#c8a84a]/20 p-6">
           <p className="text-sm font-light leading-[2.2] text-white/65">
@@ -161,73 +197,15 @@ export default function WagePage() {
             </h2>
             <div className="flex-1 h-px bg-[#c8a84a]/20" />
           </div>
-
-          {status === 'done' ? (
-            <div className="text-center py-12">
-              <div className="text-4xl mb-4">✅</div>
-              <h3
-                className="text-xl font-bold tracking-widest mb-3"
-                style={{ fontFamily: 'var(--font-noto-serif)' }}
-              >
-                応募を受け付けました
-              </h3>
-              <p className="text-sm text-white/50 tracking-wide mb-8">
-                担当よりご連絡いたします。しばらくお待ちください。
-              </p>
-              <Link
-                href="/"
-                className="text-[11px] tracking-[0.4em] text-white/30 hover:text-[#c8a84a] transition-colors"
-              >
-                ← トップへ戻る
-              </Link>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              {[
-                { key: 'name', label: 'お名前', placeholder: '山田 太郎', type: 'text' },
-                { key: 'tel', label: '電話番号', placeholder: '090-0000-0000', type: 'tel' },
-                { key: 'age', label: '年齢', placeholder: '25', type: 'number' },
-              ].map(field => (
-                <div key={field.key}>
-                  <label className="block text-xs tracking-widest text-white/50 mb-2">
-                    {field.label} *
-                  </label>
-                  <input
-                    type={field.type}
-                    value={form[field.key as keyof typeof form]}
-                    onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))}
-                    placeholder={field.placeholder}
-                    className="w-full bg-white/5 border border-white/15 text-white px-4 py-4 text-base focus:outline-none focus:border-[#c8a84a] tracking-wider placeholder:text-white/20 transition-colors"
-                  />
-                </div>
-              ))}
-
-              {status === 'error' && (
-                <p className="text-[#b01020] text-sm tracking-wide">
-                  送信に失敗しました。お電話でご連絡ください。
-                </p>
-              )}
-
-              <button
-                onClick={handleSubmit}
-                disabled={status === 'loading' || !form.name || !form.tel || !form.age}
-                className="w-full mt-4 bg-[#b01020] hover:bg-[#d01828] disabled:bg-white/10 disabled:text-white/30 text-white py-5 text-sm font-bold tracking-widest transition-colors active:scale-[0.98]"
-                style={{ fontFamily: 'var(--font-noto-serif)' }}
-              >
-                {status === 'loading' ? '送信中...' : '応募する →'}
-              </button>
-
-              <p className="text-[10px] text-white/25 tracking-widest text-center">
-                ※入力情報は採用選考のみに使用いたします
-              </p>
-            </div>
-          )}
+          <WageForm />
         </div>
       </section>
 
       {/* お電話でも */}
       <section className="py-12 px-6 text-center">
-        <p className="text-xs text-white/40 tracking-widest mb-4">お電話でのご応募も受け付けています</p>
+        <p className="text-xs text-white/40 tracking-widest mb-4">
+          お電話でのご応募も受け付けています
+        </p>
         <a
           href="tel:052-990-6329"
           className="inline-flex items-center gap-3 border border-white/20 hover:border-[#c8a84a] text-white hover:text-[#c8a84a] text-sm tracking-widest px-10 py-4 transition-all"
