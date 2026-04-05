@@ -49,6 +49,9 @@ function toJSTIsoString(dt: Date): string {
   );
 }
 
+// カレンダーIDを直接指定
+const CALENDAR_ID = '2fe0af61ebe1e42cb0fbc5761f7fd2c9dca60d8286f0a6b7a2705a0197561ca5@group.calendar.google.com';
+
 export async function POST(req: NextRequest) {
 
   // 1. 満席確認
@@ -134,7 +137,6 @@ export async function POST(req: NextRequest) {
   const privateKey = rawKey.includes('\\n')
     ? rawKey.replace(/\\n/g, '\n')
     : rawKey;
-  const calendarId = process.env.GOOGLE_CALENDAR_ID ?? 'n07y22@gmail.com';
 
   if (!clientEmail || !privateKey) {
     console.warn('Google認証情報未設定 - カレンダー登録スキップ');
@@ -148,7 +150,7 @@ export async function POST(req: NextRequest) {
       );
       const calendar = google.calendar({ version: 'v3', auth });
       await calendar.events.insert({
-        calendarId,
+        calendarId: CALENDAR_ID,
         requestBody: {
           summary: `【予約】${name}様（${party}名）`,
           description: [
