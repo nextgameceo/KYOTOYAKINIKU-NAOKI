@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 type MenuItem = {
   id: string;
-  name: string;
+  title: string;
   price: number;
   description?: string;
   category?: string;
@@ -123,7 +123,7 @@ export default async function MenuPage() {
                       <div className="relative w-20 h-20 flex-shrink-0 overflow-hidden border border-[#c8a84a]/20">
                         <Image
                           src={item.image.url}
-                          alt={item.name}
+                          alt={item.title}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-500"
                           sizes="80px"
@@ -139,15 +139,20 @@ export default async function MenuPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-baseline gap-3">
                         <h3
-                          className="text-base font-bold tracking-wide text-white truncate"
-                          style={{ fontFamily: 'var(--font-noto-serif)' }}
+                          className="text-base font-bold tracking-wide truncate"
+                          style={{ fontFamily: 'var(--font-noto-serif)', color: '#ffffff' }}
                         >
-                          {item.name}
+                          {item.title}
                         </h3>
                         <span className="text-[#c8a84a] font-bold tracking-widest shrink-0 text-sm">
                           {item.price != null ? `¥${Number(item.price).toLocaleString()}` : '時価'}
                         </span>
                       </div>
+                      {item.category && categories.length === 1 && (
+                        <span className="inline-block text-[9px] tracking-widest text-[#b01020] border border-[#b01020]/30 px-2 py-0.5 mt-1">
+                          {item.category}
+                        </span>
+                      )}
                       {item.description && (
                         <p className="text-xs text-white/45 mt-1 leading-relaxed line-clamp-2">
                           {item.description}
